@@ -125,6 +125,7 @@ pub(super) fn list_built_in_predicate_functions() -> Vec<(&'static str, ScalarFu
         ("or", F::binary_op(Operator::Or)),
         ("regexp", F::binary(rlike)),
         ("regexp_like", F::binary(rlike)),
+        ("regexp_matches", F::binary(rlike)),
         ("rlike", F::binary(rlike)),
     ]
 }

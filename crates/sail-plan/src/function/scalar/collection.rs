@@ -75,9 +75,12 @@ pub(super) fn list_built_in_collection_functions() -> Vec<(&'static str, ScalarF
     use crate::function::common::ScalarFunctionBuilder as F;
 
     vec![
+        ("array_length", F::custom(size)),
         ("cardinality", F::custom(size)),
         ("deep_size", F::unary(expr_fn::cardinality)),
         ("element_at", F::custom(|input| element_at(input, false))),
+        ("list_length", F::custom(size)),
+        ("list_reverse", F::udf(SparkReverse::new())),
         ("size", F::custom(size)),
         ("array_concat", F::udf(SparkConcat::new())),
         ("concat", F::udf(SparkConcat::new())),

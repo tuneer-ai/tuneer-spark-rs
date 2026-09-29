@@ -1293,6 +1293,7 @@ pub(super) fn list_built_in_datetime_functions() -> Vec<(&'static str, ScalarFun
         ("dateadd", F::custom(|input| dateadd(input, "dateadd"))),
         ("datediff", F::custom(datediff)),
         ("datepart", F::binary(date_part)),
+        ("datesub", F::custom(|input| interval_arithmetic(input, "days", Operator::Minus))),
         ("day", F::unary(|arg| integer_part(arg, "DAY"))),
         ("dayname", F::unary(|arg| expr_fn::to_char(arg, lit("%a")))),
         ("dayofmonth", F::unary(|arg| integer_part(arg, "DAY"))),
@@ -1301,6 +1302,23 @@ pub(super) fn list_built_in_datetime_functions() -> Vec<(&'static str, ScalarFun
             F::unary(|arg| integer_part(arg, "DOW") + lit(1)),
         ),
         ("dayofyear", F::unary(|arg| integer_part(arg, "DOY"))),
+        ("epoch", F::custom(unix_timestamp)),
+        (
+            "epoch_ms",
+            F::unary(|arg| {
+                cast(
+                    cast(arg, DataType::Int64) * lit(1_000_i64),
+                    DataType::Timestamp(TimeUnit::Microsecond, Some("UTC".into())),
+                )
+            }),
+        ),
+        (
+            "epoch_us",
+            F::cast(DataType::Timestamp(
+                TimeUnit::Microsecond,
+                Some("UTC".into()),
+            )),
+        ),
         ("extract", F::binary(date_part)),
         ("from_unixtime", F::custom(from_unixtime)),
         ("from_utc_timestamp", F::custom(from_utc_timestamp)),
@@ -1345,6 +1363,26 @@ pub(super) fn list_built_in_datetime_functions() -> Vec<(&'static str, ScalarFun
         ("quarter", F::unary(|arg| integer_part(arg, "QUARTER"))),
         ("second", F::unary(|arg| integer_part(arg, "SECOND"))),
         ("session_window", F::unknown("session_window")),
+        (
+            "strftime",
+            F::custom(|input| match input.arguments.len() {
+                2 => {
+                    let timezone = input.function_context.plan_config.session_timezone.clone();
+                    Ok(date_format_with_args(input.arguments, timezone.to_string()))
+                }
+                _ => Err(PlanError::invalid("strftime requires 2 arguments")),
+            }),
+        ),
+        (
+            "strptime",
+            F::custom(|input| {
+                let timestamp_ntz = matches!(
+                    input.function_context.plan_config.default_timestamp_type,
+                    DefaultTimestampType::TimestampNtz
+                );
+                to_timestamp(input, timestamp_ntz)
+            }),
+        ),
         ("time_bucket", F::unknown("time_bucket")),
         ("time_from_micros", F::unknown("time_from_micros")),
         ("time_from_millis", F::unknown("time_from_millis")),
@@ -1408,6 +1446,7 @@ pub(super) fn list_built_in_datetime_functions() -> Vec<(&'static str, ScalarFun
         ),
         ("to_unix_timestamp", F::custom(to_unix_timestamp)),
         ("to_utc_timestamp", F::custom(to_utc_timestamp)),
+        ("today", F::nullary(expr_fn::current_date)),
         ("trunc", F::binary(trunc)),
         ("try_make_interval", F::unknown("try_make_interval")),
         (
