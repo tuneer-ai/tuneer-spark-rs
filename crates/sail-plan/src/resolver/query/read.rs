@@ -89,6 +89,8 @@ impl PlanResolver<'_> {
             };
         }
 
+        let (name, options, metadata_table) = parse_metadata_table_suffix(name, options);
+
         let reference: Vec<String> = name.clone().into();
         let status = self
             .ctx
@@ -108,6 +110,11 @@ impl PlanResolver<'_> {
                 properties,
                 is_external: _,
             } => {
+                if metadata_table.is_some() && format != "iceberg" {
+                    return Err(PlanError::invalid(format!(
+                        "metadata tables are only supported for Iceberg tables, got format: {format}"
+                    )));
+                }
                 let schema = Schema::new(columns.iter().map(|x| x.field()).collect::<Vec<_>>());
                 let constraints = self.resolve_catalog_table_constraints(constraints, &schema)?;
                 let temporal_options = self
@@ -579,4 +586,26 @@ impl PlanResolver<'_> {
             Ok(table_scan)
         }
     }
+}
+
+const METADATA_SUFFIX_FILES: &str = "$files";
+
+fn parse_metadata_table_suffix(
+    name: spec::ObjectName,
+    mut options: Vec<(String, String)>,
+) -> (spec::ObjectName, Vec<(String, String)>, Option<&'static str>) {
+    let parts = name.parts();
+    if let Some(last) = parts.last() {
+        let last_str = last.as_ref();
+        if let Some(base_name) = last_str.strip_suffix(METADATA_SUFFIX_FILES) {
+            if !base_name.is_empty() {
+                let mut new_parts: Vec<String> =
+                    parts[..parts.len() - 1].iter().map(|p| p.as_ref().to_string()).collect();
+                new_parts.push(base_name.to_string());
+                options.push(("metadataAsDataRead".to_string(), "true".to_string()));
+                return (spec::ObjectName::from(new_parts), options, Some("files"));
+            }
+        }
+    }
+    (name, options, None)
 }
