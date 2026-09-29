@@ -146,11 +146,7 @@ impl SessionJobRunnerFactory for ServerSessionJobRunnerFactory {
                     assign_public_ip: self.config.ecs.assign_public_ip,
                     launch_type: self.config.ecs.launch_type.clone(),
                 };
-                self.create_cluster_runner(
-                    system,
-                    info,
-                    Box::new(EcsWorkerManager::new(options)),
-                )
+                self.create_cluster_runner(system, info, Box::new(EcsWorkerManager::new(options)))
             }
         }
     }

@@ -287,9 +287,7 @@ impl EcsWorkerService {
             ]))
             .send()
             .await
-            .map_err(|e| {
-                ExecutionError::InternalError(format!("failed to run ECS task: {e}"))
-            })?;
+            .map_err(|e| ExecutionError::InternalError(format!("failed to run ECS task: {e}")))?;
 
         if let Some(failures) = &result.failures {
             if !failures.is_empty() {

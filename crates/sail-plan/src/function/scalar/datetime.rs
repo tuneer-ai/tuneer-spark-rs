@@ -1293,7 +1293,10 @@ pub(super) fn list_built_in_datetime_functions() -> Vec<(&'static str, ScalarFun
         ("dateadd", F::custom(|input| dateadd(input, "dateadd"))),
         ("datediff", F::custom(datediff)),
         ("datepart", F::binary(date_part)),
-        ("datesub", F::custom(|input| interval_arithmetic(input, "days", Operator::Minus))),
+        (
+            "datesub",
+            F::custom(|input| interval_arithmetic(input, "days", Operator::Minus)),
+        ),
         ("day", F::unary(|arg| integer_part(arg, "DAY"))),
         ("dayname", F::unary(|arg| expr_fn::to_char(arg, lit("%a")))),
         ("dayofmonth", F::unary(|arg| integer_part(arg, "DAY"))),
