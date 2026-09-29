@@ -1,0 +1,55 @@
+{
+  "tests": [
+    {
+      "input": "DATE '2019'",
+      "output": {
+        "success": {
+          "unresolvedDate": {
+            "value": "2019"
+          }
+        }
+      }
+    },
+    {
+      "input": "DATE '2019-01'",
+      "output": {
+        "success": {
+          "unresolvedDate": {
+            "value": "2019-01"
+          }
+        }
+      }
+    },
+    {
+      "input": "DATE '2019-01-14'",
+      "output": {
+        "success": {
+          "unresolvedDate": {
+            "value": "2019-01-14"
+          }
+        }
+      }
+    },
+    {
+      "input": "DAtE 'mar 11 2016'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"DATE\" is invalid: 'mar 11 2016'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\nDAtE 'mar 11 2016'\n^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "success": {
+          "unresolvedDate": {
+            "value": "mar 11 2016"
+          }
+        }
+      }
+    },
+    {
+      "input": "dAte '2016-03-11'",
+      "output": {
+        "success": {
+          "unresolvedDate": {
+            "value": "2016-03-11"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "tests": [
+    {
+      "input": "SELECT 1",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "empty": {
+                  "produceOneRow": true
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "literal": {
+                    "int32": {
+                      "value": 1
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

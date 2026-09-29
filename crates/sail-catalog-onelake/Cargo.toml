@@ -1,0 +1,18 @@
+[package]
+name = "sail-catalog-onelake"
+version = { workspace = true }
+edition = { workspace = true }
+
+[lints]
+workspace = true
+
+[dependencies]
+sail-common-datafusion = { path = "../sail-common-datafusion" }
+sail-catalog = { path = "../sail-catalog" }
+sail-catalog-iceberg = { path = "../sail-catalog-iceberg" }
+sail-catalog-unity = { path = "../sail-catalog-unity" }
+
+async-trait = { workspace = true }
+object_store = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }

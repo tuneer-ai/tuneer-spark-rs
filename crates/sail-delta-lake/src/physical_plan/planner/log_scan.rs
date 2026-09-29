@@ -1,0 +1,501 @@
+use std::sync::{Arc, LazyLock};
+
+use datafusion::arrow::datatypes::{DataType, Field, FieldRef, Fields, Schema, SchemaRef};
+use datafusion::common::{DataFusionError, Result, ScalarValue};
+use datafusion::datasource::file_format::FileFormat;
+use datafusion::datasource::file_format::parquet::ParquetFormat;
+use datafusion::datasource::listing::PartitionedFile;
+use datafusion::datasource::object_store::ObjectStoreUrl;
+use datafusion::datasource::physical_plan::{FileGroup, FileScanConfigBuilder};
+use datafusion::datasource::source::DataSourceExec;
+use datafusion::datasource::table_schema::TableSchema;
+use datafusion::physical_expr::PhysicalExpr;
+use datafusion::physical_plan::ExecutionPlan;
+use datafusion::physical_plan::union::UnionExec;
+use datafusion_common::extensions::Extensions;
+use futures::{StreamExt, TryStreamExt, stream};
+use object_store::path::Path;
+use object_store::{ObjectMeta, ObjectStore, ObjectStoreExt};
+
+use super::context::PlannerContext;
+use crate::datasource::create_object_store_url;
+use crate::physical_plan::COL_LOG_VERSION;
+use crate::spec::{
+    CheckpointActionRow, delta_log_file_path, is_json_checkpoint_filename, parse_version_prefix,
+};
+
+/// The canonical Delta log file schema with proper Map types for fields like `partitionValues`.
+///
+/// JSON schema inference gives `partitionValues` as a Struct, which breaks `map_extract`.
+/// By using this fixed schema for JSON-only log reads (when no parquet checkpoint exists),
+/// we ensure consistent Map types regardless of whether a checkpoint is present.
+static DELTA_LOG_FILE_SCHEMA: LazyLock<SchemaRef> = LazyLock::new(|| {
+    #[expect(clippy::expect_used)]
+    let action_type = DataType::try_from(&crate::spec::DataType::from(
+        CheckpointActionRow::struct_type(),
+    ))
+    .expect("canonical checkpoint action schema should convert to Arrow");
+    let DataType::Struct(fields) = action_type else {
+        unreachable!("checkpoint action schema should be a struct")
+    };
+    Arc::new(Schema::new(fields))
+});
+
+fn recursively_nullable_field(field: &Field) -> Field {
+    let data_type = match field.data_type() {
+        DataType::Struct(fields) => DataType::Struct(
+            fields
+                .iter()
+                .map(|field| Arc::new(recursively_nullable_field(field)))
+                .collect::<Fields>(),
+        ),
+        DataType::List(element) => DataType::List(Arc::new(recursively_nullable_field(element))),
+        DataType::LargeList(element) => {
+            DataType::LargeList(Arc::new(recursively_nullable_field(element)))
+        }
+        DataType::FixedSizeList(element, size) => {
+            DataType::FixedSizeList(Arc::new(recursively_nullable_field(element)), *size)
+        }
+        DataType::Map(entries, sorted) => {
+            let entries_type = match entries.data_type() {
+                DataType::Struct(fields) if fields.len() == 2 => {
+                    let key = Arc::clone(&fields[0]);
+                    let value = Arc::new(recursively_nullable_field(&fields[1]));
+                    DataType::Struct(Fields::from(vec![key, value]))
+                }
+                data_type => data_type.clone(),
+            };
+            DataType::Map(
+                Arc::new(
+                    Field::new(entries.name(), entries_type, false)
+                        .with_metadata(entries.metadata().clone()),
+                ),
+                *sorted,
+            )
+        }
+        data_type => data_type.clone(),
+    };
+    Field::new(field.name(), data_type, true).with_metadata(field.metadata().clone())
+}
+
+fn replay_scan_schema(checkpoint_schema: &Schema) -> Result<SchemaRef> {
+    // Checkpoint schemas may omit null action fields and contain checkpoint-only parsed fields.
+    // JSON tails must still be decoded with every canonical action field available.
+    let checkpoint_schema = Schema::new_with_metadata(
+        checkpoint_schema
+            .fields()
+            .iter()
+            .map(|field| Arc::new(recursively_nullable_field(field)) as FieldRef)
+            .collect::<Vec<_>>(),
+        checkpoint_schema.metadata().clone(),
+    );
+    let replay_schema =
+        Schema::try_merge([checkpoint_schema, DELTA_LOG_FILE_SCHEMA.as_ref().clone()])?;
+    Ok(Arc::new(replay_schema))
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct LogScanOptions {
+    /// Optional projection of top-level log columns (e.g. ["add", "remove", "metaData"]).
+    ///
+    /// When set, the scan will only read these columns plus any required partition columns.
+    pub projection: Option<Vec<String>>,
+    /// Optional pushdown predicate for checkpoint parquet scans.
+    pub parquet_predicate: Option<Arc<dyn PhysicalExpr>>,
+}
+
+fn parse_log_version_prefix(filename: &str) -> Option<u64> {
+    parse_version_prefix(filename)?.try_into().ok()
+}
+
+fn log_file_path(table_root_path: &str, filename: &str) -> Path {
+    // Object store paths are absolute for local filesystem stores in our setup (DataFusion uses
+    // `ObjectStoreUrl::local_filesystem()`).
+    delta_log_file_path(table_root_path, filename)
+}
+
+async fn head_many(
+    store: &Arc<dyn ObjectStore>,
+    table_root_path: &str,
+    files: &[String],
+) -> Result<Vec<ObjectMeta>> {
+    if files.is_empty() {
+        return Ok(vec![]);
+    }
+
+    // Concurrency is intentionally bounded to avoid overwhelming object stores.
+    let concurrency = std::cmp::min(64usize, files.len());
+    stream::iter(files.iter().cloned())
+        .map(|f| {
+            let store = Arc::clone(store);
+            let p = log_file_path(table_root_path, &f);
+            async move {
+                store.head(&p).await.map_err(|e| {
+                    DataFusionError::External(Box::<dyn std::error::Error + Send + Sync>::from(e))
+                })
+            }
+        })
+        .buffer_unordered(concurrency)
+        .try_collect::<Vec<_>>()
+        .await
+}
+
+fn to_partitioned_files(metas: Vec<ObjectMeta>) -> Result<Vec<PartitionedFile>> {
+    metas
+        .into_iter()
+        .map(|m| {
+            let loc = m.location.as_ref();
+            let filename = m.location.filename().unwrap_or(loc);
+            let ver = parse_log_version_prefix(filename).ok_or_else(|| {
+                DataFusionError::Plan(format!(
+                    "failed to parse delta log version from file '{filename}'"
+                ))
+            })?;
+            let ver = i64::try_from(ver).map_err(|_| {
+                DataFusionError::Plan(format!(
+                    "delta log version '{ver}' does not fit into Int64 for file '{filename}'"
+                ))
+            })?;
+            Ok(PartitionedFile {
+                object_meta: m,
+                partition_values: vec![ScalarValue::Int64(Some(ver))],
+                range: None,
+                statistics: None,
+                ordering: None,
+                extensions: Extensions::default(),
+                metadata_size_hint: None,
+                table_reference: None,
+                arrow_schema: None,
+            })
+        })
+        .collect()
+}
+
+/// Create partitioned files from V2 sidecar file metadata, assigning a fixed checkpoint version
+/// as the partition value since sidecar filenames do not carry a version prefix.
+fn to_partitioned_files_with_version(
+    metas: Vec<ObjectMeta>,
+    version: i64,
+) -> Result<Vec<PartitionedFile>> {
+    Ok(metas
+        .into_iter()
+        .map(|m| PartitionedFile {
+            object_meta: m,
+            partition_values: vec![ScalarValue::Int64(Some(version))],
+            range: None,
+            statistics: None,
+            ordering: None,
+            extensions: Extensions::default(),
+            metadata_size_hint: None,
+            table_reference: None,
+            arrow_schema: None,
+        })
+        .collect())
+}
+
+fn to_file_groups(metas: Vec<ObjectMeta>, target_partitions: usize) -> Result<Vec<FileGroup>> {
+    Ok(group_partitioned_files(
+        to_partitioned_files(metas)?,
+        target_partitions,
+    ))
+}
+
+fn group_partitioned_files(
+    mut files: Vec<PartitionedFile>,
+    target_partitions: usize,
+) -> Vec<FileGroup> {
+    if files.is_empty() {
+        return Vec::new();
+    }
+
+    // Metadata lookups are concurrent, so sort by path for stable EXPLAIN output.
+    files.sort_by(|a, b| {
+        a.object_meta
+            .location
+            .as_ref()
+            .cmp(b.object_meta.location.as_ref())
+    });
+    let num_groups = std::cmp::min(target_partitions, files.len());
+    let num_groups = num_groups.max(1);
+    let chunk_size = files.len().div_ceil(num_groups);
+
+    let mut groups = Vec::with_capacity(num_groups);
+    while !files.is_empty() {
+        let rest = if files.len() > chunk_size {
+            files.split_off(chunk_size)
+        } else {
+            Vec::new()
+        };
+        groups.push(FileGroup::from(std::mem::take(&mut files)));
+        files = rest;
+    }
+    groups
+}
+
+fn build_json_log_scan(
+    object_store_url: ObjectStoreUrl,
+    table_schema: TableSchema,
+    metas: Vec<ObjectMeta>,
+    target_partitions: usize,
+    projection_indices: Option<Vec<usize>>,
+) -> Result<Option<Arc<dyn ExecutionPlan>>> {
+    if metas.is_empty() {
+        return Ok(None);
+    }
+    let source: Arc<dyn datafusion::datasource::physical_plan::FileSource> = Arc::new(
+        datafusion::datasource::physical_plan::JsonSource::new(table_schema),
+    );
+    let groups = to_file_groups(metas, target_partitions)?;
+    let config = FileScanConfigBuilder::new(object_store_url, source)
+        .with_file_groups(groups)
+        .with_projection_indices(projection_indices)?
+        .build();
+    Ok(Some(DataSourceExec::from_data_source(config)))
+}
+
+pub async fn build_delta_log_datasource_scans_with_options(
+    ctx: &PlannerContext<'_>,
+    checkpoint_files: Vec<String>,
+    commit_files: Vec<String>,
+    sidecar_files: Vec<String>,
+    options: LogScanOptions,
+) -> Result<(
+    Option<Arc<dyn ExecutionPlan>>,
+    Option<Arc<dyn ExecutionPlan>>,
+    Vec<String>,
+    Vec<String>,
+)> {
+    let store = ctx.object_store()?;
+    let log_store = ctx.log_store()?;
+    let object_store_url = create_object_store_url(&log_store.config().location).map_err(|e| {
+        DataFusionError::External(Box::<dyn std::error::Error + Send + Sync>::from(e))
+    })?;
+
+    // Commit/checkpoint lists are expected to be selected by the planner log-segment resolver.
+    // This builder only materializes datasource scans from those resolved filenames.
+    let table_root_path = log_store.config().location.path();
+    let (checkpoint_metas, commit_metas, sidecar_metas) = tokio::try_join!(
+        head_many(&store, table_root_path, &checkpoint_files),
+        head_many(&store, table_root_path, &commit_files),
+        head_many(&store, table_root_path, &sidecar_files)
+    )?;
+    let (json_checkpoint_metas, parquet_checkpoint_metas): (Vec<_>, Vec<_>) =
+        checkpoint_metas.into_iter().partition(|meta| {
+            meta.location
+                .filename()
+                .is_some_and(is_json_checkpoint_filename)
+        });
+
+    // Resolve the checkpoint version for assigning to sidecar partition values.
+    let checkpoint_version = checkpoint_files
+        .first()
+        .and_then(|f| parse_log_version_prefix(f))
+        .map(|v| v as i64);
+
+    // Infer schemas for parquet checkpoint files only. JSON commit files use the canonical
+    // Delta log file schema (see `DELTA_LOG_FILE_SCHEMA`) to avoid type mismatches for
+    // map-like fields (e.g. `add.partitionValues`).
+    //
+    // For V2 checkpoints with sidecars, infer the checkpoint schema from the Parquet sidecars
+    // even when the top-level checkpoint manifest is JSON.
+    let all_parquet_metas: Vec<ObjectMeta> = parquet_checkpoint_metas
+        .iter()
+        .chain(sidecar_metas.iter())
+        .cloned()
+        .collect();
+    let parquet_schema = if all_parquet_metas.is_empty() {
+        None
+    } else {
+        Some(
+            ParquetFormat::default()
+                .infer_schema(ctx.session(), &store, &all_parquet_metas)
+                .await?,
+        )
+    };
+    let has_json_files = !json_checkpoint_metas.is_empty() || !commit_metas.is_empty();
+
+    let replay_schema = match (parquet_schema, has_json_files) {
+        (Some(p), _) => replay_scan_schema(&p)?,
+        (None, true) => {
+            // No parquet checkpoint exists (e.g. before the first checkpoint interval fires).
+            // Use the canonical Delta log file schema so that `partitionValues` and other
+            // map-like fields have the correct Map Arrow type instead of an inferred Struct.
+            Arc::clone(&*DELTA_LOG_FILE_SCHEMA)
+        }
+        (None, false) => {
+            return Err(DataFusionError::Plan(
+                "no _delta_log files found to build log scan".to_string(),
+            ));
+        }
+    };
+
+    let projection_indices = if let Some(projection) = &options.projection {
+        let mut projection = projection.clone();
+        if !projection.iter().any(|col| col == COL_LOG_VERSION) {
+            projection.push(COL_LOG_VERSION.to_string());
+        }
+        let file_schema_len = replay_schema.fields().len();
+        let mut indices = Vec::with_capacity(projection.len());
+        for col in &projection {
+            if col == COL_LOG_VERSION {
+                indices.push(file_schema_len);
+                continue;
+            }
+
+            match replay_schema.index_of(col) {
+                Ok(idx) => indices.push(idx),
+                Err(_) => {
+                    // Some Delta writers/checkpoint formats may omit an action column
+                    // (for example, no `remove` records in a newly created table).
+                    // Skip missing projected columns and let downstream replay logic
+                    // treat them as absent.
+                }
+            }
+        }
+        Some(indices)
+    } else {
+        None
+    };
+
+    let target_partitions = ctx.session().config().target_partitions();
+    let table_schema = TableSchema::builder(Arc::clone(&replay_schema))
+        .with_table_partition_cols(vec![Arc::new(Field::new(
+            COL_LOG_VERSION,
+            DataType::Int64,
+            false,
+        ))])
+        .build();
+
+    let parquet_checkpoint_scan: Option<Arc<dyn ExecutionPlan>> = {
+        let mut source =
+            datafusion::datasource::physical_plan::ParquetSource::new(table_schema.clone());
+        if let Some(predicate) = &options.parquet_predicate {
+            source = source.with_predicate(Arc::clone(predicate));
+        }
+        let source: Arc<dyn datafusion::datasource::physical_plan::FileSource> = Arc::new(source);
+        // Include V2 Parquet sidecars alongside any Parquet top-level checkpoint.
+        let mut all_checkpoint_files = to_partitioned_files(parquet_checkpoint_metas)?;
+        if let Some(cp_version) = checkpoint_version {
+            let sidecar_partitioned = to_partitioned_files_with_version(sidecar_metas, cp_version)?;
+            all_checkpoint_files.extend(sidecar_partitioned);
+        }
+        if all_checkpoint_files.is_empty() {
+            None
+        } else {
+            let groups = group_partitioned_files(all_checkpoint_files, target_partitions);
+            let conf = FileScanConfigBuilder::new(object_store_url.clone(), source)
+                .with_file_groups(groups)
+                .with_projection_indices(projection_indices.clone())?
+                .build();
+            Some(DataSourceExec::from_data_source(conf))
+        }
+    };
+
+    let json_checkpoint_scan = build_json_log_scan(
+        object_store_url.clone(),
+        table_schema.clone(),
+        json_checkpoint_metas,
+        target_partitions,
+        projection_indices.clone(),
+    )?;
+
+    let checkpoint_scan: Option<Arc<dyn ExecutionPlan>> =
+        match (parquet_checkpoint_scan, json_checkpoint_scan) {
+            (Some(parquet), Some(json)) => Some(UnionExec::try_new(vec![parquet, json])?),
+            (Some(scan), None) | (None, Some(scan)) => Some(scan),
+            (None, None) => None,
+        };
+
+    let commit_scan = build_json_log_scan(
+        object_store_url,
+        table_schema,
+        commit_metas,
+        target_partitions,
+        projection_indices,
+    )?;
+
+    Ok((checkpoint_scan, commit_scan, checkpoint_files, commit_files))
+}
+
+#[expect(dead_code)]
+pub async fn build_delta_log_datasource_union_with_options(
+    ctx: &PlannerContext<'_>,
+    checkpoint_files: Vec<String>,
+    commit_files: Vec<String>,
+    options: LogScanOptions,
+) -> Result<(Arc<dyn ExecutionPlan>, Vec<String>, Vec<String>)> {
+    let (checkpoint_scan, commit_scan, checkpoint_files, commit_files) =
+        build_delta_log_datasource_scans_with_options(
+            ctx,
+            checkpoint_files,
+            commit_files,
+            vec![],
+            options,
+        )
+        .await?;
+
+    let mut inputs: Vec<Arc<dyn ExecutionPlan>> = Vec::new();
+    if let Some(cp) = checkpoint_scan {
+        inputs.push(cp);
+    }
+    if let Some(c) = commit_scan {
+        inputs.push(c);
+    }
+
+    Ok((UnionExec::try_new(inputs)?, checkpoint_files, commit_files))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[expect(clippy::expect_used)]
+    fn replay_schema_relaxes_checkpoint_fields_and_restores_log_fields() -> Result<()> {
+        let parsed = Field::new(
+            "partitionValues_parsed",
+            DataType::Struct(Fields::from(vec![Arc::new(Field::new(
+                "category",
+                DataType::Utf8,
+                false,
+            ))])),
+            false,
+        );
+        let checkpoint = Schema::new(vec![Field::new(
+            "add",
+            DataType::Struct(Fields::from(vec![
+                Arc::new(Field::new("path", DataType::Utf8, false)),
+                Arc::new(parsed),
+            ])),
+            true,
+        )]);
+
+        let replay = replay_scan_schema(&checkpoint).expect("replay schema should merge");
+        let add = replay
+            .field_with_name("add")
+            .expect("add should be present");
+        let DataType::Struct(add_fields) = add.data_type() else {
+            return Err(DataFusionError::Plan(
+                "add should remain a struct".to_string(),
+            ));
+        };
+        let parsed = add_fields
+            .find("partitionValues_parsed")
+            .map(|(_, field)| field)
+            .expect("parsed partition values should be present");
+        let DataType::Struct(parsed_fields) = parsed.data_type() else {
+            return Err(DataFusionError::Plan(
+                "parsed partition values should remain a struct".to_string(),
+            ));
+        };
+
+        assert!(parsed.is_nullable());
+        assert!(parsed_fields[0].is_nullable());
+        assert!(add_fields.find("deletionVector").is_some());
+        assert!(replay.field_with_name("remove").is_ok());
+        assert!(replay.field_with_name("domainMetadata").is_ok());
+        assert!(replay.field_with_name("checkpointMetadata").is_ok());
+        assert!(replay.field_with_name("sidecar").is_ok());
+        Ok(())
+    }
+}

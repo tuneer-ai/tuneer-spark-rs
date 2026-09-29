@@ -1,0 +1,6198 @@
+{
+  "tests": [
+    {
+      "input": "foo(*) over ()",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [],
+                "orderBy": [],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (cluster by a, b)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "partitionBy": [],
+                "orderBy": [],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (distribute by a, b sort by c)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "c"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (distribute by a, b)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (order by a desc, b asc)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "descending",
+                    "nullOrdering": "unspecified"
+                  },
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "ascending",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 0 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 0 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 10 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 10 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 2147483648 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range 3 + 1 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 0 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 0 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 10 preceding and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 10 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 10 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 2147483648 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 2147483648 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 3 + 1 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between 3 + 1 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and 0 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between current row and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between unbounded preceding and 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between unbounded preceding and 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between unbounded preceding and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between unbounded preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range between unbounded preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "currentRow",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedFollowing",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b range unbounded preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "range",
+                  "lower": "unboundedPreceding",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 0 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 0 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 10 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 10 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 2147483648 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows 3 + 1 preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 0 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 0 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 10 preceding and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 10 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 10 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int32": {
+                          "value": 10
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 2147483648 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 2147483648 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483648
+                        }
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 3 + 1 preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between 3 + 1 preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and 0 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between current row and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between unbounded preceding and 2147483649 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int64": {
+                          "value": 2147483649
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between unbounded preceding and 3 + 1 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "+"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 3
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "int32": {
+                                "value": 1
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between unbounded preceding and 5 following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": {
+                    "following": {
+                      "literal": {
+                        "int32": {
+                          "value": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between unbounded preceding and current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows between unbounded preceding and unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": "unboundedFollowing"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows current row)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "currentRow",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows exp(b) preceding)",
+      "exception": "\nFrame bound value must be a literal..\n== SQL (line 1, position 45) ==\n...(partition by a order by b rows exp(b) preceding)\n                                   ^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": {
+                    "preceding": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "exp"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "b"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows unbounded following)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedFollowing",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a order by b rows unbounded preceding)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": {
+                  "frameType": "row",
+                  "lower": "unboundedPreceding",
+                  "upper": "currentRow"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a, b order by c)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "c"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (partition by a, b)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "orderBy": [],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over (sort by a desc, b asc)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [],
+                "orderBy": [
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "descending",
+                    "nullOrdering": "unspecified"
+                  },
+                  {
+                    "child": {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    "direction": "ascending",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*) over w1",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "foo"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedStar": {
+                      "target": null,
+                      "planId": null,
+                      "wildcardOptions": {
+                        "ilikePattern": null,
+                        "excludeColumns": null,
+                        "exceptColumns": null,
+                        "replaceColumns": null,
+                        "renameColumns": null
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "named": "w1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "sum(product + 1) over (partition by ((product / 2) + 1) order by 2)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "sum"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedFunction": {
+                      "functionName": [
+                        "+"
+                      ],
+                      "arguments": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "product"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "literal": {
+                            "int32": {
+                              "value": 1
+                            }
+                          }
+                        }
+                      ],
+                      "namedArguments": [],
+                      "isDistinct": false,
+                      "isUserDefinedFunction": false,
+                      "isInternal": null,
+                      "ignoreNulls": null,
+                      "filter": null,
+                      "orderBy": null
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedFunction": {
+                      "functionName": [
+                        "+"
+                      ],
+                      "arguments": [
+                        {
+                          "unresolvedFunction": {
+                            "functionName": [
+                              "/"
+                            ],
+                            "arguments": [
+                              {
+                                "unresolvedAttribute": {
+                                  "name": [
+                                    "product"
+                                  ],
+                                  "planId": null,
+                                  "isMetadataColumn": false
+                                }
+                              },
+                              {
+                                "literal": {
+                                  "int32": {
+                                    "value": 2
+                                  }
+                                }
+                              }
+                            ],
+                            "namedArguments": [],
+                            "isDistinct": false,
+                            "isUserDefinedFunction": false,
+                            "isInternal": null,
+                            "ignoreNulls": null,
+                            "filter": null,
+                            "orderBy": null
+                          }
+                        },
+                        {
+                          "literal": {
+                            "int32": {
+                              "value": 1
+                            }
+                          }
+                        }
+                      ],
+                      "namedArguments": [],
+                      "isDistinct": false,
+                      "isUserDefinedFunction": false,
+                      "isInternal": null,
+                      "ignoreNulls": null,
+                      "filter": null,
+                      "orderBy": null
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "sum(product + 1) over (partition by ((product) + (1)) order by 2)",
+      "output": {
+        "success": {
+          "window": {
+            "windowFunction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "sum"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedFunction": {
+                      "functionName": [
+                        "+"
+                      ],
+                      "arguments": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "product"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "literal": {
+                            "int32": {
+                              "value": 1
+                            }
+                          }
+                        }
+                      ],
+                      "namedArguments": [],
+                      "isDistinct": false,
+                      "isUserDefinedFunction": false,
+                      "isInternal": null,
+                      "ignoreNulls": null,
+                      "filter": null,
+                      "orderBy": null
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "window": {
+              "unnamed": {
+                "clusterBy": [],
+                "partitionBy": [
+                  {
+                    "unresolvedFunction": {
+                      "functionName": [
+                        "+"
+                      ],
+                      "arguments": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "product"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "literal": {
+                            "int32": {
+                              "value": 1
+                            }
+                          }
+                        }
+                      ],
+                      "namedArguments": [],
+                      "isDistinct": false,
+                      "isUserDefinedFunction": false,
+                      "isInternal": null,
+                      "ignoreNulls": null,
+                      "filter": null,
+                      "orderBy": null
+                    }
+                  }
+                ],
+                "orderBy": [
+                  {
+                    "child": {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    },
+                    "direction": "unspecified",
+                    "nullOrdering": "unspecified"
+                  }
+                ],
+                "frame": null
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

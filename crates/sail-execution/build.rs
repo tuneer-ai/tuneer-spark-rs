@@ -1,0 +1,97 @@
+use std::path::PathBuf;
+
+use prost_build::Config;
+
+struct ProtoBuilder<'a> {
+    package: &'a str,
+    files: &'a [&'a str],
+    skip_debug: Option<&'a [&'a str]>,
+    boxed_fields: &'a [&'a str],
+    with_service: bool,
+}
+
+impl<'a> ProtoBuilder<'a> {
+    fn new(package: &'a str, files: &'a [&'a str]) -> Self {
+        Self {
+            package,
+            files,
+            skip_debug: None,
+            boxed_fields: &[],
+            with_service: false,
+        }
+    }
+
+    fn skip_debug(mut self, skip_debug: &'a [&'a str]) -> Self {
+        self.skip_debug = Some(skip_debug);
+        self
+    }
+
+    fn boxed_fields(mut self, boxed_fields: &'a [&'a str]) -> Self {
+        self.boxed_fields = boxed_fields;
+        self
+    }
+
+    fn with_service(mut self) -> Self {
+        self.with_service = true;
+        self
+    }
+
+    fn build(self) -> Result<(), Box<dyn std::error::Error>> {
+        let protos = self
+            .files
+            .iter()
+            .map(|file| format!("proto/sail/{}/{}", self.package, file))
+            .collect::<Vec<_>>();
+
+        for p in &protos {
+            println!("cargo:rerun-if-changed={p}");
+        }
+
+        // The `emit_rerun_if_changed` option does not seem to work, so we turn it off explicitly
+        // and emit the instructions ourselves in the code above.
+        let builder = tonic_prost_build::configure().emit_rerun_if_changed(false);
+
+        let builder = if self.with_service {
+            let out_dir = PathBuf::from(std::env::var("OUT_DIR")?);
+            let descriptor_path = out_dir.join(format!("sail_{}_descriptor.bin", self.package));
+            builder
+                .file_descriptor_set_path(&descriptor_path)
+                .build_server(true)
+                .build_client(true)
+        } else {
+            builder
+        };
+
+        let mut config = Config::new();
+        if let Some(skip_debug) = self.skip_debug {
+            config.skip_debug(skip_debug);
+        }
+        for field in self.boxed_fields {
+            config.boxed(field);
+        }
+
+        builder
+            .protoc_arg("--experimental_allow_proto3_optional")
+            .compile_well_known_types(true)
+            .compile_with_config(config, &protos, &["proto".to_string()])?;
+
+        Ok(())
+    }
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    println!("cargo:rerun-if-changed=build.rs");
+    ProtoBuilder::new("plan", &["physical.proto"])
+        .boxed_fields(&[".sail.plan.ExtendedPhysicalPlanNode.NodeKind.delta_writer"])
+        .build()?;
+    ProtoBuilder::new("stream", &["common.proto"]).build()?;
+    ProtoBuilder::new("task", &["common.proto"]).build()?;
+    ProtoBuilder::new("driver", &["service.proto", "celeborn.proto"])
+        .with_service()
+        .build()?;
+    ProtoBuilder::new("worker", &["service.proto"])
+        .skip_debug(&["sail.worker.RunTaskBatchRequest"])
+        .with_service()
+        .build()?;
+    Ok(())
+}

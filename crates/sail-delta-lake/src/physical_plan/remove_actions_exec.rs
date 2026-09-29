@@ -1,0 +1,293 @@
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+use std::fmt;
+use std::sync::Arc;
+use std::time::Instant;
+
+use async_trait::async_trait;
+use datafusion::execution::context::TaskContext;
+use datafusion::physical_plan::execution_plan::{Boundedness, EmissionType};
+use datafusion::physical_plan::metrics::{ExecutionPlanMetricsSet, MetricBuilder, MetricsSet};
+use datafusion::physical_plan::stream::RecordBatchStreamAdapter;
+use datafusion::physical_plan::{
+    DisplayAs, DisplayFormatType, ExecutionPlan, Partitioning, PlanProperties,
+    SendableRecordBatchStream,
+};
+use datafusion_common::tree_node::TreeNodeRecursion;
+use datafusion_common::{Result, internal_err};
+use datafusion_physical_expr::{Distribution, EquivalenceProperties, PhysicalExpr};
+use futures::stream::{self, StreamExt};
+
+use crate::physical_plan::{
+    COL_ACTION, ExecCommitMeta, current_timestamp_millis, decode_adds_from_batch,
+    delta_action_schema, encode_actions, meta_adds,
+};
+use crate::schema::PhysicalPartitionColumn;
+use crate::spec::{Action, Add, Remove, RemoveOptions, Stats};
+use crate::transaction::OperationMetrics;
+
+/// Physical execution node to convert Add actions (from FindFiles) into Remove actions
+#[derive(Debug)]
+pub struct DeltaRemoveActionsExec {
+    input: Arc<dyn ExecutionPlan>,
+    partition_value_columns: Option<Vec<PhysicalPartitionColumn>>,
+    metrics: ExecutionPlanMetricsSet,
+    cache: Arc<PlanProperties>,
+}
+
+impl DeltaRemoveActionsExec {
+    pub fn new(input: Arc<dyn ExecutionPlan>) -> Result<Self> {
+        Self::try_new(input, None)
+    }
+
+    pub fn partition_value_columns(&self) -> Option<&[PhysicalPartitionColumn]> {
+        self.partition_value_columns.as_deref()
+    }
+
+    pub fn try_new(
+        input: Arc<dyn ExecutionPlan>,
+        partition_value_columns: Option<Vec<PhysicalPartitionColumn>>,
+    ) -> Result<Self> {
+        // Output schema must match DeltaWriterExec output schema (row-per-action).
+        let schema = delta_action_schema()?;
+        let cache = Arc::new(PlanProperties::new(
+            EquivalenceProperties::new(schema),
+            Partitioning::UnknownPartitioning(1),
+            EmissionType::Final,
+            Boundedness::Bounded,
+        ));
+        Ok(Self {
+            input,
+            partition_value_columns,
+            metrics: ExecutionPlanMetricsSet::new(),
+            cache,
+        })
+    }
+
+    pub(crate) async fn create_remove_actions(adds: Vec<Add>) -> Result<Vec<Remove>> {
+        let deletion_timestamp = current_timestamp_millis()?;
+
+        Ok(adds
+            .into_iter()
+            .map(|add| {
+                add.into_remove_with_options(
+                    deletion_timestamp,
+                    RemoveOptions {
+                        extended_file_metadata: Some(true),
+                        include_tags: false,
+                    },
+                )
+            })
+            .collect())
+    }
+}
+
+impl DisplayAs for DeltaRemoveActionsExec {
+    fn fmt_as(&self, t: DisplayFormatType, f: &mut fmt::Formatter) -> fmt::Result {
+        match t {
+            DisplayFormatType::Default | DisplayFormatType::Verbose => {
+                write!(f, "DeltaRemoveActionsExec")
+            }
+            DisplayFormatType::TreeRender => {
+                write!(f, "DeltaRemoveActionsExec")
+            }
+        }
+    }
+}
+
+#[async_trait]
+impl ExecutionPlan for DeltaRemoveActionsExec {
+    fn name(&self) -> &'static str {
+        "DeltaRemoveActionsExec"
+    }
+
+    fn properties(&self) -> &Arc<PlanProperties> {
+        &self.cache
+    }
+
+    fn metrics(&self) -> Option<MetricsSet> {
+        Some(self.metrics.clone_inner())
+    }
+
+    fn children(&self) -> Vec<&Arc<dyn ExecutionPlan>> {
+        vec![&self.input]
+    }
+
+    fn apply_expressions(
+        &self,
+        _f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
+    ) -> Result<TreeNodeRecursion> {
+        Ok(TreeNodeRecursion::Continue)
+    }
+
+    #[expect(deprecated)]
+    fn replace_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+        _options: datafusion::physical_plan::ReplaceChildrenOptions,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        self.with_new_children(children)
+    }
+
+    fn with_new_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        if children.len() != 1 {
+            return internal_err!("DeltaRemoveActionsExec requires exactly one child");
+        }
+        Ok(Arc::new(DeltaRemoveActionsExec::try_new(
+            children[0].clone(),
+            self.partition_value_columns.clone(),
+        )?))
+    }
+
+    fn required_input_distribution(&self) -> Vec<Distribution> {
+        vec![Distribution::SinglePartition]
+    }
+
+    fn execute(
+        &self,
+        partition: usize,
+        context: Arc<TaskContext>,
+    ) -> Result<SendableRecordBatchStream> {
+        if partition != 0 {
+            return internal_err!("DeltaRemoveActionsExec only supports single partition");
+        }
+
+        let mut stream = self.input.execute(0, context)?;
+        let partition_value_columns = self.partition_value_columns.clone();
+
+        let output_rows = MetricBuilder::new(&self.metrics).output_rows(partition);
+        let output_bytes = MetricBuilder::new(&self.metrics).output_bytes(partition);
+        let elapsed_compute = MetricBuilder::new(&self.metrics).elapsed_compute(partition);
+
+        let future = async move {
+            let _elapsed_compute_timer = elapsed_compute.timer();
+            let exec_start = Instant::now();
+            let mut adds_to_remove = vec![];
+            let mut num_removed_bytes: u64 = 0;
+            // `None` once any removed Add lacks stats, so downstream doesn't under-count.
+            let mut num_touched_rows_accum: Option<u64> = Some(0);
+
+            while let Some(batch_result) = stream.next().await {
+                let batch = batch_result?;
+
+                let adds = if batch.column_by_name(COL_ACTION).is_some() {
+                    decode_adds_from_batch(&batch)?
+                } else {
+                    meta_adds::decode_adds_from_meta_batch_with_partition_value_columns(
+                        &batch,
+                        partition_value_columns.as_deref(),
+                    )?
+                };
+                for add in adds {
+                    num_removed_bytes = num_removed_bytes
+                        .saturating_add(u64::try_from(add.size).unwrap_or_default());
+                    accumulate_touched_rows(&mut num_touched_rows_accum, &add);
+                    adds_to_remove.push(add);
+                }
+            }
+            // This node only reads metadata (Add actions) to determine which files to
+            // remove, so scan time == total input consumption time.
+            let scan_time_ms = exec_start.elapsed().as_millis() as u64;
+
+            let num_removed_files: u64 = adds_to_remove.len() as u64;
+            let remove_actions = Self::create_remove_actions(adds_to_remove).await?;
+
+            // For execution metrics, treat removed files/bytes as this node's "output".
+            output_rows.add(usize::try_from(num_removed_files).unwrap_or(usize::MAX));
+            output_bytes.add(usize::try_from(num_removed_bytes).unwrap_or(usize::MAX));
+
+            let operation_metrics = OperationMetrics {
+                execution_time_ms: Some(exec_start.elapsed().as_millis() as u64),
+                scan_time_ms: Some(scan_time_ms),
+                num_removed_files: Some(num_removed_files),
+                num_removed_bytes: Some(num_removed_bytes),
+                num_touched_rows: num_touched_rows_accum,
+                ..Default::default()
+            };
+
+            let output_actions = remove_actions.into_iter().map(Action::Remove).collect();
+
+            encode_actions(
+                output_actions,
+                Some(ExecCommitMeta {
+                    row_count: 0,
+                    operation: None,
+                    operation_metrics,
+                }),
+            )
+        };
+
+        let stream = stream::once(future);
+        Ok(Box::pin(RecordBatchStreamAdapter::new(
+            self.schema(),
+            stream,
+        )))
+    }
+}
+
+/// Sum logical rows into `accum`, poisoning to `None` if row metadata is unavailable or invalid.
+fn accumulate_touched_rows(accum: &mut Option<u64>, add: &Add) {
+    let Some(current) = *accum else {
+        return;
+    };
+    let deletion_vector_cardinality = add
+        .deletion_vector
+        .as_ref()
+        .map(|deletion_vector| deletion_vector.cardinality);
+    *accum = logical_touched_rows(add.stats.as_deref(), deletion_vector_cardinality)
+        .map(|rows| current.saturating_add(rows));
+}
+
+fn logical_touched_rows(
+    stats_json: Option<&str>,
+    deletion_vector_cardinality: Option<i64>,
+) -> Option<u64> {
+    let stats = Stats::from_json_str(stats_json?).ok()?;
+    let physical_rows = u64::try_from(stats.num_records).ok()?;
+    let deleted_rows = deletion_vector_cardinality
+        .map(u64::try_from)
+        .transpose()
+        .ok()?
+        .unwrap_or_default();
+    physical_rows.checked_sub(deleted_rows)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn touched_rows_exclude_existing_deletion_vector_rows() {
+        assert_eq!(
+            logical_touched_rows(Some(r#"{"numRecords":5}"#), Some(2)),
+            Some(3)
+        );
+    }
+
+    #[test]
+    fn touched_rows_reject_invalid_row_metadata() {
+        assert_eq!(logical_touched_rows(None, None), None);
+        assert_eq!(logical_touched_rows(Some("not-json"), None), None);
+        assert_eq!(
+            logical_touched_rows(Some(r#"{"numRecords":2}"#), Some(-1)),
+            None
+        );
+        assert_eq!(
+            logical_touched_rows(Some(r#"{"numRecords":2}"#), Some(3)),
+            None
+        );
+    }
+}

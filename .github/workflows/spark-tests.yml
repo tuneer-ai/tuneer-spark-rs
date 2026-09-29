@@ -1,0 +1,220 @@
+name: Spark Tests
+
+on:
+  workflow_call:
+    inputs:
+      spark_version:
+        description: The Spark version to test
+        type: string
+        required: true
+    secrets:
+      CODECOV_TOKEN:
+        required: false
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      # Set the Hatch environment for `hatch run` commands.
+      HATCH_ENV: "test-spark.spark-${{ inputs.spark_version }}"
+      # Coverage environment variables
+      RUSTC_WORKSPACE_WRAPPER: ${{ github.workspace }}/.github/scripts/rustc-workspace-wrapper.sh
+      LLVM_PROFILE_FILE: ${{ github.workspace }}/target/sail-spark-${{ inputs.spark_version }}-%p-%m.profraw
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "corretto"
+          java-version: "17"
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Hatch
+        uses: pypa/hatch@install
+
+      - name: Install Rust toolchain and coverage tools
+        run: |
+          {
+            rustup toolchain install stable
+            rustup component add --toolchain stable llvm-tools-preview
+          } &
+
+      - name: Install grcov
+        uses: taiki-e/install-action@grcov
+
+      - name: Install grpc_health_probe
+        run: |
+          wget -q -O /usr/local/bin/grpc_health_probe "https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.48/grpc_health_probe-linux-amd64"
+          chmod +x /usr/local/bin/grpc_health_probe
+          grpc_health_probe -version
+
+      # Building the patched PySpark package is slow (~30 minutes on GitHub Linux runners),
+      # so we create a dedicated cache entry for it.
+      - uses: actions/cache@v6
+        name: Cache PySpark
+        id: cache-pyspark
+        with:
+          path: opt/spark/python/dist/pyspark-*.tar.gz
+          # We must use `format()` to define the key here since nested variable substitution is not supported.
+          key: ${{ format('spark-tests-pyspark-{0}-{1}-{2}-{3}', inputs.spark_version, runner.os, runner.arch, hashFiles(format('scripts/spark-tests/spark-{0}.patch', inputs.spark_version), 'scripts/spark-tests/build-pyspark.sh')) }}
+
+      - if: steps.cache-pyspark.outputs.cache-hit != 'true'
+        uses: actions/checkout@v7
+        name: Checkout Spark
+        with:
+          repository: apache/spark
+          path: opt/spark
+          ref: v${{ inputs.spark_version }}
+          fetch-depth: 1
+
+      - if: steps.cache-pyspark.outputs.cache-hit != 'true'
+        name: Build PySpark
+        env:
+          SPARK_VERSION: ${{ inputs.spark_version }}
+        run: |
+          scripts/spark-tests/build-pyspark.sh
+
+      - name: Download Python Package
+        uses: actions/download-artifact@v7
+        with:
+          name: python-package
+          path: target/wheels
+
+      # We do not cache the environments since package installation via `uv` is fast, while downloading
+      # the environments from the cache still takes time.
+      - name: Set Up Hatch Environment
+        run: |
+          hatch run install-pyspark
+          hatch run install-pysail
+
+      - name: List Python packages
+        continue-on-error: true
+        run: |
+          hatch run uv pip freeze || hatch run python -m pip freeze
+
+      - name: Run Spark Connect Server
+        run: |
+          nohup hatch run scripts/spark-tests/run-server.sh > /dev/null 2>&1 < /dev/null &
+
+      - name: Wait for Spark Connect Server to Start
+        run: |
+          scripts/spark-tests/wait-for-server.sh
+
+      - name: Run Spark Tests
+        # We set a timeout to prevent the tests from hanging indefinitely,
+        # which can happen occasionally for unknown reasons.
+        # The timeout value should be adjusted as we add more tests.
+        timeout-minutes: 10
+        env:
+          TEST_RUN_GIT_COMMIT: ${{ github.sha }}
+          TEST_RUN_GIT_REF: ${{ github.ref }}
+        run: |
+          hatch run scripts/spark-tests/run-tests.sh
+
+      - name: Shutdown Spark Connect Server
+        if: ${{ !cancelled() }}
+        # TODO: investigate if the sleep is still needed for grcov
+        run: |
+          scripts/spark-tests/stop-server.sh
+          sleep 10
+
+      # Generate coverage report after Spark tests
+      - name: Generate coverage report
+        run: |
+          # Wait for background Rust toolchain installation to complete
+          wait
+          BINARY_PATH=$(hatch run python -c 'import pysail._native; import os; print(os.path.dirname(pysail._native.__file__))')
+          echo "Binary path: $BINARY_PATH"
+          LLVM_PATH=$(.github/scripts/find-llvm-profdata.sh)
+          grcov target --binary-path "$BINARY_PATH" -s . \
+            --llvm-path "$LLVM_PATH" \
+            -t lcov --branch --ignore-not-existing \
+            -o coverage-spark-${{ inputs.spark_version }}.info
+
+      - name: Upload Spark coverage to Codecov
+        if: ${{ github.actor != 'dependabot[bot]' }}
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage-spark-${{ inputs.spark_version }}.info
+          flags: spark-tests
+          name: spark-tests
+          fail_ci_if_error: ${{ github.repository == 'lakehq/sail' }}
+          env_vars: OS
+
+      - name: Upload Test Logs
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: spark-${{ inputs.spark_version }}-test-logs
+          path: tmp/spark-tests/latest
+          retention-days: 30
+
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-slim
+    needs:
+      - test
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/commit-baseline
+        id: baseline
+
+      - uses: ./.github/actions/commit-workflow
+        id: baseline-workflow
+        with:
+          sha: ${{ steps.baseline.outputs.sha }}
+          workflow_name: Build
+          artifact_name: spark-${{ inputs.spark_version }}-test-logs
+
+      - name: Download Test Logs
+        uses: actions/download-artifact@v7
+        with:
+          name: spark-${{ inputs.spark_version }}-test-logs
+          path: /tmp/test-after
+
+      - name: Download Test Logs (Baseline)
+        if: ${{ steps.baseline-workflow.outputs.workflow_run_id != '' }}
+        uses: actions/download-artifact@v7
+        with:
+          name: spark-${{ inputs.spark_version }}-test-logs
+          path: /tmp/test-before
+          run-id: ${{ steps.baseline-workflow.outputs.workflow_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download Test Logs (No Baseline)
+        if: ${{ steps.baseline-workflow.outputs.workflow_run_id == '' }}
+        run: |
+          cp -r /tmp/test-after /tmp/test-before
+
+      - name: Generate Test Report
+        env:
+          TEST_REPORT_NAME: "Spark ${{ inputs.spark_version }} Test Report"
+          BASELINE_WORKFLOW_RUN_ID: ${{ steps.baseline-workflow.outputs.workflow_run_id }}
+        run: |
+          mkdir -p /tmp/report
+          report="/tmp/report/report.md"
+          if [[ -z "$BASELINE_WORKFLOW_RUN_ID" ]]; then
+            printf "> [!WARNING]\n> The baseline was not found.\n\n" >> "$report"
+          fi
+          scripts/spark-tests/generate-test-report.sh /tmp/test-after /tmp/test-before >> "$report"
+          cat "$report" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Save Pull Request Number
+        if: github.event_name == 'pull_request'
+        env:
+          NUMBER: ${{ github.event.number }}
+        run: |
+          echo "$NUMBER" > /tmp/report/pull-request.txt
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v7
+        with:
+          name: spark-${{ inputs.spark_version }}-test-report
+          path: /tmp/report
+          retention-days: 1

@@ -1,0 +1,88 @@
+{
+  "tests": [
+    {
+      "input": "DROP VIEW IF EXISTS db.view",
+      "output": {
+        "success": {
+          "command": {
+            "dropView": {
+              "view": [
+                "db",
+                "view"
+              ],
+              "ifExists": true
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DROP VIEW IF EXISTS view",
+      "output": {
+        "success": {
+          "command": {
+            "dropView": {
+              "view": [
+                "view"
+              ],
+              "ifExists": true
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DROP VIEW db.view",
+      "output": {
+        "success": {
+          "command": {
+            "dropView": {
+              "view": [
+                "db",
+                "view"
+              ],
+              "ifExists": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DROP VIEW testcat.db.view",
+      "output": {
+        "success": {
+          "command": {
+            "dropView": {
+              "view": [
+                "testcat",
+                "db",
+                "view"
+              ],
+              "ifExists": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DROP VIEW view",
+      "output": {
+        "success": {
+          "command": {
+            "dropView": {
+              "view": [
+                "view"
+              ],
+              "ifExists": false
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1657 @@
+{
+  "tests": [
+    {
+      "input": "\nSELECT * FROM a\nUNION\nSELECT * FROM b\nEXCEPT\nSELECT * FROM c\nINTERSECT\nSELECT * FROM d\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "setOperation": {
+                  "left": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "a"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "b"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "setOpType": "union",
+                  "isAll": false,
+                  "byName": false,
+                  "allowMissingColumns": false
+                },
+                "planId": null
+              },
+              "right": {
+                "setOperation": {
+                  "left": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "c"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "d"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "setOpType": "intersect",
+                  "isAll": false,
+                  "byName": false,
+                  "allowMissingColumns": false
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\nSELECT * FROM a\nUNION\nSELECT * FROM b\nEXCEPT ALL\nSELECT * FROM c\nINTERSECT ALL\nSELECT * FROM d\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "setOperation": {
+                  "left": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "a"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "b"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "setOpType": "union",
+                  "isAll": false,
+                  "byName": false,
+                  "allowMissingColumns": false
+                },
+                "planId": null
+              },
+              "right": {
+                "setOperation": {
+                  "left": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "c"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "d"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedStar": {
+                            "target": null,
+                            "planId": null,
+                            "wildcardOptions": {
+                              "ilikePattern": null,
+                              "excludeColumns": null,
+                              "exceptColumns": null,
+                              "replaceColumns": null,
+                              "renameColumns": null
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  },
+                  "setOpType": "intersect",
+                  "isAll": true,
+                  "byName": false,
+                  "allowMissingColumns": false
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": true,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select  id\nfrom (((select id from t0)\n       union all\n       (select  id from t0))\n      union all\n      (select id from t0)) as u_1\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "tableAlias": {
+                  "input": {
+                    "setOperation": {
+                      "left": {
+                        "setOperation": {
+                          "left": {
+                            "project": {
+                              "input": {
+                                "read": {
+                                  "namedTable": {
+                                    "name": [
+                                      "t0"
+                                    ],
+                                    "temporal": null,
+                                    "sample": null,
+                                    "options": []
+                                  },
+                                  "isStreaming": false
+                                },
+                                "planId": null
+                              },
+                              "expressions": [
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "id"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ]
+                            },
+                            "planId": null
+                          },
+                          "right": {
+                            "project": {
+                              "input": {
+                                "read": {
+                                  "namedTable": {
+                                    "name": [
+                                      "t0"
+                                    ],
+                                    "temporal": null,
+                                    "sample": null,
+                                    "options": []
+                                  },
+                                  "isStreaming": false
+                                },
+                                "planId": null
+                              },
+                              "expressions": [
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "id"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ]
+                            },
+                            "planId": null
+                          },
+                          "setOpType": "union",
+                          "isAll": true,
+                          "byName": false,
+                          "allowMissingColumns": false
+                        },
+                        "planId": null
+                      },
+                      "right": {
+                        "project": {
+                          "input": {
+                            "read": {
+                              "namedTable": {
+                                "name": [
+                                  "t0"
+                                ],
+                                "temporal": null,
+                                "sample": null,
+                                "options": []
+                              },
+                              "isStreaming": false
+                            },
+                            "planId": null
+                          },
+                          "expressions": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "id"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ]
+                        },
+                        "planId": null
+                      },
+                      "setOpType": "union",
+                      "isAll": true,
+                      "byName": false,
+                      "allowMissingColumns": false
+                    },
+                    "planId": null
+                  },
+                  "name": "u_1",
+                  "columns": []
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "id"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from ((select * from t1) union (select * from t2)) t",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "tableAlias": {
+                  "input": {
+                    "setOperation": {
+                      "left": {
+                        "project": {
+                          "input": {
+                            "read": {
+                              "namedTable": {
+                                "name": [
+                                  "t1"
+                                ],
+                                "temporal": null,
+                                "sample": null,
+                                "options": []
+                              },
+                              "isStreaming": false
+                            },
+                            "planId": null
+                          },
+                          "expressions": [
+                            {
+                              "unresolvedStar": {
+                                "target": null,
+                                "planId": null,
+                                "wildcardOptions": {
+                                  "ilikePattern": null,
+                                  "excludeColumns": null,
+                                  "exceptColumns": null,
+                                  "replaceColumns": null,
+                                  "renameColumns": null
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "planId": null
+                      },
+                      "right": {
+                        "project": {
+                          "input": {
+                            "read": {
+                              "namedTable": {
+                                "name": [
+                                  "t2"
+                                ],
+                                "temporal": null,
+                                "sample": null,
+                                "options": []
+                              },
+                              "isStreaming": false
+                            },
+                            "planId": null
+                          },
+                          "expressions": [
+                            {
+                              "unresolvedStar": {
+                                "target": null,
+                                "planId": null,
+                                "wildcardOptions": {
+                                  "ilikePattern": null,
+                                  "excludeColumns": null,
+                                  "exceptColumns": null,
+                                  "replaceColumns": null,
+                                  "renameColumns": null
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "planId": null
+                      },
+                      "setOpType": "union",
+                      "isAll": false,
+                      "byName": false,
+                      "allowMissingColumns": false
+                    },
+                    "planId": null
+                  },
+                  "name": "t",
+                  "columns": []
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a except all select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": true,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a except distinct select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a except select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a intersect all select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "intersect",
+              "isAll": true,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a intersect distinct select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "intersect",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a intersect select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "intersect",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a minus all select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": true,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a minus distinct select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a minus select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "except",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a union all select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "union",
+              "isAll": true,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a union distinct select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "union",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select * from a union select * from b",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "a"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "b"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "union",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "select 1 union select 1",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "empty": {
+                      "produceOneRow": true
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "empty": {
+                      "produceOneRow": true
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "union",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

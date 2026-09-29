@@ -1,0 +1,433 @@
+name: Release Python Package
+
+on:
+  push:
+    tags:
+      - "v*"
+  # We can run the workflow manually to test package release.
+  # Only the repository maintainers have the permission to do this.
+  workflow_dispatch:
+    inputs:
+      publish:
+        # The manual test must be done from the `main` branch
+        # due to the environment protection rules.
+        description: Publish the package to Test PyPI
+        type: boolean
+        required: true
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-slim
+    permissions:
+      # This is required for calling the GitHub API to generate release notes.
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      is_pre_release: ${{ steps.version.outputs.pre_release }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Hatch
+        uses: pypa/hatch@install
+
+      - name: Get Version
+        id: version
+        shell: bash
+        run: |
+          version="$(hatch version)"
+          is_pre_release="$([[ "${version}" =~ '^[0-9]+\.[0-9]+\.[0-9]+$' ]] && echo "false" || echo "true")"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "is_pre_release=${is_pre_release}" >> "$GITHUB_OUTPUT"
+
+      - name: Get Previous Version
+        id: previous
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const script = require('./.github/workflows/release/get-previous-version.cjs');
+            await script({ github, context, core });
+
+      - name: Verify Version
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          if pip download pysail=="${RELEASE_VERSION}" -d /tmp --no-deps --no-binary pysail; then
+            echo "The package version ${RELEASE_VERSION} already exists on PyPI."
+            echo "Please update the package version."
+            exit 1
+          else
+            echo "The package version ${RELEASE_VERSION} is not published on PyPI yet."
+            echo "The release workflow is allowed to continue."
+            echo "Please ignore the pip error messages above."
+          fi
+
+      - name: Verify Tag
+        if: ${{ github.event_name == 'push' }}
+        env:
+          RELEASE_TAG: ${{ github.ref }}
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          if [[ "${RELEASE_TAG}" == "refs/tags/v${RELEASE_VERSION}" ]]; then
+            echo "The package version ${RELEASE_VERSION} will be published to PyPI."
+          else
+            echo "The package version ${RELEASE_VERSION} and the Git tag ${RELEASE_TAG} do not match."
+            exit 1
+          fi
+
+      - name: Generate Release Notes
+        id: notes
+        uses: actions/github-script@v9
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          PREVIOUS_RELEASE_VERSION: ${{ steps.previous.outputs.version }}
+        with:
+          script: |
+            const script = require('./.github/workflows/release/generate-release-notes.cjs');
+            await script({ github, context, core });
+
+      - name: Write Release Notes
+        env:
+          RELEASE_NOTES: ${{ steps.notes.outputs.content }}
+        run: |
+          mkdir /tmp/release-notes
+          output="/tmp/release-notes/content.md"
+          printf '%s' "${RELEASE_NOTES}" > "$output"
+          cat "$output" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Release Notes
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-notes
+          path: /tmp/release-notes
+          retention-days: 1
+
+  build-sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    needs:
+      - setup
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Build sdist
+        uses: PyO3/maturin-action@v1
+        with:
+          command: sdist
+          args: --out dist
+
+      - name: Upload sdist
+        uses: actions/upload-artifact@v7
+        with:
+          name: package-sdist
+          path: dist/*.tar.gz
+          retention-days: 7
+
+  build-wheel:
+    name: Build Wheel
+    runs-on: ${{ matrix.platform.runner }}
+    needs:
+      - setup
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runner: ubuntu-24.04-x64-8-core
+            target: x86_64
+            os: linux
+          # The x64 runner is used here since Maturin performs cross-compilation.
+          - runner: ubuntu-24.04-x64-8-core
+            target: aarch64
+            os: linux
+          - runner: macos-26-intel
+            target: x86_64
+            os: macos
+          - runner: macos-26
+            target: aarch64
+            os: macos
+          - runner: windows-2025-x64-8-core
+            target: x64
+            os: windows
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      # For macOS and Windows, Maturin does not build the package in a container,
+      # so the build tools installed on the host are used.
+
+      # For Linux, Maturin builds the package in a container.
+      # We should not build the package on the host with the cross-compilation toolchain installed via system package managers,
+      # nor should we build the package on the ARM host directly.
+      # The package built on the host may incorrectly depend on a too recent glibc version,
+      # and the resulting wheel would not be manylinux compliant.
+      # The auditwheel tool would report an error in such cases.
+
+      - name: Install protoc
+        id: protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: $/.github/actions/adjust-swap-space
+        if: runner.os == 'Linux'
+
+      - name: Build Wheels
+        uses: PyO3/maturin-action@v1
+        with:
+          command: build
+          target: ${{ matrix.platform.target }}
+          # We need to specify the interpreter explicitly even if we are building for ABI3.
+          # This is to avoid unexpected PyPy wheels when building inside containers.
+          # https://github.com/PyO3/maturin/issues/2852
+          args: --release --out dist --interpreter python3.11
+          rustup-components: rustfmt
+          # https://github.com/briansmith/ring/issues/1728
+          # https://github.com/PyO3/maturin-action/issues/222
+          manylinux: ${{ matrix.platform.target == 'aarch64' && matrix.platform.os == 'linux' && '2_24' || 'auto' }}
+          # For Linux, we need to install build tools inside the container.
+          # The actual installation commands depend on the platform.
+          # https://github.com/PyO3/maturin-action/discussions/273
+          # Note: `protoc_target` is the same for all containers.
+          before-script-linux: |
+            protoc_version="${{ steps.protoc.outputs.version }}"
+            protoc_target="linux-x86_64"
+            platform_target="${{ matrix.platform.target }}"
+            case "${platform_target}" in
+              "aarch64")
+                apt-get update
+                apt-get install -y wget unzip pkg-config
+                ;;
+              "x86_64")
+                yum update -y
+                yum install -y wget unzip pkgconfig
+                ;;
+              *)
+                echo "Unsupported platform target: ${platform_target}"
+                exit 1
+                ;;
+            esac
+            wget -q -O /tmp/protoc.zip "https://github.com/protocolbuffers/protobuf/releases/download/v${protoc_version#v}/protoc-${protoc_version#v}-${protoc_target}.zip"
+            unzip /tmp/protoc.zip -d /usr/local 'bin/*' 'include/*'
+            rm /tmp/protoc.zip
+            protoc --version
+
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: package-wheel-${{ matrix.platform.os }}-${{ matrix.platform.target }}
+          path: dist/*.whl
+          retention-days: 7
+
+  # Here we test installation of packages from the `dist` directory.
+  # Note that pip favors packages from the index over local packages specified via `-f` or `--find-links`.
+  # But we cannot use `--no-index` since the dependencies are not available locally.
+  # Therefore, we install `pysail` by specifying the exact release version.
+  # In a previous job, we have verified that this version is not published on PyPI yet,
+  # so we can be sure that the package is installed from the local `dist` directory.
+
+  # The ARM runner is created in the GitHub organization.
+  # For better security, it can only be used by `release.yml` in the `main` branch.
+  # To test ARM jobs in pull requests, the organization administrators can temporarily
+  # modify the runner group ("workflow access") in the organization settings.
+
+  test-sdist:
+    name: Test sdist
+    runs-on: ${{ matrix.platform.runner }}
+    env:
+      RELEASE_VERSION: ${{ needs.setup.outputs.version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runner: ubuntu-24.04-x64-8-core
+          - runner: ubuntu-24.04-arm-8-core
+          - runner: macos-26-intel
+          - runner: macos-26
+          - runner: windows-2025
+    needs:
+      - setup
+      - build-sdist
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: package-sdist
+          path: dist
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      # We need the build tools when installing the package from source.
+
+      - name: Install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: $/.github/actions/adjust-swap-space
+        if: runner.os == 'Linux'
+
+      - name: Install Package
+        shell: bash
+        env:
+          # Make the build faster and less memory-intensive by using thin local
+          # LTO and 16 codegen units, so that we can verify installation from
+          # source using small GitHub runners. For the wheel build, we still
+          # use the default LTO setting to maximize performance.
+          CARGO_PROFILE_RELEASE_CODEGEN_UNITS: "16"
+          CARGO_PROFILE_RELEASE_LTO: "false"
+          TEST_SDIST_RUNS_ON: ${{ matrix.platform.runner }}
+        # Building native dependencies (e.g. using CMake) may fail on Windows due to long paths.
+        # We mitigate this by making the temporary directory shorter, though this workaround
+        # is not future-proof.
+        # We do not have this issue when building wheels since the temporary directory
+        # in that case is much shorter than the temporary directory created by pip.
+        run: |
+          if [[ "${TEST_SDIST_RUNS_ON}" == windows-* ]]; then
+            echo 'Setting temporary directory to a shorter path on Windows...'
+            mkdir -p 'C:\Temp'
+            export TEMP='C:\Temp'
+          fi
+          pip install 'pysail[test]=='"${RELEASE_VERSION}" -v -f dist --no-binary pysail
+
+      - name: Verify Package
+        shell: python
+        run: |
+          import os, pysail
+          assert pysail.__version__ == os.environ["RELEASE_VERSION"]
+
+      - name: Run Tests
+        shell: bash
+        run: pytest --pyargs pysail --reruns 5 --reruns-delay 2
+
+  test-wheel:
+    name: Test Wheel
+    runs-on: ${{ matrix.platform.runner }}
+    env:
+      RELEASE_VERSION: ${{ needs.setup.outputs.version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - runner: ubuntu-24.04
+          - runner: ubuntu-24.04-arm
+          - runner: macos-26-intel
+          - runner: macos-26
+          - runner: windows-2025
+    needs:
+      - setup
+      - build-wheel
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: "package-wheel-*"
+          path: dist
+          merge-multiple: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Package
+        shell: bash
+        run: |
+          pip install 'pysail[test]=='"${RELEASE_VERSION}" -v -f dist --only-binary pysail
+
+      - name: Verify Package
+        shell: python
+        run: |
+          import os, pysail
+          assert pysail.__version__ == os.environ["RELEASE_VERSION"]
+
+      - name: Run Tests
+        shell: bash
+        run: pytest --pyargs pysail --reruns 5 --reruns-delay 2
+
+  review:
+    name: Review
+    runs-on: ubuntu-slim
+    needs:
+      - test-sdist
+      - test-wheel
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: "package-*"
+          path: dist
+          merge-multiple: true
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Show Release Artifacts
+        shell: bash
+        run: scripts/release/review_packages.py --path dist >> "$GITHUB_STEP_SUMMARY"
+
+  release-pypi:
+    name: Release to PyPI
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true') }}
+    # The PyPI publishing step runs inside a Docker container,
+    # so we cannot use the `ubuntu-slim` runner.
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && 'release' || 'release/test' }}
+    permissions:
+      id-token: write
+    needs:
+      - setup
+      - review
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: "package-*"
+          path: dist
+          merge-multiple: true
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && 'https://upload.pypi.org/legacy/' || 'https://test.pypi.org/legacy/' }}
+          packages-dir: dist
+          skip-existing: true
+
+  release-github:
+    name: Release to GitHub
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+      discussions: write
+    needs:
+      - setup
+      - review
+      - release-pypi
+    steps:
+      - name: Download Release Notes
+        uses: actions/download-artifact@v7
+        with:
+          name: release-notes
+          path: /tmp/release-notes
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: /tmp/release-notes/content.md
+          discussion_category_name: Releases
+          draft: true
+          prerelease: ${{ needs.setup.outputs.is_pre_release == 'true' }}
+          generate_release_notes: false

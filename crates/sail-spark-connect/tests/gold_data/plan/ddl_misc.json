@@ -1,0 +1,315 @@
+{
+  "tests": [
+    {
+      "input": "\nMERGE WITH SCHEMA EVOLUTION INTO testcat1.ns1.ns2.tbl AS target\nUSING testcat2.ns1.ns2.tbl AS source\nON target.col1 = source.col1\nWHEN NOT MATCHED BY SOURCE THEN DELETE\n    ",
+      "output": {
+        "success": {
+          "command": {
+            "mergeInto": {
+              "target": [
+                "testcat1",
+                "ns1",
+                "ns2",
+                "tbl"
+              ],
+              "targetAlias": "target",
+              "source": {
+                "table": {
+                  "name": [
+                    "testcat2",
+                    "ns1",
+                    "ns2",
+                    "tbl"
+                  ],
+                  "alias": "source"
+                }
+              },
+              "onCondition": {
+                "expr": {
+                  "unresolvedFunction": {
+                    "functionName": [
+                      "=="
+                    ],
+                    "arguments": [
+                      {
+                        "unresolvedAttribute": {
+                          "name": [
+                            "target",
+                            "col1"
+                          ],
+                          "planId": null,
+                          "isMetadataColumn": false
+                        }
+                      },
+                      {
+                        "unresolvedAttribute": {
+                          "name": [
+                            "source",
+                            "col1"
+                          ],
+                          "planId": null,
+                          "isMetadataColumn": false
+                        }
+                      }
+                    ],
+                    "namedArguments": [],
+                    "isDistinct": false,
+                    "isUserDefinedFunction": false,
+                    "isInternal": null,
+                    "ignoreNulls": null,
+                    "filter": null,
+                    "orderBy": null
+                  }
+                },
+                "source": "target . col1 = source . col1 "
+              },
+              "clauses": [
+                {
+                  "notMatchedBySource": {
+                    "condition": null,
+                    "action": "delete"
+                  }
+                }
+              ],
+              "withSchemaEvolution": true
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "COMMENT ON DATABASE a.b.c IS 'NULL'",
+      "output": {
+        "success": {
+          "command": {
+            "commentOnDatabase": {
+              "database": [
+                "a",
+                "b",
+                "c"
+              ],
+              "value": "NULL"
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "COMMENT ON DATABASE a.b.c IS NULL",
+      "output": {
+        "success": {
+          "command": {
+            "commentOnDatabase": {
+              "database": [
+                "a",
+                "b",
+                "c"
+              ],
+              "value": null
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "COMMENT ON NAMESPACE a.b.c IS ''",
+      "output": {
+        "success": {
+          "command": {
+            "commentOnDatabase": {
+              "database": [
+                "a",
+                "b",
+                "c"
+              ],
+              "value": ""
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "COMMENT ON TABLE a.b.c IS 'xYz'",
+      "output": {
+        "success": {
+          "command": {
+            "commentOnTable": {
+              "table": [
+                "a",
+                "b",
+                "c"
+              ],
+              "value": "xYz"
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl (a, b)SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl AS t BY NAME REPLACE ON t.col1 = col2 SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl AS t REPLACE ON t.col1 = col2 SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl BY NAME REPLACE USING (col1) SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl BY NAME SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl REPLACE USING (col1) SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION INTO testcat.ns1.ns2.tbl SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION OVERWRITE testcat.ns1.ns2.tbl (a, b)SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION OVERWRITE testcat.ns1.ns2.tbl BY NAME SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "INSERT WITH SCHEMA EVOLUTION OVERWRITE testcat.ns1.ns2.tbl SELECT * FROM source",
+      "output": {
+        "failure": "invalid argument: found WITH at 7:11 expected 'OVERWRITE', or 'INTO'"
+      }
+    },
+    {
+      "input": "REFRESH FUNCTION a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "refreshFunction": {
+              "function": [
+                "a",
+                "b",
+                "c"
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "REFRESH FUNCTION b.c",
+      "output": {
+        "success": {
+          "command": {
+            "refreshFunction": {
+              "function": [
+                "b",
+                "c"
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "REFRESH FUNCTION c",
+      "output": {
+        "success": {
+          "command": {
+            "refreshFunction": {
+              "function": [
+                "c"
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "REFRESH TABLE a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "refreshTable": {
+              "table": [
+                "a",
+                "b",
+                "c"
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "VALUES (1, 2, DEFAULT) AS val",
+      "output": {
+        "success": {
+          "query": {
+            "tableAlias": {
+              "input": {
+                "values": [
+                  [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    },
+                    "defaultColumnValue"
+                  ]
+                ],
+                "planId": null
+              },
+              "name": "val",
+              "columns": []
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

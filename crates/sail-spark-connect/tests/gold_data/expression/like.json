@@ -1,0 +1,1845 @@
+{
+  "tests": [
+    {
+      "input": "a ilike all ('Foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "ilike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "all"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "Foo%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a ilike all()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na ilike all()\n  ^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 12:13 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a ilike any ('FOO%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "ilike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "any"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "FOO%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a ilike any()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na ilike any()\n  ^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 12:13 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a ilike some ('FOO%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "ilike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "some"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "FOO%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a ilike some()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na ilike some()\n  ^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 13:14 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a like 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern%"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like 'pattern%' escape '\"'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern%"
+                  }
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "\""
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like 'pattern%' escape '##'",
+      "exception": "\n[INVALID_ESC] Found an invalid escape string: '##'. The escape string must contain only one character. SQLSTATE: 42604\n== SQL (line 1, position 3) ==\na like 'pattern%' escape '##'\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: invalid escape character: ##"
+      }
+    },
+    {
+      "input": "a like 'pattern%' escape '#'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern%"
+                  }
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "#"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like 'pattern%' escape ''",
+      "exception": "\n[INVALID_ESC] Found an invalid escape string: ''. The escape string must contain only one character. SQLSTATE: 42604\n== SQL (line 1, position 3) ==\na like 'pattern%' escape ''\n  ^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: invalid escape character: "
+      }
+    },
+    {
+      "input": "a like all ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "all"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "foo%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like all()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na like all()\n  ^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 11:12 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a like any ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "any"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "foo%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like any()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na like any()\n  ^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 11:12 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a like some ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "like"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "some"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "foo%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a like some()",
+      "exception": "\nExpected something between '(' and ')'..\n== SQL (line 1, position 3) ==\na like some()\n  ^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 12:13 expected query, identifier, or expression"
+      }
+    },
+    {
+      "input": "a not ilike all ('foo%', 'B%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "all"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "B%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not ilike any ('foo%', 'B%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "any"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "B%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not ilike some ('foo%', 'B%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "some"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "B%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "pattern%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like 'pattern%' escape '\"'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "pattern%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "\""
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like 'pattern%' escape '\"/'",
+      "exception": "\n[INVALID_ESC] Found an invalid escape string: '\"/'. The escape string must contain only one character. SQLSTATE: 42604\n== SQL (line 1, position 3) ==\na not like 'pattern%' escape '\"/'\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: invalid escape character: \"/"
+      }
+    },
+    {
+      "input": "a not like 'pattern%' escape '#'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "pattern%"
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "#"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like 'pattern%' escape ''",
+      "exception": "\n[INVALID_ESC] Found an invalid escape string: ''. The escape string must contain only one character. SQLSTATE: 42604\n== SQL (line 1, position 3) ==\na not like 'pattern%' escape ''\n  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: invalid escape character: "
+      }
+    },
+    {
+      "input": "a not like all ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "all"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like any ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "any"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not like some ('foo%', 'b%')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "some"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a not rlike 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "rlike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "pattern%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a rlike '^\\x20[\\x20-\\x23]+$'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "rlike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "^ [ -#]+$"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a rlike 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "rlike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern%"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a rlike 'pattern\\\\'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "rlike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern\\"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a rlike 'pattern\\t\\n'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "rlike"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern\t\n"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a ilike all ('foO%', 'b%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "all"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foO%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a ilike any ('FOO%', 'B%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "any"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "FOO%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "B%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a ilike some ('FOO%', 'B%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "ilike"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "some"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "FOO%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "B%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a like all ('foo%', 'b%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "all"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a like any ('foo%', 'b%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "any"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not (a like some ('foo%', 'b%'))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "like"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "some"
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "foo%"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "b%"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    }
+  ]
+}

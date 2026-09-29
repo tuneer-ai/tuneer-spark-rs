@@ -1,0 +1,297 @@
+{
+  "tests": [
+    {
+      "input": "",
+      "exception": "\n[PARSE_EMPTY_STATEMENT] Syntax error, unexpected empty statement. SQLSTATE: 42617 (line 1, pos 0)\n\n== SQL ==\n\n^^^\n",
+      "output": {
+        "failure": "invalid argument: empty data type"
+      }
+    },
+    {
+      "input": "A int",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "A",
+              "dataType": "int32",
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "`!@#$%.^&*()` string",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "!@#$%.^&*()",
+              "dataType": {
+                "configuredUtf8": {
+                  "utf8Type": "configured"
+                }
+              },
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "a",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near end of input. SQLSTATE: 42601 (line 1, pos 1)\n\n== SQL ==\na\n-^^^\n",
+      "output": {
+        "failure": "parse error: error in SQL parser: found > at 8:9 expected ':', or data type"
+      }
+    },
+    {
+      "input": "a INT",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "a",
+              "dataType": "int32",
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "a INT b long",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'b'. SQLSTATE: 42601 (line 1, pos 6)\n\n== SQL ==\na INT b long\n------^^^\n",
+      "output": {
+        "failure": "parse error: error in SQL parser: found b at 13:14 expected 'NOT', 'COMMENT', ',', or '>'"
+      }
+    },
+    {
+      "input": "a INT, b long, c int,",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near end of input. SQLSTATE: 42601 (line 1, pos 21)\n\n== SQL ==\na INT, b long, c int,\n---------------------^^^\n",
+      "output": {
+        "failure": "parse error: error in SQL parser: found > at 28:29 expected identifier"
+      }
+    },
+    {
+      "input": "a INT, b long,,",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ','. SQLSTATE: 42601 (line 1, pos 14)\n\n== SQL ==\na INT, b long,,\n--------------^^^\n",
+      "output": {
+        "failure": "parse error: error in SQL parser: found , at 21:22 expected identifier"
+      }
+    },
+    {
+      "input": "a INT,, b long",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ','. SQLSTATE: 42601 (line 1, pos 6)\n\n== SQL ==\na INT,, b long\n------^^^\n",
+      "output": {
+        "failure": "parse error: error in SQL parser: found , at 13:14 expected identifier"
+      }
+    },
+    {
+      "input": "a STRUCT<intType: int, ts:timestamp>",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "a",
+              "dataType": {
+                "struct": {
+                  "fields": [
+                    {
+                      "name": "intType",
+                      "dataType": "int32",
+                      "nullable": true,
+                      "metadata": []
+                    },
+                    {
+                      "name": "ts",
+                      "dataType": {
+                        "timestamp": {
+                          "timeUnit": "microsecond",
+                          "timestampType": "configured"
+                        }
+                      },
+                      "nullable": true,
+                      "metadata": []
+                    }
+                  ]
+                }
+              },
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "a int",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "a",
+              "dataType": "int32",
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "a int comment 'test'",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "a",
+              "dataType": "int32",
+              "nullable": true,
+              "metadata": [
+                [
+                  "comment",
+                  "test"
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "a int, b long",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "a",
+              "dataType": "int32",
+              "nullable": true,
+              "metadata": []
+            },
+            {
+              "name": "b",
+              "dataType": "int64",
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "input": "complexStructCol struct<struct:struct<deciMal:DECimal, anotherDecimal:decimAL(5,2)>,MAP:Map<timestamp, varchar(10)>,arrAy:Array<double>,anotherArray:Array<char(9)>>      ",
+      "output": {
+        "success": {
+          "fields": [
+            {
+              "name": "complexStructCol",
+              "dataType": {
+                "struct": {
+                  "fields": [
+                    {
+                      "name": "struct",
+                      "dataType": {
+                        "struct": {
+                          "fields": [
+                            {
+                              "name": "deciMal",
+                              "dataType": {
+                                "decimal128": {
+                                  "precision": 10,
+                                  "scale": 0
+                                }
+                              },
+                              "nullable": true,
+                              "metadata": []
+                            },
+                            {
+                              "name": "anotherDecimal",
+                              "dataType": {
+                                "decimal128": {
+                                  "precision": 5,
+                                  "scale": 2
+                                }
+                              },
+                              "nullable": true,
+                              "metadata": []
+                            }
+                          ]
+                        }
+                      },
+                      "nullable": true,
+                      "metadata": []
+                    },
+                    {
+                      "name": "MAP",
+                      "dataType": {
+                        "map": {
+                          "keyType": {
+                            "timestamp": {
+                              "timeUnit": "microsecond",
+                              "timestampType": "configured"
+                            }
+                          },
+                          "valueType": {
+                            "configuredUtf8": {
+                              "utf8Type": {
+                                "varChar": {
+                                  "length": 10
+                                }
+                              }
+                            }
+                          },
+                          "valueTypeNullable": true,
+                          "keysSorted": false
+                        }
+                      },
+                      "nullable": true,
+                      "metadata": []
+                    },
+                    {
+                      "name": "arrAy",
+                      "dataType": {
+                        "list": {
+                          "dataType": "float64",
+                          "nullable": true
+                        }
+                      },
+                      "nullable": true,
+                      "metadata": []
+                    },
+                    {
+                      "name": "anotherArray",
+                      "dataType": {
+                        "list": {
+                          "dataType": {
+                            "configuredUtf8": {
+                              "utf8Type": {
+                                "char": {
+                                  "length": 9
+                                }
+                              }
+                            }
+                          },
+                          "nullable": true
+                        }
+                      },
+                      "nullable": true,
+                      "metadata": []
+                    }
+                  ]
+                }
+              },
+              "nullable": true,
+              "metadata": []
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

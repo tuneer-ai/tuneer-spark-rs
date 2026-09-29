@@ -1,0 +1,116 @@
+{
+  "tests": [
+    {
+      "input": "SHOW VIEWS",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": null,
+              "pattern": null
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS '*test*'",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": null,
+              "pattern": "*test*"
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS FROM testcat.ns1.ns2.tbl",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": [
+                "testcat",
+                "ns1",
+                "ns2",
+                "tbl"
+              ],
+              "pattern": null
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS IN ns1 '*test*'",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": [
+                "ns1"
+              ],
+              "pattern": "*test*"
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS IN ns1 LIKE '*test*'",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": [
+                "ns1"
+              ],
+              "pattern": "*test*"
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS IN testcat.ns1.ns2.tbl",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": [
+                "testcat",
+                "ns1",
+                "ns2",
+                "tbl"
+              ],
+              "pattern": null
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SHOW VIEWS LIKE '*test*'",
+      "output": {
+        "success": {
+          "command": {
+            "listViews": {
+              "database": null,
+              "pattern": "*test*"
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

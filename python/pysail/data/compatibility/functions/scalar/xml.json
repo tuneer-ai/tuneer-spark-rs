@@ -1,0 +1,63 @@
+[
+  {
+    "module": "pyspark.sql.functions",
+    "function": "from_xml",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "schema_of_xml",
+    "status": "planned",
+    "ref": "https://github.com/lakehq/sail/issues/231"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "to_xml",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_boolean",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_double",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_float",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_int",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_long",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_number",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_short",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "xpath_string",
+    "status": "supported"
+  }
+]

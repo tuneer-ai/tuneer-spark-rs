@@ -1,0 +1,35 @@
+{
+  "name": "Sail DevContainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17",
+      "distribution": "corretto"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "1.91.1",
+      "profile": "default"
+    }
+  },
+  "postCreateCommand": "hatch env create default && . ${containerWorkspaceFolder}/.venvs/default/bin/activate && pip install --upgrade pip && echo 'source ${containerWorkspaceFolder}/.venvs/default/bin/activate' >> ~/.bashrc",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "ms-python.python"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}

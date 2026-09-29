@@ -1,0 +1,453 @@
+{
+  "tests": [
+    {
+      "input": {
+        "query": "SELECT from_xml('<p><a>1</a><b>0.8</b></p>', 'a INT, b DOUBLE');",
+        "result": [
+          "{\"a\":1,\"b\":0.8}"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "from_xml(<p><a>1</a><b>0.8</b></p>)",
+              "nullable": true,
+              "type": {
+                "type": "struct",
+                "fields": [
+                  {
+                    "name": "a",
+                    "nullable": true,
+                    "type": "integer",
+                    "metadata": {}
+                  },
+                  {
+                    "name": "b",
+                    "nullable": true,
+                    "type": "double",
+                    "metadata": {}
+                  }
+                ]
+              },
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT from_xml('<p><teacher>Alice</teacher><student><name>Bob</name><rank>1</rank></student><student><name>Charlie</name><rank>2</rank></student></p>', 'STRUCT<teacher: STRING, student: ARRAY<STRUCT<name: STRING, rank: INT>>>');",
+        "result": [
+          "{\"teacher\":\"Alice\",\"student\":[{\"name\":\"Bob\",\"rank\":1},{\"name\":\"Charlie\",\"rank\":2}]}"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "from_xml(<p><teacher>Alice</teacher><student><name>Bob</name><rank>1</rank></student><student><name>Charlie</name><rank>2</rank></student></p>)",
+              "nullable": true,
+              "type": {
+                "type": "struct",
+                "fields": [
+                  {
+                    "name": "teacher",
+                    "nullable": true,
+                    "type": "string",
+                    "metadata": {}
+                  },
+                  {
+                    "name": "student",
+                    "nullable": true,
+                    "type": {
+                      "type": "array",
+                      "elementType": {
+                        "type": "struct",
+                        "fields": [
+                          {
+                            "name": "name",
+                            "nullable": true,
+                            "type": "string",
+                            "metadata": {}
+                          },
+                          {
+                            "name": "rank",
+                            "nullable": true,
+                            "type": "integer",
+                            "metadata": {}
+                          }
+                        ]
+                      },
+                      "containsNull": true
+                    },
+                    "metadata": {}
+                  }
+                ]
+              },
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT from_xml('<p><time>26/08/2015</time></p>', 'time Timestamp', map('timestampFormat', 'dd/MM/yyyy'));",
+        "result": [
+          "{\"time\":2015-08-26 00:00:00}"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "from_xml(<p><time>26/08/2015</time></p>)",
+              "nullable": true,
+              "type": {
+                "type": "struct",
+                "fields": [
+                  {
+                    "name": "time",
+                    "nullable": true,
+                    "type": "timestamp",
+                    "metadata": {}
+                  }
+                ]
+              },
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT schema_of_xml('<p><a attr=\"2\">1</a><a>3</a></p>', map('excludeAttribute', 'true'));",
+        "result": [
+          "STRUCT<a: ARRAY<BIGINT>>"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "schema_of_xml(<p><a attr=\"2\">1</a><a>3</a></p>)",
+              "nullable": false,
+              "type": "string",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "failure": "not implemented: function: schema_of_xml"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT schema_of_xml('<p><a>1</a></p>');",
+        "result": [
+          "STRUCT<a: BIGINT>"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "schema_of_xml(<p><a>1</a></p>)",
+              "nullable": false,
+              "type": "string",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "failure": "not implemented: function: schema_of_xml"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT to_xml(named_struct('a', 1, 'b', 2));",
+        "result": [
+          "<ROW>",
+          "<a>1</a>",
+          "<b>2</b>",
+          "</ROW>"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "to_xml(named_struct(a, 1, b, 2))",
+              "nullable": true,
+              "type": "string",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT to_xml(named_struct('time', to_timestamp('2015-08-26', 'yyyy-MM-dd')), map('timestampFormat', 'dd/MM/yyyy'));",
+        "result": [
+          "<ROW>",
+          "<time>26/08/2015</time>",
+          "</ROW>"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "to_xml(named_struct(time, to_timestamp(2015-08-26, yyyy-MM-dd)))",
+              "nullable": true,
+              "type": "string",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath('<a><b>b1</b><b>b2</b><b>b3</b><c>c1</c><c>c2</c></a>','a/b');",
+        "result": [
+          "[null,null,null]"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath(<a><b>b1</b><b>b2</b><b>b3</b><c>c1</c><c>c2</c></a>, a/b)",
+              "nullable": true,
+              "type": {
+                "type": "array",
+                "elementType": "string",
+                "containsNull": true
+              },
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath('<a><b>b1</b><b>b2</b><b>b3</b><c>c1</c><c>c2</c></a>','a/b/text()');",
+        "result": [
+          "[\"b1\",\"b2\",\"b3\"]"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath(<a><b>b1</b><b>b2</b><b>b3</b><c>c1</c><c>c2</c></a>, a/b/text())",
+              "nullable": true,
+              "type": {
+                "type": "array",
+                "elementType": "string",
+                "containsNull": true
+              },
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_boolean('<a><b>1</b></a>','a/b');",
+        "result": [
+          "true"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_boolean(<a><b>1</b></a>, a/b)",
+              "nullable": true,
+              "type": "boolean",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_double('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3.0"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_double(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "double",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_float('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3.0"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_float(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "float",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_int('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_int(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "integer",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_long('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_long(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "long",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_number('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3.0"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_number(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "double",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_short('<a><b>1</b><b>2</b></a>', 'sum(a/b)');",
+        "result": [
+          "3"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_short(<a><b>1</b><b>2</b></a>, sum(a/b))",
+              "nullable": true,
+              "type": "short",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    },
+    {
+      "input": {
+        "query": "SELECT xpath_string('<a><b>b</b><c>cc</c></a>','a/c');",
+        "result": [
+          "cc"
+        ],
+        "schema": {
+          "type": "struct",
+          "fields": [
+            {
+              "name": "xpath_string(<a><b>b</b><c>cc</c></a>, a/c)",
+              "nullable": true,
+              "type": "string",
+              "metadata": {}
+            }
+          ]
+        }
+      },
+      "output": {
+        "success": "ok"
+      }
+    }
+  ]
+}

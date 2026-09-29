@@ -1,0 +1,45 @@
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+pub mod arrow_conversions;
+pub mod converter;
+pub mod manager;
+pub mod mapping;
+pub mod normalize;
+pub mod type_widening;
+
+pub(crate) use converter::adapt_array_to_physical_field;
+pub use converter::{
+    PhysicalPartitionColumn, arrow_field_physical_name, arrow_schema_from_struct_type,
+    arrow_schema_reorder_partitions, attach_column_mapping_metadata,
+    get_physical_arrow_schema as get_physical_schema, logical_to_physical_arrow_paths,
+    make_physical_arrow_schema, restore_logical_record_batch,
+};
+pub use manager::{
+    evolve_schema, metadata_for_create_with_struct_type, protocol_for_create,
+    protocol_for_metadata, schema_has_column_defaults, schema_has_generated_columns,
+    schema_has_identity_columns,
+};
+pub(crate) use manager::{
+    inject_default_expressions, inject_generation_expressions, inject_identity_columns,
+};
+pub use mapping::{
+    annotate_new_fields_for_column_mapping, annotate_schema_for_column_mapping,
+    annotate_schema_for_column_mapping as annotate_for_column_mapping, compute_max_column_id,
+};
+pub use normalize::{normalize_delta_schema, strip_column_mapping_metadata};
+pub use type_widening::{
+    add_type_widening_metadata, collect_type_changes, format_type_change_path,
+    is_supported_type_change_for_schema_evolution, is_supported_type_change_for_write,
+    protocol_can_write_type_widening, protocol_supports_type_widening,
+    schema_contains_type_widening_metadata, validate_type_widening_metadata,
+};

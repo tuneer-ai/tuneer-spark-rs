@@ -1,0 +1,14 @@
+>>> import pandas as pd
+>>>
+>>> def center(pdf):
+...     return pdf.assign(v=pdf.v - pdf.v.mean())
+...
+>>> df = spark.createDataFrame([(1, 1.0), (1, 2.0), (2, 3.0)], ["id", "v"])
+>>> df.groupby("id").applyInPandas(center, schema="id long, v double").sort("id", "v").show()
++---+----+
+| id|   v|
++---+----+
+|  1|-0.5|
+|  1| 0.5|
+|  2| 0.0|
++---+----+

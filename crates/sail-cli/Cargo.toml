@@ -1,0 +1,30 @@
+[package]
+name = "sail-cli"
+version = { workspace = true }
+edition = { workspace = true }
+
+[lints]
+workspace = true
+
+[[bin]]
+name = "sail"
+path = "src/main.rs"
+
+[features]
+mimalloc = ["dep:sail-mimalloc"]
+default = ["mimalloc"]
+
+[dependencies]
+sail-common = { path = "../sail-common" }
+sail-execution = { path = "../sail-execution" }
+sail-flight = { path = "../sail-flight" }
+sail-telemetry = { path = "../sail-telemetry" }
+sail-spark-connect = { path = "../sail-spark-connect" }
+sail-session = { path = "../sail-session" }
+sail-mimalloc = { path = "../sail-mimalloc", optional = true }
+
+clap = { workspace = true }
+tokio = { workspace = true }
+log = { workspace = true }
+pyo3 = { workspace = true }
+rustls = { workspace = true }

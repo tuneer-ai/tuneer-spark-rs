@@ -1,0 +1,65 @@
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "vue-tsc --noEmit && eslint docs",
+    "format": "prettier ${FORMAT_OPTIONS---write} \"*.{js,json,yml,yaml,md}\" \".github/**/*.{yml,yaml,cjs,md}\" \"docs/**/*.{ts,mts,vue,css,md,json,yml,yaml}\" \"deployments/**/*.{json,yml,yaml}\"",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/js-yaml": "^4.0.9",
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^24.12.2",
+    "@typescript-eslint/eslint-plugin": "^8.70.1",
+    "@typescript-eslint/parser": "^8.70.1",
+    "@viz-js/viz": "^3.30.0",
+    "autoprefixer": "^10.6.1",
+    "eslint": "^10.11.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.11.1",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.2.0",
+    "markdown-it": "^14.3.0",
+    "markdown-it-deflist": "^3.0.1",
+    "markdown-it-footnote": "^4.0.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "prettier-plugin-vitepress": "^0.0.10",
+    "sql-formatter": "^15.9.0",
+    "svgo": "^4.1.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.1",
+    "vega": "^6.4.0",
+    "vite": "^5.4.21",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.43",
+    "vue-eslint-parser": "^10.4.1",
+    "vue-tsc": "^3.3.11"
+  },
+  "prettier": {
+    "plugins": [
+      "@ianvs/prettier-plugin-sort-imports",
+      "prettier-plugin-tailwindcss",
+      "prettier-plugin-vitepress"
+    ],
+    "importOrder": [
+      "<BUILT_IN_MODULES>",
+      "",
+      "<TYPES>",
+      "<THIRD_PARTY_MODULES>",
+      "",
+      "<TYPES>^@theme/",
+      "<TYPES>^[.]",
+      "^@theme/",
+      "^[.]"
+    ]
+  },
+  "packageManager": "pnpm@10.12.3"
+}

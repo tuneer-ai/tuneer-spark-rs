@@ -1,0 +1,7641 @@
+{
+  "tests": [
+    {
+      "input": "-interval '\t -1-2\t' year to month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -14,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '\t 1 0:0:1 ' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 86401000000,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-1 0:0:0' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -86400000000,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-123-0' year to month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -1476,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-19:18:17.123456789' hour to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -69497123456,
+                    "startField": "hour",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-2-3' year to month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -27,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -604800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -604800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -25200000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -25200000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -420000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -420000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -7,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -7,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -4233600000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -4233600000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -84,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-7' years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -84,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '-99 11:22:33.123456789' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -8594553123456,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0' years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0:0:0' hour to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "hour",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '0:0:1' hour to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1000000,
+                    "startField": "hour",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '1 0:0:0' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 86400000000,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '1 0:0:1' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 86401000000,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '1 day 2 hour 3 minute 4.005006 second'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 93784005006,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '1 year 2 month'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 14,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10 9:8:7.123456789' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 896887123456,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 864000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 864000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 36000000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 36000000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 600000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 600000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 10,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 10,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 6048000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 6048000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 120,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '10' years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 120,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '11:22:33.123456789' hour to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 40953123456,
+                    "startField": "hour",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '123-10' year to month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 1486,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1814400000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1814400000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 75600000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 75600000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1260000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1260000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 21,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 21,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 12700800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 12700800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 252,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '21' years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 252,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '3 month 1 hour'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalMonthDayNano": {
+                    "value": {
+                      "months": 3,
+                      "days": 0,
+                      "nanoseconds": 3600000000000
+                    }
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '496-0' year to month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 5952,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '99 11:22:33.123456789' day to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 8594553123456,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval '9:8:7.123456789' hour to second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 32887123456,
+                    "startField": "hour",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -13.123456789 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -13123456,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -604800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -604800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -25200000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -25200000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -420000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -420000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -7,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -7,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -7000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -4233600000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": -4233600000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -84,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval -7 years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": -84,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 0,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 0 years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 0,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 1.001 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1001000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 864000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 864000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 36000000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 36000000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 600000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 600000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 10,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 10,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 10000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 6048000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 6048000000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 120,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 120,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 10 years 3 months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 123,
+                    "startField": "year",
+                    "endField": "month"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 13.123456 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 13123456,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 13.123456789 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 13123456,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 day",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1814400000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 days",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1814400000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 hour",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 75600000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 hours",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 75600000000,
+                    "startField": "hour",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 microsecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 microseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 milliseconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 minute",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1260000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 minutes",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 1260000000,
+                    "startField": "minute",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 month",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 21,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 months",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 21,
+                    "startField": "month",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 second",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 21000000,
+                    "startField": "second",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 week",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 12700800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 weeks",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 12700800000000,
+                    "startField": "day",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 year",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 252,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 21 years",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalYearMonth": {
+                    "months": 252,
+                    "startField": "year",
+                    "endField": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 3 monThs 4 dayS 22 sEcond 1 millisecond",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalMonthDayNano": {
+                    "value": {
+                      "months": 3,
+                      "days": 4,
+                      "nanoseconds": 22001000000
+                    }
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-interval 8 days 2 hours 3 minutes 21 seconds",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "intervalDayTimeMicrosecond": {
+                    "microseconds": 698601000000,
+                    "startField": "day",
+                    "endField": "second"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "INTERVAL '1 day 2 hour 3 minute 4.005006 second'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 93784005006,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "INTERVAL '1 year 2 month'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 14,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "INTERVAL '1 year 2 second'",
+      "exception": "\nCannot mix year-month and day-time fields: INTERVAL '1 year 2 second'.\n== SQL (line 1, position 1) ==\nINTERVAL '1 year 2 second'\n^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalMonthDayNano": {
+              "value": {
+                "months": 12,
+                "days": 0,
+                "nanoseconds": 2000000000
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "INTERVAL '3 month 1 hour'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalMonthDayNano": {
+              "value": {
+                "months": 3,
+                "days": 0,
+                "nanoseconds": 3600000000000
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "InterVal 'interval 1 day 2 hour 3 minute 4.005006 second'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 93784005006,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "InterVal 'interval 1 year 2 month'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 14,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "InterVal 'interval 3 month 1 hour'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalMonthDayNano": {
+              "value": {
+                "months": 3,
+                "days": 0,
+                "nanoseconds": 3600000000000
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "Interval 'interval 1 daysss 2 hoursss'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"INTERVAL\" is invalid: 'interval 1 daysss 2 hoursss'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\nInterval 'interval 1 daysss 2 hoursss'\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found daysss at 11:17 expected '->', '.', '(', '[', '::', 'ESCAPE', 'IS', 'NOT', 'IN', '*', '/', '%', 'DIV', '+', '-', '||', '>>>', '>>', '<<', '&', '^', '|', '!=', '!>', '!<', '==', '=', '>=', '>', '<=>', '<=', '<>', '<', 'BETWEEN', 'LIKE', 'ILIKE', 'RLIKE', 'REGEXP', 'SIMILAR', 'AND', 'OR', 'YEAR', 'YEARS', 'MONTH', 'MONTHS', 'WEEK', 'WEEKS', 'DAY', 'DAYS', 'HOUR', 'HOURS', 'MINUTE', 'MINUTES', 'SECOND', 'SECONDS', 'MILLISECOND', 'MILLISECONDS', 'MICROSECOND', or 'MICROSECONDS'"
+      }
+    },
+    {
+      "input": "Interval 'interval 1 yearsss 2 monthsss'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"INTERVAL\" is invalid: 'interval 1 yearsss 2 monthsss'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\nInterval 'interval 1 yearsss 2 monthsss'\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found yearsss at 11:18 expected '->', '.', '(', '[', '::', 'ESCAPE', 'IS', 'NOT', 'IN', '*', '/', '%', 'DIV', '+', '-', '||', '>>>', '>>', '<<', '&', '^', '|', '!=', '!>', '!<', '==', '=', '>=', '>', '<=>', '<=', '<>', '<', 'BETWEEN', 'LIKE', 'ILIKE', 'RLIKE', 'REGEXP', 'SIMILAR', 'AND', 'OR', 'YEAR', 'YEARS', 'MONTH', 'MONTHS', 'WEEK', 'WEEKS', 'DAY', 'DAYS', 'HOUR', 'HOURS', 'MINUTE', 'MINUTES', 'SECOND', 'SECONDS', 'MILLISECOND', 'MILLISECONDS', 'MICROSECOND', or 'MICROSECONDS'"
+      }
+    },
+    {
+      "input": "Interval 'interval 3 monthsss 1 hoursss'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"INTERVAL\" is invalid: 'interval 3 monthsss 1 hoursss'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\nInterval 'interval 3 monthsss 1 hoursss'\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found monthsss at 11:19 expected '->', '.', '(', '[', '::', 'ESCAPE', 'IS', 'NOT', 'IN', '*', '/', '%', 'DIV', '+', '-', '||', '>>>', '>>', '<<', '&', '^', '|', '!=', '!>', '!<', '==', '=', '>=', '>', '<=>', '<=', '<>', '<', 'BETWEEN', 'LIKE', 'ILIKE', 'RLIKE', 'REGEXP', 'SIMILAR', 'AND', 'OR', 'YEAR', 'YEARS', 'MONTH', 'MONTHS', 'WEEK', 'WEEKS', 'DAY', 'DAYS', 'HOUR', 'HOURS', 'MINUTE', 'MINUTES', 'SECOND', 'SECONDS', 'MILLISECOND', 'MILLISECONDS', 'MICROSECOND', or 'MICROSECONDS'"
+      }
+    },
+    {
+      "input": "interval '\t -1-2\t' year to month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -14,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '\t 1 0:0:1 ' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 86401000000,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-1 0:0:0' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -86400000000,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-123-0' year to month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -1476,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-19:18:17.123456789' hour to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -69497123456,
+              "startField": "hour",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-2-3' year to month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -27,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -604800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -604800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -25200000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -25200000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -420000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -420000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -7,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -7,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -4233600000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -4233600000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -84,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-7' years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -84,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '-99 11:22:33.123456789' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -8594553123456,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0' years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0:0:0' hour to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "hour",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '0:0:1' hour to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1000000,
+              "startField": "hour",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '1 0:0:0' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 86400000000,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '1 0:0:1' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 86401000000,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '1 year 3 months 2 weeks 2 days 1 hour 3 minutes 2 seconds 100 millisecond 200 microseconds'",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalMonthDayNano": {
+              "value": {
+                "months": 15,
+                "days": 16,
+                "nanoseconds": 3782100200000
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10 9:8:7.123456789' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 896887123456,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 864000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 864000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 36000000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 36000000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 600000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 600000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 10,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' month to second",
+      "exception": "\n[INVALID_INTERVAL_FORMAT.UNSUPPORTED_FROM_TO_EXPRESSION] Error parsing '10' to interval. Please ensure that the value provided is in a valid format for defining an interval. You can reference the documentation for the correct format. Cannot support (interval '10' month to second) expression. SQLSTATE: 22006\n== SQL (line 1, position 10) ==\ninterval '10' month to second\n         ^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found end of input expected expression"
+      }
+    },
+    {
+      "input": "interval '10' months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 10,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 6048000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 6048000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 120,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '10' years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 120,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '11:22:33.123456789' hour to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 40953123456,
+              "startField": "hour",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '123-10' year to month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 1486,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1814400000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1814400000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 75600000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 75600000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1260000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1260000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 21,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 21,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 12700800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 12700800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 252,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '21' years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 252,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '496-0' year to month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 5952,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '99 11:22:33.123456789' day to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 8594553123456,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval '9:8:7.123456789' hour to second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 32887123456,
+              "startField": "hour",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -13.123456789 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -13123456,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -604800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -604800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -25200000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -25200000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -420000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -420000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -7,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -7,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -7000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -4233600000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": -4233600000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -84,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval -7 years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": -84,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 0,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 0 years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 0,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 1.001 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1001000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 864000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 864000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 36000000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 36000000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 600000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 600000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 10,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 10,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 10000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 6048000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 6048000000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 120,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 120,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 10 years 3 months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 123,
+              "startField": "year",
+              "endField": "month"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 13.123456 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 13123456,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 13.123456789 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 13123456,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 day",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1814400000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 days",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1814400000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 hour",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 75600000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 hours",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 75600000000,
+              "startField": "hour",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 microsecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 microseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 milliseconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 minute",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1260000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 minutes",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 1260000000,
+              "startField": "minute",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 month",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 21,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 months",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 21,
+              "startField": "month",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 second",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 21000000,
+              "startField": "second",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 week",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 12700800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 weeks",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 12700800000000,
+              "startField": "day",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 year",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 252,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 21 years",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalYearMonth": {
+              "months": 252,
+              "startField": "year",
+              "endField": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 3 monThs 4 dayS 22 sEcond 1 millisecond",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalMonthDayNano": {
+              "value": {
+                "months": 3,
+                "days": 4,
+                "nanoseconds": 22001000000
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "interval 8 days 2 hours 3 minutes 21 seconds",
+      "output": {
+        "success": {
+          "literal": {
+            "intervalDayTimeMicrosecond": {
+              "microseconds": 698601000000,
+              "startField": "day",
+              "endField": "second"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

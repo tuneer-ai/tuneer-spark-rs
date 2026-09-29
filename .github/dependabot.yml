@@ -1,0 +1,50 @@
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "deps(cargo)"
+    open-pull-requests-limit: 3
+    target-branch: main
+    groups:
+      all:
+        update-types:
+          - "minor"
+          - "patch"
+      breaking:
+        update-types:
+          - "major"
+    ignore:
+      - dependency-name: "rustfs-mimalloc-sys"
+      - dependency-name: "datafusion"
+      - dependency-name: "datafusion-*"
+      - dependency-name: "arrow"
+      - dependency-name: "arrow-*"
+      - dependency-name: "parquet"
+      - dependency-name: "parquet-*"
+      - dependency-name: "sqlparser"
+      - dependency-name: "pyo3"
+      - dependency-name: "object_store"
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "deps(npm)"
+    open-pull-requests-limit: 3
+    target-branch: main
+    groups:
+      all:
+        update-types:
+          - "minor"
+          - "patch"
+      breaking:
+        update-types:
+          - "major"
+
+    ignore:
+      - dependency-name: "@types/node"
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]

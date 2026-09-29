@@ -1,0 +1,40 @@
+{
+  "tests": [
+    {
+      "input": "UNCACHE TABLE IF EXISTS a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "uncacheTable": {
+              "table": [
+                "a",
+                "b",
+                "c"
+              ],
+              "ifExists": true
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "UNCACHE TABLE a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "uncacheTable": {
+              "table": [
+                "a",
+                "b",
+                "c"
+              ],
+              "ifExists": false
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

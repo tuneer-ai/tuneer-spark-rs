@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package sail.worker;
+
+message WorkerLocation {
+  uint64 worker_id = 1;
+  string host = 2;
+  uint32 port = 3;
+}
+
+message TaskAttempt {
+  uint64 partition = 1;
+  uint64 attempt = 2;
+}
+
+// Accepts all tasks together. Tasks share a stage and belong to one task region.
+// Completion is reported separately for each task attempt.
+message RunTaskBatchRequest {
+  uint64 job_id = 1;
+  uint64 stage = 2;
+  repeated TaskAttempt tasks = 3;
+  bytes definition = 5;
+  // The locations of peer workers that may or may not be needed
+  // when fetching streams for this task.
+  // Note that we should not broadcast peer information to workers
+  // asynchronously because the requests may arrive out of order.
+  // However, the worker can asynchronously acknowledge the receipt
+  // of peer information to the driver so that duplicate peer
+  // information does not need to be sent again in the future.
+  repeated WorkerLocation peers = 6;
+}
+
+message RunTaskBatchResponse {
+}
+
+message StopTaskRequest {
+  uint64 job_id = 1;
+  uint64 stage = 2;
+  uint64 partition = 3;
+  uint64 attempt = 4;
+}
+
+message StopTaskResponse {
+}
+
+message CleanUpJobRequest {
+  uint64 job_id = 1;
+  // An optional stage to clean up.
+  // If not specified, clean up all stages for the job.
+  optional uint64 stage = 2;
+}
+
+message CleanUpJobResponse {
+}
+
+message StopWorkerRequest {
+}
+
+message StopWorkerResponse {
+}
+
+service WorkerService {
+  rpc RunTaskBatch(RunTaskBatchRequest) returns (RunTaskBatchResponse) {}
+  rpc StopTask(StopTaskRequest) returns (StopTaskResponse) {}
+  rpc CleanUpJob(CleanUpJobRequest) returns (CleanUpJobResponse) {}
+  rpc StopWorker(StopWorkerRequest) returns (StopWorkerResponse) {}
+}

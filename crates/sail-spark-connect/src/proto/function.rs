@@ -1,0 +1,132 @@
+#[cfg(test)]
+mod tests {
+    use std::collections::HashMap;
+    use std::sync::Arc;
+    use std::thread;
+
+    use datafusion::arrow::array::RecordBatch;
+    use datafusion::arrow::error::ArrowError;
+    use datafusion::arrow::util::display::{ArrayFormatter, FormatOptions};
+    use futures::stream::TryStreamExt;
+    use pyo3::Python;
+    use sail_common::actor::ActorSystem;
+    use sail_common::config::AppConfig;
+    use sail_common::runtime::RuntimeManager;
+    use sail_common::tests::test_gold_set;
+    use sail_common_datafusion::extension::SessionExtensionAccessor;
+    use sail_common_datafusion::session::job::JobService;
+    use sail_plan::resolve_and_execute_plan;
+    use sail_telemetry::telemetry::init_telemetry;
+    use sail_telemetry::{ResourceKind, ResourceOptions};
+    use serde::{Deserialize, Serialize};
+
+    use crate::error::{SparkError, SparkResult};
+    use crate::proto::data_type_json::JsonDataType;
+    use crate::session::SparkSession;
+    use crate::session_manager::create_spark_session_manager;
+    use crate::spark::connect::relation::RelType;
+    use crate::spark::connect::{Relation, Sql};
+
+    #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    pub(crate) struct FunctionExample {
+        query: String,
+        result: Vec<String>,
+        schema: JsonDataType,
+    }
+
+    #[expect(dead_code)]
+    fn format_record_batches(batches: Vec<RecordBatch>) -> SparkResult<Vec<String>> {
+        let options = FormatOptions::default();
+        let mut output = vec![];
+        for batch in batches {
+            let formatters = batch
+                .columns()
+                .iter()
+                .map(|column| ArrayFormatter::try_new(column, &options))
+                .collect::<Result<Vec<_>, ArrowError>>()?;
+            for row in 0..batch.num_rows() {
+                let line = formatters
+                    .iter()
+                    .map(|formatter| formatter.value(row).try_to_string())
+                    .collect::<Result<Vec<_>, ArrowError>>()?
+                    .join("\t");
+                output.push(line);
+            }
+        }
+        Ok(output)
+    }
+
+    #[test]
+    fn test_sql_function() -> Result<(), Box<dyn std::error::Error>> {
+        // Initialize Python for Python data source registration when creating sessions.
+        Python::initialize();
+        let config = Arc::new(AppConfig::load()?);
+        let runtime = RuntimeManager::try_new(&config.runtime)?;
+        let handle = runtime.handle();
+        handle.primary().block_on(async {
+            init_telemetry(
+                &config.telemetry,
+                &config.catalog.system,
+                ResourceOptions {
+                    kind: ResourceKind::Server,
+                },
+            )
+        })?;
+        let mut system = ActorSystem::new();
+        // The driver gateway is initialized before the session manager in cluster mode, so the
+        // manager must be created inside an async context.
+        let manager = handle.primary().block_on(create_spark_session_manager(
+            config,
+            handle.clone(),
+            &mut system,
+        ))?;
+        let context = handle
+            .primary()
+            .block_on(manager.get_or_create_session_context("test".to_string(), "".to_string()))?;
+        let test = move || {
+            test_gold_set(
+                "tests/gold_data/function/*.json",
+                |example: FunctionExample| -> SparkResult<String> {
+                    let relation = Relation {
+                        common: None,
+                        #[expect(deprecated)]
+                        rel_type: Some(RelType::Sql(Sql {
+                            query: example.query,
+                            args: HashMap::new(),
+                            pos_args: vec![],
+                            named_arguments: HashMap::new(),
+                            pos_arguments: vec![],
+                        })),
+                    };
+                    let plan = relation.try_into()?;
+                    let result = handle.primary().block_on(async {
+                        let spark = context.extension::<SparkSession>()?;
+                        let service = context.extension::<JobService>()?;
+                        let (plan, _) =
+                            resolve_and_execute_plan(&context, spark.plan_config()?, plan).await?;
+                        let stream = service.runner().execute(&context, plan).await?;
+                        stream.err_into().try_collect::<Vec<_>>().await
+                    });
+                    // TODO: validate the result against the expected output
+                    // TODO: handle non-deterministic results and error messages
+                    match result {
+                        // FIXME: the output can be non-deterministic
+                        Ok(_) => Ok("ok".to_string()),
+                        Err(x) => Err(x),
+                    }
+                },
+                SparkError::internal,
+            )
+        };
+        // `Handle::block_on` polls futures on the calling thread, so use a larger stack than the
+        // default to avoid stack overflow.
+        // Note that increasing the Tokio runtime stack size does not have an effect here.
+        thread::Builder::new()
+            .stack_size(8 * 1024 * 1024)
+            .spawn(test)?
+            .join()
+            .map_err(|_| SparkError::internal("test thread panicked"))?
+            .map_err(|e| e.into())
+    }
+}

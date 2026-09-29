@@ -1,0 +1,30 @@
+//! Python bindings for PySail.
+//!
+//! This module allows Python to interact with the Sail computation engine
+//! by binding the Rust functions and types to Python.
+mod catalog;
+mod celeborn;
+mod cli;
+mod flight;
+mod globals;
+mod spark;
+
+use pyo3::prelude::*;
+
+#[cfg(feature = "mimalloc")]
+#[global_allocator]
+static GLOBAL: sail_mimalloc::MiMalloc = sail_mimalloc::MiMalloc;
+
+/// Creates the `_native` Python module.
+/// Registers the version constant, the `main` function,
+/// and various submodules.
+#[pymodule]
+fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    celeborn::register_module(m)?;
+    catalog::register_module(m)?;
+    flight::register_module(m)?;
+    spark::register_module(m)?;
+    m.add_function(wrap_pyfunction!(cli::main, m)?)?;
+    m.add("_SAIL_VERSION", env!("CARGO_PKG_VERSION"))?;
+    Ok(())
+}

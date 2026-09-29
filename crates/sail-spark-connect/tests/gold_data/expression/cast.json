@@ -1,0 +1,105 @@
+{
+  "tests": [
+    {
+      "input": "cast(a as array<int>)",
+      "output": {
+        "success": {
+          "cast": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "castToType": {
+              "list": {
+                "dataType": "int32",
+                "nullable": true
+              }
+            },
+            "rename": true,
+            "isTry": false
+          }
+        }
+      }
+    },
+    {
+      "input": "cast(a as int)",
+      "output": {
+        "success": {
+          "cast": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "castToType": "int32",
+            "rename": true,
+            "isTry": false
+          }
+        }
+      }
+    },
+    {
+      "input": "cast(a as timestamp)",
+      "output": {
+        "success": {
+          "cast": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "castToType": {
+              "timestamp": {
+                "timeUnit": "microsecond",
+                "timestampType": "configured"
+              }
+            },
+            "rename": true,
+            "isTry": false
+          }
+        }
+      }
+    },
+    {
+      "input": "cast(cast(a as int) as long)",
+      "output": {
+        "success": {
+          "cast": {
+            "expr": {
+              "cast": {
+                "expr": {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "a"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                },
+                "castToType": "int32",
+                "rename": true,
+                "isTry": false
+              }
+            },
+            "castToType": "int64",
+            "rename": true,
+            "isTry": false
+          }
+        }
+      }
+    }
+  ]
+}

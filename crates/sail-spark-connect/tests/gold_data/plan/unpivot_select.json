@@ -1,0 +1,1376 @@
+{
+  "tests": [
+    {
+      "input": "SELECT * FROM t UNPIVOT (() FOR col in ((a, b), (c, d)))",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ')'. SQLSTATE: 42601 (line 1, pos 26)\n\n== SQL ==\nSELECT * FROM t UNPIVOT (() FOR col in ((a, b), (c, d)))\n--------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 26:27 expected identifier"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in (()))",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ')'. SQLSTATE: 42601 (line 1, pos 51)\n\n== SQL ==\nSELECT * FROM t UNPIVOT ((val1, val2) FOR col in (()))\n---------------------------------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 51:52 expected identifier"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a A, b), (c, d)))",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'A': extra input 'A'. SQLSTATE: 42601 (line 1, pos 53)\n\n== SQL ==\nSELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a A, b), (c, d)))\n-----------------------------------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found A at 53:54 expected ',', or ')'"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a AS A, b), (c, d)))",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'AS'. SQLSTATE: 42601 (line 1, pos 53)\n\n== SQL ==\nSELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a AS A, b), (c, d)))\n-----------------------------------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found AS at 53:55 expected ',', or ')'"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a, b) AS first, (c, d)))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": "first"
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "c"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "d"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val1",
+                    "val2"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a, b) first, (c, d)))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": "first"
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "c"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "d"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val1",
+                    "val2"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ((a, b), (c, d)))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "c"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        },
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "d"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val1",
+                    "val2"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT ((val1, val2) FOR col in ())",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ')'. SQLSTATE: 42601 (line 1, pos 50)\n\n== SQL ==\nSELECT * FROM t UNPIVOT ((val1, val2) FOR col in ())\n--------------------------------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 50:51 expected '('"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT (val FOR col in ())",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ')'. SQLSTATE: 42601 (line 1, pos 41)\n\n== SQL ==\nSELECT * FROM t UNPIVOT (val FOR col in ())\n-----------------------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found ) at 41:42 expected identifier"
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT (val FOR col in (a A, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": "A"
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT (val FOR col in (a AS A, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": "A"
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT (val FOR col in (a, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT EXCLUDE NULLS (val FOR col in (a, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t UNPIVOT INCLUDE NULLS (val FOR col in (a, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": true
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t1 UNPIVOT (val FOR col in (a, b)) UNPIVOT (val FOR col in (a, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "unpivot": {
+                  "input": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t1"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "ids": null,
+                  "values": [
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "a"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    },
+                    {
+                      "columns": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ],
+                      "alias": null
+                    }
+                  ],
+                  "variableColumnName": "col",
+                  "valueColumnNames": [
+                    "val"
+                  ],
+                  "includeNulls": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t1 UNPIVOT (val FOR col in (a, b)), t2",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "join": {
+                  "left": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t1"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t2"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "joinType": "cross",
+                  "joinCriteria": null,
+                  "joinDataType": null
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t1, (t2 UNPIVOT (val FOR col in (a, b)))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "join": {
+                  "left": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t1"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t2"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "joinType": "cross",
+                  "joinCriteria": null,
+                  "joinDataType": null
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT * FROM t1, t2 UNPIVOT (val FOR col in (a, b))",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "join": {
+                  "left": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t1"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "right": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t2"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "joinType": "cross",
+                  "joinCriteria": null,
+                  "joinDataType": null
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT up.* FROM t UNPIVOT (val FOR col in (a, b)) AS up",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "tableAlias": {
+                  "input": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "name": "up",
+                  "columns": []
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": [
+                      "up"
+                    ],
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "SELECT up.* FROM t UNPIVOT (val FOR col in (a, b)) up",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "tableAlias": {
+                  "input": {
+                    "unpivot": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "t"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "ids": null,
+                      "values": [
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "a"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        },
+                        {
+                          "columns": [
+                            {
+                              "unresolvedAttribute": {
+                                "name": [
+                                  "b"
+                                ],
+                                "planId": null,
+                                "isMetadataColumn": false
+                              }
+                            }
+                          ],
+                          "alias": null
+                        }
+                      ],
+                      "variableColumnName": "col",
+                      "valueColumnNames": [
+                        "val"
+                      ],
+                      "includeNulls": false
+                    },
+                    "planId": null
+                  },
+                  "name": "up",
+                  "columns": []
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": [
+                      "up"
+                    ],
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

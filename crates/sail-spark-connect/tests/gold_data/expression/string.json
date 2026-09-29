@@ -1,0 +1,227 @@
+{
+  "tests": [
+    {
+      "input": "\"hello\"",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "hello"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "\"hello\" 'world'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "helloworld"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'''",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near ''': extra input '''. SQLSTATE: 42601 (line 1, pos 2)\n\n== SQL ==\n'''\n--^^^\n",
+      "output": {
+        "failure": "invalid argument: found end of input expected any, '\\', or '''"
+      }
+    },
+    {
+      "input": "'\\\"'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\""
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\''",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "'"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\0'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\u0000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\110\\145\\154\\154\\157\\041'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "Hello!"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\Z'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\u001a"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\b'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\b"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\n'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\n"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\r'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\r"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\t'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "\t"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'\\u0057\\u006F\\u0072\\u006C\\u0064\\u0020\\u003A\\u0029'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "World :)"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'hello'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "hello"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'hello' \" \" 'world'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "hello world"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'no-pattern\\%'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "no-pattern\\%"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'pattern%'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "pattern%"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'pattern\\\\%'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "pattern\\%"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "'pattern\\\\\\%'",
+      "output": {
+        "success": {
+          "literal": {
+            "utf8": {
+              "value": "pattern\\\\%"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

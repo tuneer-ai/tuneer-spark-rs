@@ -1,0 +1,107 @@
+use std::sync::Arc;
+
+use datafusion::common::tree_node::TreeNodeRecursion;
+use datafusion::execution::{SendableRecordBatchStream, TaskContext};
+use datafusion::physical_expr::{EquivalenceProperties, PhysicalExpr};
+use datafusion::physical_plan::{
+    DisplayAs, ExecutionPlan, ExecutionPlanProperties, PlanProperties,
+};
+use datafusion_common::{Result, plan_err};
+use futures::{StreamExt, stream};
+use sail_common_datafusion::streaming::event::FlowEvent;
+use sail_common_datafusion::streaming::event::encoding::EncodedFlowEventStream;
+use sail_common_datafusion::streaming::event::marker::FlowMarker;
+use sail_common_datafusion::streaming::event::schema::to_flow_event_schema;
+use sail_common_datafusion::streaming::event::stream::FlowEventStreamAdapter;
+
+/// A physical plan node that adapts a non-streaming source to a streaming source.
+/// The input schema is the original data schema, while the output schema is the
+/// corresponding flow event schema.
+#[derive(Debug)]
+pub struct StreamSourceAdapterExec {
+    input: Arc<dyn ExecutionPlan>,
+    properties: Arc<PlanProperties>,
+}
+
+impl StreamSourceAdapterExec {
+    pub fn new(input: Arc<dyn ExecutionPlan>) -> Self {
+        let schema = Arc::new(to_flow_event_schema(&input.schema()));
+        let properties = Arc::new(PlanProperties::new(
+            EquivalenceProperties::new(schema),
+            input.output_partitioning().clone(),
+            input.pipeline_behavior(),
+            input.boundedness(),
+        ));
+        Self { input, properties }
+    }
+
+    pub fn input(&self) -> &Arc<dyn ExecutionPlan> {
+        &self.input
+    }
+}
+
+impl DisplayAs for StreamSourceAdapterExec {
+    fn fmt_as(
+        &self,
+        _t: datafusion::physical_plan::DisplayFormatType,
+        f: &mut std::fmt::Formatter,
+    ) -> std::fmt::Result {
+        write!(f, "{}", Self::static_name())
+    }
+}
+
+impl ExecutionPlan for StreamSourceAdapterExec {
+    fn name(&self) -> &str {
+        Self::static_name()
+    }
+
+    fn properties(&self) -> &Arc<PlanProperties> {
+        &self.properties
+    }
+
+    fn children(&self) -> Vec<&Arc<dyn ExecutionPlan>> {
+        vec![&self.input]
+    }
+
+    fn apply_expressions(
+        &self,
+        _f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
+    ) -> Result<TreeNodeRecursion> {
+        Ok(TreeNodeRecursion::Continue)
+    }
+
+    #[expect(deprecated)]
+    fn replace_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+        _options: datafusion::physical_plan::ReplaceChildrenOptions,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        self.with_new_children(children)
+    }
+
+    fn with_new_children(
+        self: Arc<Self>,
+        mut children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        let (Some(child), true) = (children.pop(), children.is_empty()) else {
+            return plan_err!("{} expects exactly one child", self.name());
+        };
+        Ok(Arc::new(StreamSourceAdapterExec::new(child)))
+    }
+
+    fn execute(
+        &self,
+        partition: usize,
+        context: Arc<TaskContext>,
+    ) -> Result<SendableRecordBatchStream> {
+        let stream = self
+            .input
+            .execute(partition, context)?
+            .map(|x| Ok(FlowEvent::append_only_data(x?)))
+            .chain(stream::once(async {
+                Ok(FlowEvent::Marker(FlowMarker::EndOfData))
+            }));
+        let stream = Box::pin(FlowEventStreamAdapter::new(self.input.schema(), stream));
+        Ok(Box::pin(EncodedFlowEventStream::new(stream)))
+    }
+}

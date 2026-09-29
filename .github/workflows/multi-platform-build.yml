@@ -1,0 +1,159 @@
+name: Multi-platform Build
+
+on:
+  # This workflow is triggered manually for ad-hoc development purposes.
+  # It builds and tests the Python package for selected platforms.
+  workflow_dispatch:
+    inputs:
+      build_linux_x86_64:
+        description: "Build for Linux (x86_64)"
+        type: boolean
+        required: true
+      build_linux_aarch64:
+        description: "Build for Linux (aarch64)"
+        type: boolean
+        required: true
+      build_macos_x86_64:
+        description: "Build for macOS (x86_64)"
+        type: boolean
+        required: true
+      build_macos_aarch64:
+        description: "Build for macOS (aarch64)"
+        type: boolean
+        required: true
+      build_windows_x64:
+        description: "Build for Windows (x64)"
+        type: boolean
+        required: true
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-slim
+    outputs:
+      platforms: ${{ steps.define-platforms.outputs.result }}
+      package_version: ${{ steps.version.outputs.package_version }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Hatch
+        uses: pypa/hatch@install
+
+      # We add the `+local` suffix in the package version
+      # to distinguish the built package from the released version on PyPI.
+      # This ensures that pip can install the package from a local directory
+      # while the dependencies are fetched from PyPI.
+      - name: Get patched package version
+        id: version
+        shell: bash
+        run: |
+          echo "package_version=$(hatch version)+local" >> "$GITHUB_OUTPUT"
+
+      - id: define-platforms
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const platforms = [];
+            if (context.payload.inputs.build_linux_x86_64 == 'true') {
+              platforms.push({ runner: 'ubuntu-24.04', target: 'x86_64', os: 'linux' });
+            }
+            if (context.payload.inputs.build_linux_aarch64 == 'true') {
+              platforms.push({ runner: 'ubuntu-24.04-arm', target: 'aarch64', os: 'linux' });
+            }
+            if (context.payload.inputs.build_macos_x86_64 == 'true') {
+              platforms.push({ runner: 'macos-26-intel', target: 'x86_64', os: 'macos' });
+            }
+            if (context.payload.inputs.build_macos_aarch64 == 'true') {
+              platforms.push({ runner: 'macos-26', target: 'aarch64', os: 'macos' });
+            }
+            if (context.payload.inputs.build_windows_x64 == 'true') {
+              platforms.push({ runner: 'windows-2025', target: 'x64', os: 'windows' });
+            }
+            return platforms;
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(needs.setup.outputs.platforms) }}
+    needs:
+      - setup
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install Hatch
+        uses: pypa/hatch@install
+
+      - name: Install protoc
+        id: protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Patch package version
+        shell: bash
+        run: |
+          python -c 'import re, pathlib; p = pathlib.Path("pyproject.toml"); p.write_text(re.sub(r"""(?m)^version\s*=\s*"([^"]+)""", r"""version = "\1+local""", p.read_text()))'
+          if [[ "$(hatch version)" != *"+local" ]]; then
+            echo "Error: failed to patch package version"
+            exit 1
+          fi
+
+      - name: Build Wheels
+        uses: PyO3/maturin-action@v1
+        env:
+          CARGO_INCREMENTAL: 0
+          CARGO_PROFILE_DEV_DEBUG: 0
+          # Override the linker on Windows since the default MSVC linker has some issues
+          # for the debug build: `LINK : fatal error LNK1318: Unexpected PDB error; LIMIT (12)`.
+          RUSTFLAGS: ${{ matrix.platform.os == 'windows' && '-C linker=rust-lld.exe' || '' }}
+
+      - name: Upload Wheels
+        uses: actions/upload-artifact@v7
+        with:
+          name: python-package-${{ matrix.platform.os }}-${{ matrix.platform.target }}
+          path: target/wheels
+          retention-days: 3
+
+  test:
+    name: Test
+    runs-on: ${{ matrix.platform.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(needs.setup.outputs.platforms) }}
+    needs:
+      - setup
+      - build
+    steps:
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: python-package-${{ matrix.platform.os }}-${{ matrix.platform.target }}
+          path: target/wheels
+
+      - name: Install Package
+        shell: bash
+        env:
+          PACKAGE_VERSION: ${{ needs.setup.outputs.package_version }}
+        run: |
+          pip install 'pysail[test]=='"${PACKAGE_VERSION}" -v -f target/wheels --only-binary pysail
+
+      # We run the tests in the installed package without using Hatch and
+      # without the source code being present in the current working directory.
+      # This is a closer setup to how users will run the tests.
+      - name: Run Tests
+        run: pytest --pyargs pysail

@@ -1,0 +1,420 @@
+use std::any::Any;
+use std::fmt;
+use std::pin::Pin;
+use std::sync::Arc;
+use std::task::{Context, Poll};
+use std::time::{Duration, Instant};
+
+use datafusion::arrow::array::RecordBatch;
+use datafusion::arrow::datatypes::SchemaRef;
+use datafusion::common::tree_node::{Transformed, TransformedResult, TreeNode, TreeNodeRecursion};
+use datafusion::common::{Result, Statistics, plan_err};
+use datafusion::config::ConfigOptions;
+use datafusion::execution::{SendableRecordBatchStream, TaskContext};
+use datafusion::physical_expr::{
+    Distribution, OrderingRequirements, PhysicalExpr, PhysicalSortExpr,
+};
+use datafusion::physical_plan::execution_plan::{
+    CardinalityEffect, InvariantLevel, check_default_invariants,
+};
+use datafusion::physical_plan::filter_pushdown::{
+    ChildPushdownResult, FilterDescription, FilterPushdownPhase, FilterPushdownPropagation,
+};
+use datafusion::physical_plan::metrics::MetricsSet;
+use datafusion::physical_plan::projection::ProjectionExec;
+use datafusion::physical_plan::sort_pushdown::SortOrderPushdownResult;
+use datafusion::physical_plan::statistics::{ChildStats, StatisticsArgs};
+use datafusion::physical_plan::stream::RecordBatchStreamAdapter;
+use datafusion::physical_plan::{
+    DisplayAs, DisplayFormatType, ExecutionPlan, InputDistributionRequirements, PlanProperties,
+};
+use datafusion_proto::protobuf::PhysicalPlanNode;
+use fastrace::Span;
+use fastrace_futures::StreamExt;
+use futures::Stream;
+use pin_project_lite::pin_project;
+use sail_common::telemetry::{KeyValue, SpanAttribute};
+use sail_common_datafusion::utils::items::ItemTaker;
+
+use crate::execution::metrics::MetricEmitter;
+use crate::metrics::{MetricAttribute, MetricManager, MetricRegistry};
+
+#[derive(Debug, Clone, Default)]
+pub struct TracingExecOptions {
+    pub metrics: Option<MetricManager>,
+    pub session_id: Option<String>,
+    pub job_id: Option<u64>,
+    pub stage: Option<usize>,
+    pub attempt: Option<usize>,
+    pub operator_id: Option<u64>,
+}
+
+impl TracingExecOptions {
+    pub fn with_metrics(mut self, manager: MetricManager) -> Self {
+        self.metrics = Some(manager);
+        self
+    }
+}
+
+pub fn trace_execution_plan(
+    plan: Arc<dyn ExecutionPlan>,
+    options: TracingExecOptions,
+) -> Result<Arc<dyn ExecutionPlan>> {
+    if options.operator_id.is_some() {
+        return plan_err!(
+            "operator ID is supposed to be assigned automatically for tracing execution plan"
+        );
+    }
+    let mut index = 0u64;
+    plan.transform(|plan| {
+        let mut options = options.clone();
+        index += 1;
+        options.operator_id = Some(index);
+        Ok(Transformed::yes(Arc::new(TracingExec::new(plan, options))))
+    })
+    .data()
+}
+
+/// A physical execution plan wrapper that emits traces and metrics
+/// for each operation during query execution.
+///
+/// Note that this wrapper should only be injected to optimized physical plans
+/// right before query execution. Many of the [`ExecutionPlan`] methods
+/// of this wrapper only have placeholder implementations, so physical optimizers
+/// may break or become ineffective if this wrapper ever participates in
+/// physical optimization.
+#[derive(Debug)]
+pub struct TracingExec {
+    inner: Arc<dyn ExecutionPlan>,
+    options: TracingExecOptions,
+}
+
+impl TracingExec {
+    pub fn new(inner: Arc<dyn ExecutionPlan>, options: TracingExecOptions) -> Self {
+        Self { inner, options }
+    }
+}
+
+impl DisplayAs for TracingExec {
+    fn fmt_as(&self, t: DisplayFormatType, f: &mut fmt::Formatter) -> fmt::Result {
+        self.inner.fmt_as(t, f)
+    }
+}
+
+#[warn(clippy::missing_trait_methods)]
+impl ExecutionPlan for TracingExec {
+    fn name(&self) -> &str {
+        Self::static_name()
+    }
+
+    fn downcast_delegate(&self) -> Option<&dyn ExecutionPlan> {
+        Some(self.inner.as_ref())
+    }
+
+    fn static_name() -> &'static str
+    where
+        Self: Sized,
+    {
+        "TracingExec"
+    }
+
+    fn schema(&self) -> SchemaRef {
+        self.inner.schema()
+    }
+
+    fn properties(&self) -> &Arc<PlanProperties> {
+        self.inner.properties()
+    }
+
+    fn check_invariants(&self, check: InvariantLevel) -> Result<()> {
+        check_default_invariants(self, check)
+    }
+
+    fn dynamic_expressions_produced(&self) -> Vec<Arc<dyn PhysicalExpr>> {
+        Vec::new()
+    }
+
+    fn required_input_distribution(&self) -> Vec<Distribution> {
+        vec![Distribution::UnspecifiedDistribution]
+    }
+
+    fn input_distribution_requirements(&self) -> InputDistributionRequirements {
+        InputDistributionRequirements::new(vec![Distribution::UnspecifiedDistribution])
+    }
+
+    fn required_input_ordering(&self) -> Vec<Option<OrderingRequirements>> {
+        vec![None]
+    }
+
+    fn maintains_input_order(&self) -> Vec<bool> {
+        vec![true]
+    }
+
+    fn benefits_from_input_partitioning(&self) -> Vec<bool> {
+        vec![false]
+    }
+
+    fn children(&self) -> Vec<&Arc<dyn ExecutionPlan>> {
+        vec![&self.inner]
+    }
+
+    fn apply_expressions(
+        &self,
+        _f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
+    ) -> Result<TreeNodeRecursion> {
+        Ok(TreeNodeRecursion::Continue)
+    }
+
+    #[expect(deprecated)]
+    fn replace_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+        _options: datafusion::physical_plan::ReplaceChildrenOptions,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        self.with_new_children(children)
+    }
+
+    fn with_new_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        let child = children.one()?;
+        Ok(Arc::new(TracingExec::new(child, self.options.clone())))
+    }
+
+    fn with_new_children_and_same_properties(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        let child = children.one()?;
+        Ok(Arc::new(TracingExec::new(child, self.options.clone())))
+    }
+
+    fn reset_state(self: Arc<Self>) -> Result<Arc<dyn ExecutionPlan>> {
+        let child = Arc::clone(&self.inner);
+        Ok(Arc::new(TracingExec::new(child, self.options.clone())))
+    }
+
+    fn repartitioned(
+        &self,
+        _target_partitions: usize,
+        _config: &ConfigOptions,
+    ) -> Result<Option<Arc<dyn ExecutionPlan>>> {
+        Ok(None)
+    }
+
+    fn execute(
+        &self,
+        partition: usize,
+        context: Arc<TaskContext>,
+    ) -> Result<SendableRecordBatchStream> {
+        let span = Span::enter_with_local_parent(self.inner.name().to_string())
+            .with_property(|| (SpanAttribute::EXECUTION_PARTITION, partition.to_string()));
+        let span = if let Some(session_id) = self.options.session_id.clone() {
+            span.with_property(|| (SpanAttribute::SESSION_ID, session_id))
+        } else {
+            span
+        };
+        let stream = {
+            let _guard = span.set_local_parent();
+            self.inner.execute(partition, context)?
+        };
+        let schema = stream.schema();
+        if let Some(ref manager) = self.options.metrics {
+            let stream = MetricEmitterStream {
+                inner: stream,
+                plan: self.inner.clone(),
+                emitter: self.build_metric_emitter(),
+                attributes: self.build_metric_attributes(),
+                registry: manager.registry.clone(),
+                interval: manager.collection_interval,
+                last_emit: None,
+            };
+            Ok(Box::pin(RecordBatchStreamAdapter::new(
+                schema,
+                stream.in_span(span),
+            )))
+        } else {
+            Ok(Box::pin(RecordBatchStreamAdapter::new(
+                schema,
+                stream.in_span(span),
+            )))
+        }
+    }
+
+    fn metrics(&self) -> Option<MetricsSet> {
+        self.inner.metrics()
+    }
+
+    #[expect(
+        deprecated,
+        reason = "TracingExec transparently exposes legacy child statistics"
+    )]
+    fn partition_statistics(&self, partition: Option<usize>) -> Result<Arc<Statistics>> {
+        self.inner.partition_statistics(partition)
+    }
+
+    fn statistics_from_inputs(
+        &self,
+        input_stats: &[Arc<Statistics>],
+        _args: &StatisticsArgs,
+    ) -> Result<Arc<Statistics>> {
+        match input_stats {
+            [inner] => Ok(Arc::clone(inner)),
+            _ => plan_err!(
+                "TracingExec expected statistics for one input, but got {}",
+                input_stats.len()
+            ),
+        }
+    }
+
+    fn child_stats_requests(&self, partition: Option<usize>) -> Vec<ChildStats> {
+        vec![ChildStats::At(partition)]
+    }
+
+    fn supports_limit_pushdown(&self) -> bool {
+        false
+    }
+
+    fn with_fetch(&self, _limit: Option<usize>) -> Option<Arc<dyn ExecutionPlan>> {
+        None
+    }
+
+    fn fetch(&self) -> Option<usize> {
+        None
+    }
+
+    fn cardinality_effect(&self) -> CardinalityEffect {
+        CardinalityEffect::Equal
+    }
+
+    fn try_swapping_with_projection(
+        &self,
+        _projection: &ProjectionExec,
+    ) -> Result<Option<Arc<dyn ExecutionPlan>>> {
+        Ok(None)
+    }
+
+    fn with_preserve_order(&self, _preserve_order: bool) -> Option<Arc<dyn ExecutionPlan>> {
+        None
+    }
+
+    fn try_to_proto(
+        &self,
+        _ctx: &datafusion::physical_plan::proto::ExecutionPlanEncodeCtx<'_>,
+    ) -> Result<Option<PhysicalPlanNode>> {
+        Ok(None)
+    }
+
+    fn gather_filters_for_pushdown(
+        &self,
+        _phase: FilterPushdownPhase,
+        parent_filters: Vec<Arc<dyn PhysicalExpr>>,
+        _config: &ConfigOptions,
+    ) -> Result<FilterDescription> {
+        Ok(FilterDescription::all_unsupported(
+            &parent_filters,
+            &[&self.inner],
+        ))
+    }
+
+    fn handle_child_pushdown_result(
+        &self,
+        _phase: FilterPushdownPhase,
+        child_pushdown_result: ChildPushdownResult,
+        _config: &ConfigOptions,
+    ) -> Result<FilterPushdownPropagation<Arc<dyn ExecutionPlan>>> {
+        Ok(FilterPushdownPropagation::if_all(child_pushdown_result))
+    }
+
+    fn with_new_state(&self, _state: Arc<dyn Any + Send + Sync>) -> Option<Arc<dyn ExecutionPlan>> {
+        None
+    }
+
+    fn try_pushdown_sort(
+        &self,
+        _order: &[PhysicalSortExpr],
+    ) -> Result<SortOrderPushdownResult<Arc<dyn ExecutionPlan>>> {
+        Ok(SortOrderPushdownResult::Unsupported)
+    }
+}
+
+impl TracingExec {
+    fn build_metric_emitter(&self) -> Box<dyn MetricEmitter> {
+        crate::execution::metrics::build_metric_emitter(self.inner.as_ref())
+    }
+
+    fn build_metric_attributes(&self) -> Vec<KeyValue> {
+        let mut attributes = vec![];
+        if let Some(session_id) = &self.options.session_id {
+            attributes.push((MetricAttribute::SESSION_ID, session_id.clone().into()));
+        }
+        if let Some(job_id) = self.options.job_id {
+            attributes.push((MetricAttribute::EXECUTION_JOB_ID, job_id.to_string().into()));
+        }
+        if let Some(stage) = self.options.stage {
+            attributes.push((MetricAttribute::EXECUTION_STAGE, stage.to_string().into()));
+        }
+        if let Some(attempt) = self.options.attempt {
+            attributes.push((
+                MetricAttribute::EXECUTION_ATTEMPT,
+                attempt.to_string().into(),
+            ));
+        }
+        if let Some(operator_id) = self.options.operator_id {
+            attributes.push((
+                MetricAttribute::EXECUTION_OPERATOR_ID,
+                operator_id.to_string().into(),
+            ));
+        }
+        attributes.push((
+            MetricAttribute::EXECUTION_OPERATOR_NAME,
+            self.inner.name().to_string().into(),
+        ));
+        attributes
+    }
+}
+
+pin_project! {
+    struct MetricEmitterStream {
+        #[pin]
+        inner: SendableRecordBatchStream,
+        plan: Arc<dyn ExecutionPlan>,
+        emitter: Box<dyn MetricEmitter>,
+        attributes: Vec<KeyValue>,
+        registry: Arc<MetricRegistry>,
+        interval: Duration,
+        last_emit: Option<Instant>,
+    }
+}
+
+impl Stream for MetricEmitterStream {
+    type Item = Result<RecordBatch>;
+
+    fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        let this = self.project();
+        let poll = this.inner.poll_next(cx);
+        if poll.is_ready() {
+            let is_done = matches!(poll, Poll::Ready(None));
+            // Note: metrics are not emitted regularly if a batch takes long to be produced,
+            // but this is acceptable for the purpose of execution metrics.
+            let should_emit =
+                is_done || this.last_emit.is_none_or(|t| t.elapsed() >= *this.interval);
+            if should_emit {
+                if let Some(metrics) = this.plan.metrics() {
+                    for metric in metrics.iter() {
+                        let _ = this
+                            .emitter
+                            .try_emit(metric, this.attributes, this.registry);
+                    }
+                }
+                *this.last_emit = Some(Instant::now());
+            }
+        }
+        poll
+    }
+
+    fn size_hint(&self) -> (usize, Option<usize>) {
+        self.inner.size_hint()
+    }
+}

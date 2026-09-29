@@ -1,0 +1,172 @@
+use chumsky::Parser;
+use chumsky::input::Input;
+use chumsky::span::SimpleSpan;
+use sail_sql_parser::ast::data_type::DataType;
+use sail_sql_parser::ast::expression::{Expr, IntervalLiteral};
+use sail_sql_parser::ast::identifier::{ObjectName, QualifiedWildcard};
+use sail_sql_parser::ast::query::NamedExpr;
+use sail_sql_parser::ast::statement::Statement;
+use sail_sql_parser::lexer::create_lexer;
+use sail_sql_parser::options::ParserOptions;
+use sail_sql_parser::parser::{
+    create_data_type_parser, create_expression_parser, create_interval_literal_parser,
+    create_named_expression_parser, create_object_name_parser, create_parser,
+    create_qualified_wildcard_parser,
+};
+use sail_sql_parser::token::{Punctuation, Token};
+
+use crate::error::{SqlError, SqlResult};
+use crate::literal::datetime::{
+    DateValue, TimeValue, TimestampValue, create_date_parser, create_time_parser,
+    create_timestamp_parser,
+};
+use crate::literal::interval::{IntervalValue, parse_unqualified_interval_string};
+
+fn map_parser_input<'a, C>(
+    (t, s): &'a (Token<'a>, SimpleSpan<usize, C>),
+) -> (&'a Token<'a>, &'a SimpleSpan<usize, C>) {
+    (t, s)
+}
+
+macro_rules! parse {
+    ($input:ident, $parser:ident $(,)?) => {{
+        let options = ParserOptions::default();
+        let length = $input.len();
+        let lexer = create_lexer::<_, chumsky::extra::Err<chumsky::error::Rich<_, _>>>(&options);
+        let tokens = lexer
+            .parse($input)
+            .into_result()
+            .map_err(SqlError::parser)?;
+        let tokens = tokens
+            .as_slice()
+            .map((length..length).into(), map_parser_input);
+        let parser = $parser::<_, chumsky::extra::Err<chumsky::error::Rich<_, _>>>(&options);
+        parser.parse(tokens).into_result().map_err(SqlError::parser)
+    }};
+}
+
+macro_rules! parse_simple {
+    ($input:ident, $parser:ident $(,)?) => {{
+        let parser = $parser::<chumsky::extra::Err<chumsky::error::Rich<_, _>>>();
+        parser.parse($input).into_result().map_err(SqlError::parser)
+    }};
+}
+
+pub fn rewrite_positional_parameter_markers(s: &str) -> SqlResult<(String, usize)> {
+    let options = ParserOptions::default();
+    let lexer = create_lexer::<_, chumsky::extra::Err<chumsky::error::Rich<_, _>>>(&options);
+    let tokens = lexer.parse(s).into_result().map_err(SqlError::parser)?;
+
+    let mut output = String::with_capacity(s.len());
+    let mut last = 0;
+    let mut count = 0;
+    for (token, span) in tokens {
+        if matches!(token, Token::Punctuation(Punctuation::QuestionMark)) {
+            count += 1;
+            output.push_str(&s[last..span.start]);
+            output.push('$');
+            output.push_str(&count.to_string());
+            last = span.end;
+        }
+    }
+    output.push_str(&s[last..]);
+    Ok((output, count))
+}
+
+pub fn parse_data_type(s: &str) -> SqlResult<DataType> {
+    parse!(s, create_data_type_parser)
+}
+
+pub fn parse_expression(s: &str) -> SqlResult<Expr> {
+    parse!(s, create_expression_parser)
+}
+
+pub fn parse_statements(s: &str) -> SqlResult<Vec<Statement>> {
+    parse!(s, create_parser)
+}
+
+/// Parses a SQL string containing exactly one statement into an AST.
+pub fn parse_one_statement(s: &str) -> SqlResult<Statement> {
+    let mut plan = parse_statements(s)?;
+    match (plan.pop(), plan.is_empty()) {
+        (Some(x), true) => Ok(x),
+        _ => Err(SqlError::invalid("expected one statement")),
+    }
+}
+
+pub fn parse_object_name(s: &str) -> SqlResult<ObjectName> {
+    parse!(s, create_object_name_parser)
+}
+
+pub fn parse_qualified_wildcard(s: &str) -> SqlResult<QualifiedWildcard> {
+    parse!(s, create_qualified_wildcard_parser)
+}
+
+pub fn parse_named_expression(s: &str) -> SqlResult<NamedExpr> {
+    parse!(s, create_named_expression_parser)
+}
+
+pub(crate) fn parse_interval_literal(s: &str) -> SqlResult<IntervalLiteral> {
+    parse!(s, create_interval_literal_parser)
+}
+
+pub fn parse_interval(s: &str) -> SqlResult<IntervalValue> {
+    parse_unqualified_interval_string(s, false)
+}
+
+pub fn parse_date(s: &str) -> SqlResult<DateValue> {
+    parse_simple!(s, create_date_parser)
+}
+
+pub fn parse_timestamp(s: &str) -> SqlResult<TimestampValue<'_>> {
+    parse_simple!(s, create_timestamp_parser)
+}
+
+pub fn parse_time(s: &str) -> SqlResult<TimeValue> {
+    parse_simple!(s, create_time_parser)
+}
+
+#[cfg(test)]
+mod tests {
+    use sail_sql_parser::ast::query::Query;
+    use sail_sql_parser::ast::statement::Statement;
+    use sail_sql_parser::tree::TreeText;
+
+    use crate::error::SqlResult;
+    use crate::parser::{parse_one_statement, parse_statements};
+
+    #[test]
+    fn test_parse() -> SqlResult<()> {
+        let sql = "/* */ ; SELECT 1;;; SELECT 2";
+        let tree = parse_statements(sql)?;
+        assert!(matches!(
+            tree.as_slice(),
+            [
+                Statement::Query(Query { .. }),
+                Statement::Query(Query { .. }),
+            ]
+        ));
+        Ok(())
+    }
+
+    #[test]
+    fn test_unparse() -> SqlResult<()> {
+        assert_eq!(
+            parse_one_statement("/* */ SELECT 1+1")?.text(),
+            "SELECT 1 + 1 "
+        );
+        assert_eq!(
+            parse_one_statement("Select  2*3 +(4*5)AS a, b '\\x01', $1,? -- comment")?.text(),
+            "SELECT 2 * 3 + ( 4 * 5 ) AS a , b '\\x01' , $1 , ? "
+        );
+        assert_eq!(
+            parse_one_statement("SELECT foo(0), cast(1L as decimal(10, -1)) FROM a.b")?.text(),
+            "SELECT foo ( 0 ) , CAST ( 1L AS DECIMAL ( 10 , -1 ) ) FROM a . b "
+        );
+        assert_eq!(
+            parse_one_statement("SELECT U&\"a#2014b#+002014c\"   UESCAPE '#'")?.text(),
+            "SELECT U&\"a#2014b#+002014c\" UESCAPE '#' "
+        );
+        Ok(())
+    }
+}

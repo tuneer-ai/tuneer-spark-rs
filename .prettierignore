@@ -1,0 +1,12 @@
+/*
+
+!.github/
+!docs/
+!deployments/
+!/*.js
+!/*.json
+!/*.yml
+!/*.yaml
+!/*.md
+
+pnpm-lock.yaml

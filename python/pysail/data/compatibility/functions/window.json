@@ -1,0 +1,47 @@
+[
+  {
+    "module": "pyspark.sql.functions",
+    "function": "cume_dist",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "dense_rank",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "lag",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "lead",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "nth_value",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "ntile",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "percent_rank",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "rank",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "row_number",
+    "status": "supported"
+  }
+]

@@ -1,0 +1,256 @@
+use std::pin::Pin;
+use std::sync::Arc;
+use std::task::{Context, Poll};
+
+use datafusion::arrow::array::{RecordBatch, StringArray};
+use datafusion::arrow::compute::concat_batches;
+use datafusion::arrow::datatypes::SchemaRef;
+use datafusion::common::tree_node::TreeNodeRecursion;
+use datafusion::execution::{RecordBatchStream, SendableRecordBatchStream, TaskContext};
+use datafusion::physical_expr::{EquivalenceProperties, Partitioning, PhysicalExpr};
+use datafusion::physical_plan::{
+    ChildrenPropertiesMode, DisplayAs, ExecutionPlan, ExecutionPlanProperties, PlanProperties,
+    ReplaceChildrenOptions,
+};
+use datafusion_common::{DataFusionError, Result, exec_err, internal_datafusion_err};
+use futures::{Stream, StreamExt};
+use sail_common_datafusion::utils::items::ItemTaker;
+
+#[derive(Debug, Clone)]
+pub struct SchemaPivotExec {
+    input: Arc<dyn ExecutionPlan>,
+    names: Vec<String>,
+    schema: SchemaRef,
+    properties: Arc<PlanProperties>,
+}
+
+impl SchemaPivotExec {
+    pub fn new(input: Arc<dyn ExecutionPlan>, names: Vec<String>, schema: SchemaRef) -> Self {
+        let partitioning = match input.output_partitioning() {
+            Partitioning::RoundRobinBatch(size) => Partitioning::RoundRobinBatch(*size),
+            Partitioning::Hash(_phy_exprs, size) => Partitioning::UnknownPartitioning(*size),
+            Partitioning::Range(range) => {
+                Partitioning::UnknownPartitioning(range.partition_count())
+            }
+            Partitioning::UnknownPartitioning(size) => Partitioning::UnknownPartitioning(*size),
+        };
+        let properties = Arc::new(PlanProperties::new(
+            EquivalenceProperties::new(schema.clone()),
+            partitioning,
+            input.pipeline_behavior(),
+            input.boundedness(),
+        ));
+        Self {
+            input,
+            names,
+            schema,
+            properties,
+        }
+    }
+
+    pub fn input(&self) -> &Arc<dyn ExecutionPlan> {
+        &self.input
+    }
+
+    pub fn names(&self) -> &[String] {
+        &self.names
+    }
+
+    pub fn schema(&self) -> &SchemaRef {
+        &self.schema
+    }
+}
+
+impl DisplayAs for SchemaPivotExec {
+    fn fmt_as(
+        &self,
+        _t: datafusion::physical_plan::DisplayFormatType,
+        f: &mut std::fmt::Formatter,
+    ) -> std::fmt::Result {
+        write!(f, "SchemaPivotExec")
+    }
+}
+
+impl ExecutionPlan for SchemaPivotExec {
+    fn name(&self) -> &'static str {
+        Self::static_name()
+    }
+
+    fn schema(&self) -> SchemaRef {
+        Arc::clone(&self.schema)
+    }
+
+    fn properties(&self) -> &Arc<PlanProperties> {
+        &self.properties
+    }
+
+    fn children(&self) -> Vec<&Arc<dyn ExecutionPlan>> {
+        vec![&self.input]
+    }
+
+    fn apply_expressions(
+        &self,
+        _f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
+    ) -> Result<TreeNodeRecursion> {
+        Ok(TreeNodeRecursion::Continue)
+    }
+
+    fn replace_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+        options: ReplaceChildrenOptions,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        let input = children
+            .one()
+            .map_err(|_| internal_datafusion_err!("SchemaPivotExec should have one child"))?;
+        match options.children_properties {
+            ChildrenPropertiesMode::Keep => Ok(Arc::new(Self {
+                input,
+                ..self.as_ref().clone()
+            })),
+            ChildrenPropertiesMode::Recompute => Ok(Arc::new(Self::new(
+                input,
+                self.names.clone(),
+                self.schema.clone(),
+            ))),
+        }
+    }
+
+    fn with_new_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        self.replace_children(
+            children,
+            ReplaceChildrenOptions::new(ChildrenPropertiesMode::Recompute),
+        )
+    }
+
+    fn execute(
+        &self,
+        partition: usize,
+        context: Arc<TaskContext>,
+    ) -> Result<SendableRecordBatchStream> {
+        if partition >= self.properties().output_partitioning().partition_count() {
+            return exec_err!("SchemaPivotExec: partition index out of range: {partition}");
+        }
+        let stream = self.input.execute(partition, context)?;
+        Ok(Box::pin(SchemaPivotStream::new(
+            stream,
+            self.names.clone(),
+            self.schema().clone(),
+        )))
+    }
+}
+
+struct SchemaPivotStream {
+    input: Option<SendableRecordBatchStream>,
+    names: Vec<String>,
+    input_schema: SchemaRef,
+    output_schema: SchemaRef,
+    data: Vec<RecordBatch>,
+}
+
+enum SchemaPivotState {
+    Continue,
+    SchemaPivot,
+    Error(DataFusionError),
+    Stopped,
+}
+
+impl SchemaPivotStream {
+    pub fn new(
+        input: SendableRecordBatchStream,
+        names: Vec<String>,
+        output_schema: SchemaRef,
+    ) -> Self {
+        let input_schema = input.schema();
+        Self {
+            input: Some(input),
+            names,
+            input_schema,
+            output_schema,
+            data: vec![],
+        }
+    }
+
+    fn schema_pivot(&self) -> Result<RecordBatch> {
+        let input_fields = &self.names;
+        let num_fields = input_fields.len();
+        let mut seen_values = vec![false; num_fields];
+        let batch = concat_batches(&self.input_schema, &self.data)?;
+        let num_rows = batch.num_rows();
+
+        for (i, seen) in seen_values.iter_mut().enumerate() {
+            if !*seen {
+                let column = batch.column(i);
+                if !column.is_empty() && column.null_count() < num_rows {
+                    *seen = true;
+                }
+            }
+        }
+
+        let column_names: StringArray = seen_values
+            .iter()
+            .enumerate()
+            .filter_map(|(i, &has_values)| {
+                if has_values {
+                    Some(&input_fields[i])
+                } else {
+                    None
+                }
+            })
+            .map(Some)
+            .collect();
+
+        let batch = RecordBatch::try_new(self.output_schema.clone(), vec![Arc::new(column_names)])?;
+        Ok(batch)
+    }
+
+    fn poll(&mut self, cx: &mut Context<'_>) -> Poll<SchemaPivotState> {
+        let input = match self.input.as_mut() {
+            Some(x) => x,
+            None => return Poll::Ready(SchemaPivotState::Stopped),
+        };
+        let poll = input.poll_next_unpin(cx);
+        match poll {
+            Poll::Pending => Poll::Pending,
+            Poll::Ready(None) => Poll::Ready(SchemaPivotState::SchemaPivot),
+            Poll::Ready(Some(Err(e))) => Poll::Ready(SchemaPivotState::Error(e)),
+            Poll::Ready(Some(Ok(batch))) => {
+                self.data.push(batch);
+                Poll::Ready(SchemaPivotState::Continue)
+            }
+        }
+    }
+}
+
+impl Stream for SchemaPivotStream {
+    type Item = Result<RecordBatch>;
+
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        loop {
+            match self.as_mut().get_mut().poll(cx) {
+                Poll::Pending => break Poll::Pending,
+                Poll::Ready(SchemaPivotState::SchemaPivot) => {
+                    self.input = None;
+                    break Poll::Ready(Some(self.schema_pivot()));
+                }
+                Poll::Ready(SchemaPivotState::Error(e)) => {
+                    self.input = None;
+                    break Poll::Ready(Some(Err(e)));
+                }
+                Poll::Ready(SchemaPivotState::Stopped) => {
+                    break Poll::Ready(None);
+                }
+                Poll::Ready(SchemaPivotState::Continue) => continue,
+            }
+        }
+    }
+}
+
+impl RecordBatchStream for SchemaPivotStream {
+    fn schema(&self) -> SchemaRef {
+        self.output_schema.clone()
+    }
+}

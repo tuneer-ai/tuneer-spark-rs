@@ -1,0 +1,4544 @@
+{
+  "tests": [
+    {
+      "input": "!a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "!"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(a + b).b",
+      "output": {
+        "success": {
+          "unresolvedExtractValue": {
+            "child": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "+"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "extraction": {
+              "literal": {
+                "utf8": {
+                  "value": "b"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "(a as b, b as c)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "struct"
+            ],
+            "arguments": [
+              {
+                "alias": {
+                  "expr": {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  "name": [
+                    "b"
+                  ],
+                  "metadata": null
+                }
+              },
+              {
+                "alias": {
+                  "expr": {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  "name": [
+                    "c"
+                  ],
+                  "metadata": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(a)",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "(a) in (select b from c)",
+      "output": {
+        "success": {
+          "inSubquery": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "subquery": {
+              "project": {
+                "input": {
+                  "read": {
+                    "namedTable": {
+                      "name": [
+                        "c"
+                      ],
+                      "temporal": null,
+                      "sample": null,
+                      "options": []
+                    },
+                    "isStreaming": false
+                  },
+                  "planId": null
+                },
+                "expressions": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ]
+              },
+              "planId": null
+            },
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "(a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "struct"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(a, b) in (select c from d)",
+      "output": {
+        "success": {
+          "inSubquery": {
+            "expr": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "struct"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "subquery": {
+              "project": {
+                "input": {
+                  "read": {
+                    "namedTable": {
+                      "name": [
+                        "d"
+                      ],
+                      "temporal": null,
+                      "sample": null,
+                      "options": []
+                    },
+                    "isStreaming": false
+                  },
+                  "planId": null
+                },
+                "expressions": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "c"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ]
+              },
+              "planId": null
+            },
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "(a, b, c)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "struct"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(a, b, c) in (select d, e, f from g)",
+      "output": {
+        "success": {
+          "inSubquery": {
+            "expr": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "struct"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "c"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "subquery": {
+              "project": {
+                "input": {
+                  "read": {
+                    "namedTable": {
+                      "name": [
+                        "g"
+                      ],
+                      "temporal": null,
+                      "sample": null,
+                      "options": []
+                    },
+                    "isStreaming": false
+                  },
+                  "planId": null
+                },
+                "expressions": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "d"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "e"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "f"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ]
+              },
+              "planId": null
+            },
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "(select max(val) from tbl) > current",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              ">"
+            ],
+            "arguments": [
+              {
+                "scalarSubquery": {
+                  "subquery": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "tbl"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedFunction": {
+                            "functionName": [
+                              "max"
+                            ],
+                            "arguments": [
+                              {
+                                "unresolvedAttribute": {
+                                  "name": [
+                                    "val"
+                                  ],
+                                  "planId": null,
+                                  "isMetadataColumn": false
+                                }
+                              }
+                            ],
+                            "namedArguments": [],
+                            "isDistinct": false,
+                            "isUserDefinedFunction": false,
+                            "isInternal": null,
+                            "ignoreNulls": null,
+                            "filter": null,
+                            "orderBy": null
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  }
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "current"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(x, y) -> x + y",
+      "output": {
+        "success": {
+          "lambdaFunction": {
+            "function": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "+"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "x"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "y"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "arguments": [
+              {
+                "name": [
+                  "x"
+                ]
+              },
+              {
+                "name": [
+                  "y"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": "*",
+      "output": {
+        "success": {
+          "unresolvedStar": {
+            "target": null,
+            "planId": null,
+            "wildcardOptions": {
+              "ilikePattern": null,
+              "excludeColumns": null,
+              "exceptColumns": null,
+              "replaceColumns": null,
+              "renameColumns": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "-+~~a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "+"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "~"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedFunction": {
+                              "functionName": [
+                                "~"
+                              ],
+                              "arguments": [
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "a"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ],
+                              "namedArguments": [],
+                              "isDistinct": false,
+                              "isUserDefinedFunction": false,
+                              "isInternal": null,
+                              "ignoreNulls": null,
+                              "filter": null,
+                              "orderBy": null
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "1 + r.r As q",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "+"
+                ],
+                "arguments": [
+                  {
+                    "literal": {
+                      "int32": {
+                        "value": 1
+                      }
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "r",
+                        "r"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "name": [
+              "q"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "1 - f('o', o(bar))",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "int32": {
+                    "value": 1
+                  }
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "f"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "o"
+                        }
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "o"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "bar"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "1 - f('o', o(bar)) hello * world",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near '*'. SQLSTATE: 42601 (line 1, pos 25)\n\n== SQL ==\n1 - f('o', o(bar)) hello * world\n-------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found * at 25:26 expected something else, or end of input"
+      }
+    },
+    {
+      "input": "123_",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "123_"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "1a.123_",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "1a",
+              "123_"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "False",
+      "output": {
+        "success": {
+          "literal": {
+            "boolean": {
+              "value": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "GEO '(10,-6)'",
+      "exception": "\n[UNSUPPORTED_TYPED_LITERAL] Literals of the type \"GEO\" are not supported. Supported types are \"DATE\", \"TIMESTAMP_NTZ\", \"TIMESTAMP_LTZ\", \"TIMESTAMP\", \"INTERVAL\", \"X\", \"TIME\". SQLSTATE: 0A000\n== SQL (line 1, position 1) ==\nGEO '(10,-6)'\n^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: found '(10,-6)' at 4:13 expected '->', '.', '(', '[', '::', 'ESCAPE', 'IS', 'NOT', 'IN', '*', '/', '%', 'DIV', '+', '-', '||', '>>>', '>>', '<<', '&', '^', '|', '!=', '!>', '!<', '==', '=', '>=', '>', '<=>', '<=', '<>', '<', 'BETWEEN', 'LIKE', 'ILIKE', 'RLIKE', 'REGEXP', 'SIMILAR', 'AND', 'OR', 'AS', identifier, something else, or end of input"
+      }
+    },
+    {
+      "input": "TIME'23:59:59.999999'",
+      "output": {
+        "success": {
+          "unresolvedTime": {
+            "value": "23:59:59.999999"
+          }
+        }
+      }
+    },
+    {
+      "input": "X'A'",
+      "output": {
+        "success": {
+          "literal": {
+            "binary": {
+              "value": [
+                10
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "```fo``o`.```ba``r`",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "`fo`o",
+              "`ba`r"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "`c`.a[b]",
+      "output": {
+        "success": {
+          "unresolvedExtractValue": {
+            "child": {
+              "unresolvedAttribute": {
+                "name": [
+                  "c",
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "extraction": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "`fo````o`.`ba````r`",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "fo``o",
+              "ba``r"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "`fo`o.`ba`r",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near '.'. SQLSTATE: 42601 (line 1, pos 5)\n\n== SQL ==\n`fo`o.`ba`r\n-----^^^\n",
+      "output": {
+        "failure": "invalid argument: found . at 5:6 expected something else, or end of input"
+      }
+    },
+    {
+      "input": "`select`",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "select"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "`select`(all a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "select"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "`select`.b",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "select",
+              "b"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a !< b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              ">="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a != b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "!="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a !> b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "<="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a % b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "%"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a & b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "&"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a * b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "*"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a * t | b ^ c & d - e + f % g DIV h / i * k",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "|"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "*"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "t"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "^"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "&"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "c"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          },
+                          {
+                            "unresolvedFunction": {
+                              "functionName": [
+                                "+"
+                              ],
+                              "arguments": [
+                                {
+                                  "unresolvedFunction": {
+                                    "functionName": [
+                                      "-"
+                                    ],
+                                    "arguments": [
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "d"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      },
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "e"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      }
+                                    ],
+                                    "namedArguments": [],
+                                    "isDistinct": false,
+                                    "isUserDefinedFunction": false,
+                                    "isInternal": null,
+                                    "ignoreNulls": null,
+                                    "filter": null,
+                                    "orderBy": null
+                                  }
+                                },
+                                {
+                                  "unresolvedFunction": {
+                                    "functionName": [
+                                      "*"
+                                    ],
+                                    "arguments": [
+                                      {
+                                        "unresolvedFunction": {
+                                          "functionName": [
+                                            "/"
+                                          ],
+                                          "arguments": [
+                                            {
+                                              "unresolvedFunction": {
+                                                "functionName": [
+                                                  "div"
+                                                ],
+                                                "arguments": [
+                                                  {
+                                                    "unresolvedFunction": {
+                                                      "functionName": [
+                                                        "%"
+                                                      ],
+                                                      "arguments": [
+                                                        {
+                                                          "unresolvedAttribute": {
+                                                            "name": [
+                                                              "f"
+                                                            ],
+                                                            "planId": null,
+                                                            "isMetadataColumn": false
+                                                          }
+                                                        },
+                                                        {
+                                                          "unresolvedAttribute": {
+                                                            "name": [
+                                                              "g"
+                                                            ],
+                                                            "planId": null,
+                                                            "isMetadataColumn": false
+                                                          }
+                                                        }
+                                                      ],
+                                                      "namedArguments": [],
+                                                      "isDistinct": false,
+                                                      "isUserDefinedFunction": false,
+                                                      "isInternal": null,
+                                                      "ignoreNulls": null,
+                                                      "filter": null,
+                                                      "orderBy": null
+                                                    }
+                                                  },
+                                                  {
+                                                    "unresolvedAttribute": {
+                                                      "name": [
+                                                        "h"
+                                                      ],
+                                                      "planId": null,
+                                                      "isMetadataColumn": false
+                                                    }
+                                                  }
+                                                ],
+                                                "namedArguments": [],
+                                                "isDistinct": false,
+                                                "isUserDefinedFunction": false,
+                                                "isInternal": null,
+                                                "ignoreNulls": null,
+                                                "filter": null,
+                                                "orderBy": null
+                                              }
+                                            },
+                                            {
+                                              "unresolvedAttribute": {
+                                                "name": [
+                                                  "i"
+                                                ],
+                                                "planId": null,
+                                                "isMetadataColumn": false
+                                              }
+                                            }
+                                          ],
+                                          "namedArguments": [],
+                                          "isDistinct": false,
+                                          "isUserDefinedFunction": false,
+                                          "isInternal": null,
+                                          "ignoreNulls": null,
+                                          "filter": null,
+                                          "orderBy": null
+                                        }
+                                      },
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "k"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      }
+                                    ],
+                                    "namedArguments": [],
+                                    "isDistinct": false,
+                                    "isUserDefinedFunction": false,
+                                    "isInternal": null,
+                                    "ignoreNulls": null,
+                                    "filter": null,
+                                    "orderBy": null
+                                  }
+                                }
+                              ],
+                              "namedArguments": [],
+                              "isDistinct": false,
+                              "isUserDefinedFunction": false,
+                              "isInternal": null,
+                              "ignoreNulls": null,
+                              "filter": null,
+                              "orderBy": null
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a + b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "+"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a - b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a / b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "/"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a < b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "<"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a <= b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "<="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a <=> b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "<=>"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a <> b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "!="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a = (select b from s)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "=="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "scalarSubquery": {
+                  "subquery": {
+                    "project": {
+                      "input": {
+                        "read": {
+                          "namedTable": {
+                            "name": [
+                              "s"
+                            ],
+                            "temporal": null,
+                            "sample": null,
+                            "options": []
+                          },
+                          "isStreaming": false
+                        },
+                        "planId": null
+                      },
+                      "expressions": [
+                        {
+                          "unresolvedAttribute": {
+                            "name": [
+                              "b"
+                            ],
+                            "planId": null,
+                            "isMetadataColumn": false
+                          }
+                        }
+                      ]
+                    },
+                    "planId": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a = b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "=="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a = b is not null",
+      "output": {
+        "success": {
+          "isNotNull": {
+            "unresolvedFunction": {
+              "functionName": [
+                "=="
+              ],
+              "arguments": [
+                {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "a"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                },
+                {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "b"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                }
+              ],
+              "namedArguments": [],
+              "isDistinct": false,
+              "isUserDefinedFunction": false,
+              "isInternal": null,
+              "ignoreNulls": null,
+              "filter": null,
+              "orderBy": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a = b is null",
+      "output": {
+        "success": {
+          "isNull": {
+            "unresolvedFunction": {
+              "functionName": [
+                "=="
+              ],
+              "arguments": [
+                {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "a"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                },
+                {
+                  "unresolvedAttribute": {
+                    "name": [
+                      "b"
+                    ],
+                    "planId": null,
+                    "isMetadataColumn": false
+                  }
+                }
+              ],
+              "namedArguments": [],
+              "isDistinct": false,
+              "isUserDefinedFunction": false,
+              "isInternal": null,
+              "ignoreNulls": null,
+              "filter": null,
+              "orderBy": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a == b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "=="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a > b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              ">"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a >= b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              ">="
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a DIV b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "div"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a ^ b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "^"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a and b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "and"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a and b and c and d and e and f",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "and"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "and"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "and"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedFunction": {
+                              "functionName": [
+                                "and"
+                              ],
+                              "arguments": [
+                                {
+                                  "unresolvedFunction": {
+                                    "functionName": [
+                                      "and"
+                                    ],
+                                    "arguments": [
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "a"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      },
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "b"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      }
+                                    ],
+                                    "namedArguments": [],
+                                    "isDistinct": false,
+                                    "isUserDefinedFunction": false,
+                                    "isInternal": null,
+                                    "ignoreNulls": null,
+                                    "filter": null,
+                                    "orderBy": null
+                                  }
+                                },
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "c"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ],
+                              "namedArguments": [],
+                              "isDistinct": false,
+                              "isUserDefinedFunction": false,
+                              "isInternal": null,
+                              "ignoreNulls": null,
+                              "filter": null,
+                              "orderBy": null
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "d"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "e"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "f"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a and b or c and d",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "or"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "and"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "and"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "c"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "d"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a as (b, c)",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "name": [
+              "b",
+              "c"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a as b",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "name": [
+              "b"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a b",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "name": [
+              "b"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a between b and c",
+      "output": {
+        "success": {
+          "between": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "negated": false,
+            "low": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "high": {
+              "unresolvedAttribute": {
+                "name": [
+                  "c"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a in (b, c, d)",
+      "output": {
+        "success": {
+          "inList": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "list": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "d"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a in (select b from c)",
+      "output": {
+        "success": {
+          "inSubquery": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "subquery": {
+              "project": {
+                "input": {
+                  "read": {
+                    "namedTable": {
+                      "name": [
+                        "c"
+                      ],
+                      "temporal": null,
+                      "sample": null,
+                      "options": []
+                    },
+                    "isStreaming": false
+                  },
+                  "planId": null
+                },
+                "expressions": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ]
+              },
+              "planId": null
+            },
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a is distinct from b",
+      "output": {
+        "success": {
+          "isDistinctFrom": {
+            "left": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "right": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a is not distinct from b",
+      "output": {
+        "success": {
+          "isNotDistinctFrom": {
+            "left": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "right": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a is not null",
+      "output": {
+        "success": {
+          "isNotNull": {
+            "unresolvedAttribute": {
+              "name": [
+                "a"
+              ],
+              "planId": null,
+              "isMetadataColumn": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a is null",
+      "output": {
+        "success": {
+          "isNull": {
+            "unresolvedAttribute": {
+              "name": [
+                "a"
+              ],
+              "planId": null,
+              "isMetadataColumn": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a not between b and c",
+      "output": {
+        "success": {
+          "between": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "negated": true,
+            "low": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "high": {
+              "unresolvedAttribute": {
+                "name": [
+                  "c"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a not in (b, c, d)",
+      "output": {
+        "success": {
+          "inList": {
+            "expr": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "list": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "d"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "negated": true
+          }
+        }
+      }
+    },
+    {
+      "input": "a not regexp 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "regexp"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "pattern%"
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a or b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "or"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a or b or c and d",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "or"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "or"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "and"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "c"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "d"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a or b or c or d or e or f",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "or"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "or"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "or"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedFunction": {
+                              "functionName": [
+                                "or"
+                              ],
+                              "arguments": [
+                                {
+                                  "unresolvedFunction": {
+                                    "functionName": [
+                                      "or"
+                                    ],
+                                    "arguments": [
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "a"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      },
+                                      {
+                                        "unresolvedAttribute": {
+                                          "name": [
+                                            "b"
+                                          ],
+                                          "planId": null,
+                                          "isMetadataColumn": false
+                                        }
+                                      }
+                                    ],
+                                    "namedArguments": [],
+                                    "isDistinct": false,
+                                    "isUserDefinedFunction": false,
+                                    "isInternal": null,
+                                    "ignoreNulls": null,
+                                    "filter": null,
+                                    "orderBy": null
+                                  }
+                                },
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "c"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ],
+                              "namedArguments": [],
+                              "isDistinct": false,
+                              "isUserDefinedFunction": false,
+                              "isInternal": null,
+                              "ignoreNulls": null,
+                              "filter": null,
+                              "orderBy": null
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "d"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "e"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "f"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a regexp 'pattern%'",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "regexp"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "pattern%"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a | b",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "|"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a() (b, c)",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "a"
+                ],
+                "arguments": [],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "name": [
+              "b",
+              "c"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a.* b",
+      "output": {
+        "success": {
+          "alias": {
+            "expr": {
+              "unresolvedStar": {
+                "target": [
+                  "a"
+                ],
+                "planId": null,
+                "wildcardOptions": {
+                  "ilikePattern": null,
+                  "excludeColumns": null,
+                  "exceptColumns": null,
+                  "replaceColumns": null,
+                  "renameColumns": null
+                }
+              }
+            },
+            "name": [
+              "b"
+            ],
+            "metadata": null
+          }
+        }
+      }
+    },
+    {
+      "input": "a.123A",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a",
+              "123A"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a.123BD_column",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a",
+              "123BD_column"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a.123D_column",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a",
+              "123D_column"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a.123E3_column",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a",
+              "123E3_column"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a.b",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "a",
+              "b"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "a.b.*",
+      "output": {
+        "success": {
+          "unresolvedStar": {
+            "target": [
+              "a",
+              "b"
+            ],
+            "planId": null,
+            "wildcardOptions": {
+              "ilikePattern": null,
+              "excludeColumns": null,
+              "exceptColumns": null,
+              "replaceColumns": null,
+              "renameColumns": null
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a[1 + 1]",
+      "output": {
+        "success": {
+          "unresolvedExtractValue": {
+            "child": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "extraction": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "+"
+                ],
+                "arguments": [
+                  {
+                    "literal": {
+                      "int32": {
+                        "value": 1
+                      }
+                    }
+                  },
+                  {
+                    "literal": {
+                      "int32": {
+                        "value": 1
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "a[b]",
+      "output": {
+        "success": {
+          "unresolvedExtractValue": {
+            "child": {
+              "unresolvedAttribute": {
+                "name": [
+                  "a"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            },
+            "extraction": {
+              "unresolvedAttribute": {
+                "name": [
+                  "b"
+                ],
+                "planId": null,
+                "isMetadataColumn": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "any_value(a ignore nulls)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "any_value"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": true,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "any_value(a)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "any_value"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "columns",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "columns"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "count(*)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "count"
+            ],
+            "arguments": [
+              {
+                "unresolvedStar": {
+                  "target": null,
+                  "planId": null,
+                  "wildcardOptions": {
+                    "ilikePattern": null,
+                    "excludeColumns": null,
+                    "exceptColumns": null,
+                    "replaceColumns": null,
+                    "renameColumns": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "encode('abc', charset => 'utf' || '-8')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "encode"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "abc"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [
+              [
+                "charset",
+                {
+                  "unresolvedFunction": {
+                    "functionName": [
+                      "concat"
+                    ],
+                    "arguments": [
+                      {
+                        "literal": {
+                          "utf8": {
+                            "value": "utf"
+                          }
+                        }
+                      },
+                      {
+                        "literal": {
+                          "utf8": {
+                            "value": "-8"
+                          }
+                        }
+                      }
+                    ],
+                    "namedArguments": [],
+                    "isDistinct": false,
+                    "isUserDefinedFunction": false,
+                    "isInternal": null,
+                    "ignoreNulls": null,
+                    "filter": null,
+                    "orderBy": null
+                  }
+                }
+              ]
+            ],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "encode('abc', charset => 'utf-8')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "encode"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "utf8": {
+                    "value": "abc"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [
+              [
+                "charset",
+                {
+                  "literal": {
+                    "utf8": {
+                      "value": "utf-8"
+                    }
+                  }
+                }
+              ]
+            ],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "encode(charset => 'utf-8', 'abc')",
+      "output": {
+        "failure": "analysis error: [UNEXPECTED_POSITIONAL_ARGUMENT] Positional argument follows a named (keyword) argument."
+      }
+    },
+    {
+      "input": "encode(value => 'abc', charset => 'utf-8')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "encode"
+            ],
+            "arguments": [],
+            "namedArguments": [
+              [
+                "value",
+                {
+                  "literal": {
+                    "utf8": {
+                      "value": "abc"
+                    }
+                  }
+                }
+              ],
+              [
+                "charset",
+                {
+                  "literal": {
+                    "utf8": {
+                      "value": "utf-8"
+                    }
+                  }
+                }
+              ]
+            ],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "encode(value => ((select '1')), charset => 'utf-8')",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "encode"
+            ],
+            "arguments": [],
+            "namedArguments": [
+              [
+                "value",
+                {
+                  "scalarSubquery": {
+                    "subquery": {
+                      "project": {
+                        "input": {
+                          "empty": {
+                            "produceOneRow": true
+                          },
+                          "planId": null
+                        },
+                        "expressions": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "1"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "planId": null
+                    }
+                  }
+                }
+              ],
+              [
+                "charset",
+                {
+                  "literal": {
+                    "utf8": {
+                      "value": "utf-8"
+                    }
+                  }
+                }
+              ]
+            ],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "exists (select 1 from b where b.x = a.x)",
+      "output": {
+        "success": {
+          "exists": {
+            "subquery": {
+              "project": {
+                "input": {
+                  "filter": {
+                    "input": {
+                      "read": {
+                        "namedTable": {
+                          "name": [
+                            "b"
+                          ],
+                          "temporal": null,
+                          "sample": null,
+                          "options": []
+                        },
+                        "isStreaming": false
+                      },
+                      "planId": null
+                    },
+                    "condition": {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "=="
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "b",
+                                "x"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "a",
+                                "x"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  },
+                  "planId": null
+                },
+                "expressions": [
+                  {
+                    "literal": {
+                      "int32": {
+                        "value": 1
+                      }
+                    }
+                  }
+                ]
+              },
+              "planId": null
+            },
+            "negated": false
+          }
+        }
+      }
+    },
+    {
+      "input": "first(a ignore nulls)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "first"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": true,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "first(a)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "first"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo()",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo"
+            ],
+            "arguments": [],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(*)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo"
+            ],
+            "arguments": [
+              {
+                "unresolvedStar": {
+                  "target": null,
+                  "planId": null,
+                  "wildcardOptions": {
+                    "ilikePattern": null,
+                    "excludeColumns": null,
+                    "exceptColumns": null,
+                    "replaceColumns": null,
+                    "renameColumns": null
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(a x)",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'x': extra input 'x'. SQLSTATE: 42601 (line 1, pos 6)\n\n== SQL ==\nfoo(a x)\n------^^^\n",
+      "output": {
+        "failure": "invalid argument: found x at 6:7 expected '->', '.', '(', '[', '::', 'ESCAPE', 'IS', 'NOT', 'IN', '*', '/', '%', 'DIV', '+', '-', '||', '>>>', '>>', '<<', '&', '^', '|', '!=', '!>', '!<', '==', '=', '>=', '>', '<=>', '<=', '<>', '<', 'BETWEEN', 'LIKE', 'ILIKE', 'RLIKE', 'REGEXP', 'SIMILAR', 'AND', 'OR', '=>', ',', 'RESPECT', 'IGNORE', or ')'"
+      }
+    },
+    {
+      "input": "foo(a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(all a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo(distinct a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": true,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "foo.bar()",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "foo",
+              "bar"
+            ],
+            "arguments": [],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "grouping(distinct a, b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "grouping"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": true,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "last(a ignore nulls)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "last"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": true,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "last(a)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "last"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "not true > true",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "not"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    ">"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "boolean": {
+                          "value": true
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "boolean": {
+                          "value": true
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "null",
+      "output": {
+        "success": {
+          "literal": "null"
+        }
+      }
+    },
+    {
+      "input": "r * (a + b)",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "*"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "r"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "+"
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "b"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "struct(a, b).b",
+      "output": {
+        "success": {
+          "unresolvedExtractValue": {
+            "child": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "struct"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "a"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "b"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "extraction": {
+              "literal": {
+                "utf8": {
+                  "value": "b"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "tIme '12:13:14'",
+      "output": {
+        "success": {
+          "unresolvedTime": {
+            "value": "12:13:14"
+          }
+        }
+      }
+    },
+    {
+      "input": "time '12-13.14'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"TIME\" is invalid: '12-13.14'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\ntime '12-13.14'\n^^^^^^^^^^^^^^^\n",
+      "output": {
+        "success": {
+          "unresolvedTime": {
+            "value": "12-13.14"
+          }
+        }
+      }
+    },
+    {
+      "input": "trUe",
+      "output": {
+        "success": {
+          "literal": {
+            "boolean": {
+              "value": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "x -> x + 1",
+      "output": {
+        "success": {
+          "lambdaFunction": {
+            "function": {
+              "unresolvedFunction": {
+                "functionName": [
+                  "+"
+                ],
+                "arguments": [
+                  {
+                    "unresolvedAttribute": {
+                      "name": [
+                        "x"
+                      ],
+                      "planId": null,
+                      "isMetadataColumn": false
+                    }
+                  },
+                  {
+                    "literal": {
+                      "int32": {
+                        "value": 1
+                      }
+                    }
+                  }
+                ],
+                "namedArguments": [],
+                "isDistinct": false,
+                "isUserDefinedFunction": false,
+                "isInternal": null,
+                "ignoreNulls": null,
+                "filter": null,
+                "orderBy": null
+              }
+            },
+            "arguments": [
+              {
+                "name": [
+                  "x"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "input": "x'A10C'",
+      "output": {
+        "success": {
+          "literal": {
+            "binary": {
+              "value": [
+                161,
+                12
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "x'A1OC'",
+      "exception": "\n[INVALID_TYPED_LITERAL] The value of the typed literal \"X\" is invalid: 'A1OC'. SQLSTATE: 42604\n== SQL (line 1, position 1) ==\nx'A1OC'\n^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: hex string: A1OC"
+      }
+    },
+    {
+      "input": "~a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "~"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    }
+  ]
+}

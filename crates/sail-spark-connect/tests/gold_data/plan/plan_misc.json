@@ -1,0 +1,707 @@
+{
+  "tests": [
+    {
+      "input": "\n/*\nSELECT 'trailing' as x1; -- inside block comment\n*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/* This block comment surrounds a query which itself has a block comment...\n//* I am a nested bracketed comment.\n*/\n*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/* This block comment surrounds a query which itself has a block comment...\nSELECT /* embedded single line */ 'embedded' AS x2;\n*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/* This is an example of SQL which should not execute:\n * select 'multi-line';\n */\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/*/**/*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/*/*abc*/*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/*/*foo*//*bar*/*/\nSELECT * FROM a\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "\n/*abc*/\nselect 1 as a\n/*\n\n2 as b\n/*abc */\n, 3 as c\n\n/**/\n*/\n      ",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "empty": {
+                  "produceOneRow": true
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "alias": {
+                    "expr": {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    },
+                    "name": [
+                      "a"
+                    ],
+                    "metadata": null
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "(select * from t1) union distinct (select * from t2)",
+      "output": {
+        "success": {
+          "query": {
+            "setOperation": {
+              "left": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t1"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "right": {
+                "project": {
+                  "input": {
+                    "read": {
+                      "namedTable": {
+                        "name": [
+                          "t2"
+                        ],
+                        "temporal": null,
+                        "sample": null,
+                        "options": []
+                      },
+                      "isStreaming": false
+                    },
+                    "planId": null
+                  },
+                  "expressions": [
+                    {
+                      "unresolvedStar": {
+                        "target": null,
+                        "planId": null,
+                        "wildcardOptions": {
+                          "ilikePattern": null,
+                          "excludeColumns": null,
+                          "exceptColumns": null,
+                          "replaceColumns": null,
+                          "renameColumns": null
+                        }
+                      }
+                    }
+                  ]
+                },
+                "planId": null
+              },
+              "setOpType": "union",
+              "isAll": false,
+              "byName": false,
+              "allowMissingColumns": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-- single comment\nSELECT * FROM a",
+      "output": {
+        "success": {
+          "query": {
+            "project": {
+              "input": {
+                "read": {
+                  "namedTable": {
+                    "name": [
+                      "a"
+                    ],
+                    "temporal": null,
+                    "sample": null,
+                    "options": []
+                  },
+                  "isStreaming": false
+                },
+                "planId": null
+              },
+              "expressions": [
+                {
+                  "unresolvedStar": {
+                    "target": null,
+                    "planId": null,
+                    "wildcardOptions": {
+                      "ilikePattern": null,
+                      "excludeColumns": null,
+                      "exceptColumns": null,
+                      "replaceColumns": null,
+                      "renameColumns": null
+                    }
+                  }
+                }
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-- single comment\\\nwith line continuity\nSELECT * FROM a",
+      "output": {
+        "failure": "invalid argument: found continuity at 29:39 expected '(', or 'AS'"
+      }
+    },
+    {
+      "input": "/*abc*/\nselect 1 as a\n/*\n\n2 as b\n/*abc */\n, 3 as c\n\n/**/\n",
+      "exception": "\n[UNCLOSED_BRACKETED_COMMENT] Found an unclosed bracketed comment. Please, append */ at the end of the comment. SQLSTATE: 42601\n== SQL ==\n/*abc*/\nselect 1 as a\n/*\n\n2 as b\n/*abc */\n, 3 as c\n\n/**/\n",
+      "output": {
+        "failure": "invalid argument: found / at 22:23 expected ',', 'FROM', 'LATERAL', 'WHERE', 'GROUP', 'HAVING', 'INTERSECT', 'UNION', 'EXCEPT', 'MINUS', 'WINDOW', 'ORDER', 'SORT', 'CLUSTER', 'DISTRIBUTE', 'LIMIT', 'OFFSET', ';', or end of input"
+      }
+    },
+    {
+      "input": "/*abc*/\nselect 1 as a\n/*\n\n2 as b\n/*abc */\n, 3 as c\n\n/**/\nselect 4 as d\n",
+      "exception": "\n[UNCLOSED_BRACKETED_COMMENT] Found an unclosed bracketed comment. Please, append */ at the end of the comment. SQLSTATE: 42601\n== SQL ==\n/*abc*/\nselect 1 as a\n/*\n\n2 as b\n/*abc */\n, 3 as c\n\n/**/\nselect 4 as d\n",
+      "output": {
+        "failure": "invalid argument: found / at 22:23 expected ',', 'FROM', 'LATERAL', 'WHERE', 'GROUP', 'HAVING', 'INTERSECT', 'UNION', 'EXCEPT', 'MINUS', 'WINDOW', 'ORDER', 'SORT', 'CLUSTER', 'DISTRIBUTE', 'LIMIT', 'OFFSET', ';', or end of input"
+      }
+    },
+    {
+      "input": "TABLE testcat.db.tab",
+      "output": {
+        "success": {
+          "query": {
+            "read": {
+              "namedTable": {
+                "name": [
+                  "testcat",
+                  "db",
+                  "tab"
+                ],
+                "temporal": null,
+                "sample": null,
+                "options": []
+              },
+              "isStreaming": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "from (from a union all from b) c select *",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a insert into tbl1 select * insert into tbl2 select * where s < 10",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a select * from b",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'from'. SQLSTATE: 42601 (line 1, pos 16)\n\n== SQL ==\nfrom a select * from b\n----------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a select * select * from x where a.s < 10",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near 'from'. SQLSTATE: 42601 (line 1, pos 25)\n\n== SQL ==\nfrom a select * select * from x where a.s < 10\n-------------------------^^^\n",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a select * select * where s < 10",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a select b, c",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from a select distinct b, c",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from db.a select b, c where d < 1",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from t insert into s select * limit 1 insert into u select * where x > 5",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "from t1\nlateral view explode(x) expl as x\ninsert into t2\nselect *\nlateral view json_tuple(x, y) jtup q, z\ninsert into t3\nselect *\nwhere s < 10\n      ",
+      "output": {
+        "failure": "invalid argument: found from at 0:4 expected something else, ';', statement, or end of input"
+      }
+    },
+    {
+      "input": "table d.t",
+      "output": {
+        "success": {
+          "query": {
+            "read": {
+              "namedTable": {
+                "name": [
+                  "d",
+                  "t"
+                ],
+                "temporal": null,
+                "sample": null,
+                "options": []
+              },
+              "isStreaming": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "table t",
+      "output": {
+        "success": {
+          "query": {
+            "read": {
+              "namedTable": {
+                "name": [
+                  "t"
+                ],
+                "temporal": null,
+                "sample": null,
+                "options": []
+              },
+              "isStreaming": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "values (1, 'a'), (2, 'b') as tbl(a, b)",
+      "output": {
+        "success": {
+          "query": {
+            "tableAlias": {
+              "input": {
+                "values": [
+                  [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "a"
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    },
+                    {
+                      "literal": {
+                        "utf8": {
+                          "value": "b"
+                        }
+                      }
+                    }
+                  ]
+                ],
+                "planId": null
+              },
+              "name": "tbl",
+              "columns": [
+                "a",
+                "b"
+              ]
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "values 1, 2, 3, 4",
+      "output": {
+        "success": {
+          "query": {
+            "values": [
+              [
+                {
+                  "literal": {
+                    "int32": {
+                      "value": 1
+                    }
+                  }
+                }
+              ],
+              [
+                {
+                  "literal": {
+                    "int32": {
+                      "value": 2
+                    }
+                  }
+                }
+              ],
+              [
+                {
+                  "literal": {
+                    "int32": {
+                      "value": 3
+                    }
+                  }
+                }
+              ],
+              [
+                {
+                  "literal": {
+                    "int32": {
+                      "value": 4
+                    }
+                  }
+                }
+              ]
+            ],
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

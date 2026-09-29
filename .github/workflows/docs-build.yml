@@ -1,0 +1,90 @@
+name: Docs Build
+
+# This workflow uses the following variable(s) from the environment:
+# - FATHOM_SITE_ID (optional)
+# - APOLLOIO_APP_ID (optional)
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        description: The stage ("test", "dev", or "prod") for documentation build
+        type: string
+        required: true
+      version:
+        description: The documentation version ("main", "latest", or a version number)
+        type: string
+        required: true
+      package_run_id:
+        description: The workflow run to download the python package artifact
+        type: string
+
+jobs:
+  docs-build:
+    name: Docs Build
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.stage != 'test' && format('docs/{0}', inputs.stage) || '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true
+
+      - name: Install Hatch
+        uses: pypa/hatch@install
+
+      - uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Run Code Formatter
+        env:
+          FORMAT_OPTIONS: --check
+        run: pnpm run format
+
+      - name: Run Code Linter
+        run: pnpm run lint
+
+      - name: Download Python Package
+        uses: actions/download-artifact@v7
+        with:
+          name: python-package
+          path: target/wheels
+          run-id: ${{ inputs.package_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Python Documentation
+        run: |
+          hatch env create docs
+          hatch run docs:install-pysail
+          hatch run docs:build
+
+      - name: Build VitePress Site
+        env:
+          SAIL_SITE_URL: "https://${{ inputs.stage == 'prod' && 'docs' || 'docs.dev' }}.lakesail.com/sail/${{ inputs.version }}/"
+          # The Fathom Analytics script will not be added if the site ID is not set.
+          SAIL_FATHOM_SITE_ID: ${{ vars.FATHOM_SITE_ID }}
+          # The Apollo.io script will not be added if the app ID is not set.
+          SAIL_APOLLOIO_APP_ID: ${{ vars.APOLLOIO_APP_ID }}
+        run: |
+          if [[ "${SAIL_SITE_URL}" == */main/ ]]; then
+            version="$(hatch version)+$(git rev-parse --short=7 HEAD)"
+          else
+            version="$(hatch version)"
+          fi
+          export SAIL_VERSION="$version"
+          pnpm run docs:build
+        shell: bash
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: docs-dist-${{ inputs.stage }}-${{ inputs.version }}
+          path: docs/.vitepress/dist
+          retention-days: 7

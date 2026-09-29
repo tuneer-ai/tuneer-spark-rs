@@ -1,0 +1,175 @@
+services:
+  minio:
+    image: quay.io/minio/minio:latest
+    command: ["server", "--address", ":9000", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: sail
+      MINIO_ROOT_PASSWORD: password
+      MINIO_VOLUMES: /mnt/data
+    volumes:
+      - minio-data:/mnt/data
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      start_period: 30s
+      interval: 5s
+      timeout: 5s
+      retries: 6
+    profiles:
+      - storage
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    command:
+      [
+        "azurite",
+        "--skipApiVersionCheck",
+        "--blobHost",
+        "0.0.0.0",
+        "--queueHost",
+        "0.0.0.0",
+        "--tableHost",
+        "0.0.0.0",
+      ]
+    environment:
+      AZURITE_ACCOUNTS: "devstoreaccount1:Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="
+    volumes:
+      - azurite-data:/data
+    ports:
+      - "10000:10000" # Blob service
+      - "10001:10001" # Queue service
+      - "11000:11000" # Table service
+    profiles:
+      - storage
+
+  hdfs:
+    build:
+      context: ./scripts/hadoop
+      dockerfile: Dockerfile
+      args:
+        HADOOP_USER_NAME: root
+    ports:
+      - "9870:9870"
+      - "127.0.0.1:9000:9000"
+      - "9864:9864"
+      - "9866:9866"
+    healthcheck:
+      test:
+        ["CMD", "/opt/hadoop/bin/hdfs", "-test", "-e", "/user/root/test.json"]
+      start_period: 60s
+      interval: 60s
+      timeout: 60s
+      retries: 5
+    profiles:
+      - storage
+
+  celeborn-master:
+    image: apache/celeborn:0.6.3
+    hostname: celeborn-master
+    environment:
+      CELEBORN_LOCAL_HOSTNAME: celeborn-master
+      CELEBORN_MASTER_MEMORY: 512m
+      CELEBORN_NO_DAEMONIZE: "1"
+    command: ["start-master.sh", "--host", "celeborn-master", "--port", "12097"]
+    volumes:
+      - ./deployments/celeborn/celeborn-defaults.conf:/opt/celeborn/conf/celeborn-defaults.conf:ro
+    ports:
+      - "12097:12097"
+      - "12098:12098"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/celeborn-master/12097'"]
+      start_period: 15s
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    profiles:
+      - celeborn
+
+  celeborn-worker:
+    image: apache/celeborn:0.6.3
+    hostname: celeborn-worker
+    depends_on:
+      celeborn-master:
+        condition: service_healthy
+    environment:
+      CELEBORN_LOCAL_HOSTNAME: celeborn-worker
+      CELEBORN_NO_DAEMONIZE: "1"
+      CELEBORN_WORKER_MEMORY: 512m
+      CELEBORN_WORKER_OFFHEAP_MEMORY: 512m
+    command:
+      [
+        "start-worker.sh",
+        "--host",
+        "celeborn-worker",
+        "--port",
+        "12000",
+        "celeborn://celeborn-master:12097",
+      ]
+    volumes:
+      - ./deployments/celeborn/celeborn-defaults.conf:/opt/celeborn/conf/celeborn-defaults.conf:ro
+    ports:
+      - "12000:12000"
+      - "12001:12001"
+      - "12002:12002"
+      - "12003:12003"
+      - "12096:12096"
+    profiles:
+      - celeborn
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./deployments/telemetry/otel-collector-debug.yaml:/etc/otel-collector.yaml
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    profiles:
+      - telemetry
+
+  tempo:
+    image: grafana/tempo:latest
+    command: ["-config.file=/etc/tempo.yaml"]
+    volumes:
+      - ./deployments/telemetry/tempo.yaml:/etc/tempo.yaml
+    ports:
+      - "3200"
+      - "4317"
+    profiles:
+      - telemetry
+
+  prometheus:
+    image: prom/prometheus:latest
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+      - --enable-feature=native-histograms
+    volumes:
+      - ./deployments/telemetry/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+    profiles:
+      - telemetry
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - ./deployments/telemetry/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+    ports:
+      - "3000:3000"
+    profiles:
+      - telemetry
+
+volumes:
+  minio-data:
+    driver: local
+  azurite-data:
+    driver: local

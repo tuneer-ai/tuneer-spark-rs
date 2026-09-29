@@ -1,0 +1,122 @@
+use std::sync::Arc;
+
+use datafusion::arrow::datatypes::SchemaRef;
+use datafusion::common::tree_node::TreeNodeRecursion;
+use datafusion::execution::{SendableRecordBatchStream, TaskContext};
+use datafusion::physical_expr::{EquivalenceProperties, PhysicalExpr};
+use datafusion::physical_plan::stream::RecordBatchStreamAdapter;
+use datafusion::physical_plan::{
+    DisplayAs, ExecutionPlan, ExecutionPlanProperties, PlanProperties,
+};
+use datafusion_common::{Result, internal_datafusion_err};
+use sail_common_datafusion::array::record_batch::record_batch_with_schema;
+use sail_common_datafusion::udf::StreamUDF;
+use sail_common_datafusion::utils::items::ItemTaker;
+use tokio_stream::StreamExt;
+
+#[derive(Debug, Clone)]
+pub struct MapPartitionsExec {
+    input: Arc<dyn ExecutionPlan>,
+    udf: Arc<dyn StreamUDF>,
+    properties: Arc<PlanProperties>,
+}
+
+impl MapPartitionsExec {
+    pub fn new(input: Arc<dyn ExecutionPlan>, udf: Arc<dyn StreamUDF>, schema: SchemaRef) -> Self {
+        // The plan output schema can be different from the output schema of the UDF
+        // due to field renaming.
+        let properties = Arc::new(PlanProperties::new(
+            EquivalenceProperties::new(schema.clone()),
+            input.output_partitioning().clone(),
+            input.pipeline_behavior(),
+            input.boundedness(),
+        ));
+        Self {
+            input,
+            udf,
+            properties,
+        }
+    }
+
+    pub fn input(&self) -> &Arc<dyn ExecutionPlan> {
+        &self.input
+    }
+
+    pub fn udf(&self) -> &Arc<dyn StreamUDF> {
+        &self.udf
+    }
+}
+
+impl DisplayAs for MapPartitionsExec {
+    fn fmt_as(
+        &self,
+        _t: datafusion::physical_plan::DisplayFormatType,
+        f: &mut std::fmt::Formatter,
+    ) -> std::fmt::Result {
+        write!(f, "MapPartitionsExec")
+    }
+}
+
+impl ExecutionPlan for MapPartitionsExec {
+    fn name(&self) -> &str {
+        Self::static_name()
+    }
+
+    fn properties(&self) -> &Arc<PlanProperties> {
+        &self.properties
+    }
+
+    fn benefits_from_input_partitioning(&self) -> Vec<bool> {
+        vec![false]
+    }
+
+    fn children(&self) -> Vec<&Arc<dyn ExecutionPlan>> {
+        vec![&self.input]
+    }
+
+    fn apply_expressions(
+        &self,
+        _f: &mut dyn FnMut(&Arc<dyn PhysicalExpr>) -> Result<TreeNodeRecursion>,
+    ) -> Result<TreeNodeRecursion> {
+        Ok(TreeNodeRecursion::Continue)
+    }
+
+    #[expect(deprecated)]
+    fn replace_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+        _options: datafusion::physical_plan::ReplaceChildrenOptions,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        self.with_new_children(children)
+    }
+
+    fn with_new_children(
+        self: Arc<Self>,
+        children: Vec<Arc<dyn ExecutionPlan>>,
+    ) -> Result<Arc<dyn ExecutionPlan>> {
+        let input = children.one().map_err(|_| {
+            internal_datafusion_err!("MapPartitionsExec must have exactly one child")
+        })?;
+        Ok(Arc::new(Self::new(
+            input,
+            self.udf.clone(),
+            self.properties.eq_properties.schema().clone(),
+        )))
+    }
+
+    fn execute(
+        &self,
+        partition: usize,
+        context: Arc<TaskContext>,
+    ) -> Result<SendableRecordBatchStream> {
+        let stream = self.input.execute(partition, Arc::clone(&context))?;
+        let output = self.udf.invoke(stream, context)?;
+        let schema = self.schema();
+        let output =
+            output.map(move |x| x.and_then(|batch| record_batch_with_schema(batch, &schema)));
+        Ok(Box::pin(RecordBatchStreamAdapter::new(
+            self.schema(),
+            output,
+        )))
+    }
+}

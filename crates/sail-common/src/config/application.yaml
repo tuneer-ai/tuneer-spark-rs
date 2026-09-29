@@ -1,0 +1,1142 @@
+- key: mode
+  type: string
+  default: "local"
+  description: |
+    The running mode for Sail. Valid values are `local`, `local-cluster`, and `kubernetes-cluster`.
+    
+    * In `local` mode, Sail runs in a single process, while query execution is still parallelized via threads.
+    * In `local-cluster` mode, Sail starts a cluster within a single process. The driver and workers run on different threads
+      in the same process and communicate with each other via RPC.
+    * In `kubernetes-cluster` mode, Sail manages a cluster in Kubernetes. The driver and workers run in separate
+      pods and communicate with each other via RPC.
+
+- key: runtime.stack_size
+  type: number
+  default: "8388608"
+  description: |
+    The stack size in bytes for each thread.
+    The default value works well for common cases, but complex queries involving deeply nested expressions or plans
+    may require a larger stack size to avoid stack overflow during query planning.
+
+- key: runtime.memory_pool.type
+  type: string
+  default: "unbounded"
+  description: |
+    The type of memory pool to use for managing memory allocations during query execution.
+    Valid values are `unbounded`, `greedy`, and `fair`.
+    If the value is `unbounded`, there is no limit on memory usage.
+    If the value is `greedy`, the memory pool will allocate memory up to a limit on a
+    first come, first served basis.
+    If the value is `fair`, the memory pool will allocate memory up to a limit and ensure
+    that a single operator does not use too much memory.
+  experimental: true
+
+- key: runtime.memory_pool.greedy.max_size
+  type: number
+  default: "68719476736"
+  description: |
+    The maximum size in bytes if the `greedy` memory pool is in use.
+  experimental: true
+
+- key: runtime.memory_pool.fair.max_size
+  type: number
+  default: "68719476736"
+  description: |
+    The maximum size in bytes if the `fair` memory pool is in use.
+  experimental: true
+
+- key: runtime.temporary_files.paths
+  type: array
+  default: "[]"
+  description: |
+    The list of local directories for storing temporary files.
+    If multiple directories are specified, temporary files are distributed
+    across the directories.
+    If no directory is specified, the operating system default temporary directory is used.
+  experimental: true
+
+- key: runtime.temporary_files.max_size
+  type: number
+  default: "68719476736"
+  description: |
+    The maximum total size in bytes for temporary files.
+    If the size of temporary files exceeds this limit, an error will be raised.
+    If the value is `0`, writing to temporary files is disabled and an error
+    will be raised if a query attempts to spill to disk.
+  experimental: true
+
+- key: cluster.enable_tls
+  type: boolean
+  default: "false"
+  description: Whether to enable TLS for cluster communication.
+  experimental: true
+
+- key: cluster.session_id
+  type: string
+  default: ""
+  description:
+  hidden: true
+
+- key: cluster.driver_listen_host
+  type: string
+  default: "127.0.0.1"
+  description: The host on which the driver listens.
+
+- key: cluster.driver_listen_port
+  type: number
+  default: "0"
+  description: |
+    The port on which the driver listens.
+    If the value is `0`, a random port is assigned by the operating system.
+
+- key: cluster.driver_external_host
+  type: string
+  default: "127.0.0.1"
+  description: The external host for the worker to connect to the driver.
+
+- key: cluster.driver_external_port
+  type: number
+  default: "0"
+  description: |
+    The external port for the worker to connect to the driver.
+    If the value is `0`, the port is assumed to be the same as the port
+    on which the driver listens.
+
+- key: cluster.driver_id
+  type: number
+  default: "0"
+  description:
+  hidden: true
+
+- key: cluster.worker_id
+  type: number
+  default: "0"
+  description:
+  hidden: true
+
+- key: cluster.worker_listen_host
+  type: string
+  default: "127.0.0.1"
+  description: The host on which the worker listens.
+
+- key: cluster.worker_listen_port
+  type: number
+  default: "0"
+  description: |
+    The port on which the worker listens.
+    If the value is `0`, a random port is assigned by the operating system.
+
+- key: cluster.worker_external_host
+  type: string
+  default: "127.0.0.1"
+  description: The external host for other workers to connect to the worker.
+
+- key: cluster.worker_external_port
+  type: number
+  default: "0"
+  description: |
+    The external port for other workers to connect to the worker.
+    If the value is `0`, the port is assumed to be the same as the port
+    on which the worker listens.
+
+- key: cluster.worker_initial_count
+  type: number
+  default: "4"
+  description: The initial number of workers to launch.
+
+- key: cluster.worker_max_count
+  type: number
+  default: "0"
+  description: The maximum number of workers that can be launched.
+
+- key: cluster.worker_max_idle_time_secs
+  type: number
+  default: "60"
+  description: The maximum idle time in seconds before a worker is removed.
+
+- key: cluster.worker_heartbeat_interval_secs
+  type: number
+  default: "10"
+  description: The interval in seconds for worker heartbeats.
+  experimental: true
+
+- key: cluster.worker_heartbeat_timeout_secs
+  type: number
+  default: "120"
+  description: The timeout in seconds for worker heartbeats.
+  experimental: true
+
+- key: cluster.worker_launch_timeout_secs
+  type: number
+  default: "120"
+  description: The timeout in seconds for launching a worker.
+
+- key: cluster.worker_launch_retry_strategy.type
+  type: string
+  default: "exponential_backoff"
+  description: |
+    The retry strategy for failed worker launches.
+    Valid values are `fixed` and `exponential_backoff`.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.fixed.max_count
+  type: number
+  default: "3"
+  description: The maximum number of worker launch retries using a fixed delay.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.fixed.delay_secs
+  type: number
+  default: "5"
+  description: The delay in seconds between worker launch retries using a fixed delay.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.exponential_backoff.max_count
+  type: number
+  default: "5"
+  description: The maximum number of worker launch retries using exponential backoff.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.exponential_backoff.initial_delay_secs
+  type: number
+  default: "1"
+  description: The initial delay in seconds before retrying a worker launch.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.exponential_backoff.max_delay_secs
+  type: number
+  default: "30"
+  description: The maximum delay in seconds before retrying a worker launch.
+  experimental: true
+
+- key: cluster.worker_launch_retry_strategy.exponential_backoff.factor
+  type: number
+  default: "2"
+  description: The factor by which the worker launch retry delay increases.
+  experimental: true
+
+- key: cluster.worker_task_slots
+  type: number
+  default: "8"
+  description: The maximum number of tasks that can be launched on a worker.
+
+- key: cluster.task_launch_timeout_secs
+  type: number
+  default: "120"
+  description: The timeout in seconds for launching a task.
+
+- key: cluster.task_stream_buffer
+  type: number
+  default: "16"
+  description: The number of batches to buffer in the task stream.
+  experimental: true
+
+- key: cluster.task_stream_creation_timeout_secs
+  type: number
+  default: "60"
+  description: |
+    The timeout in seconds for creating the task stream.
+    This gives a grace period when a task is launched simultaneously with its dependency tasks
+    and the task stream inputs may not be ready immediately.
+
+- key: cluster.task_max_attempts
+  type: number
+  default: "3"
+  description: The maximum number of attempts for a task.
+
+- key: cluster.rpc_retry_strategy.type
+  type: string
+  default: "fixed"
+  description: |
+    The retry strategy for driver and worker RPC requests.
+    Valid values are `fixed` and `exponential_backoff`.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.fixed.max_count
+  type: number
+  default: "3"
+  description: |
+    The maximum number of retries for RPC requests
+    when using the `fixed` retry strategy.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.fixed.delay_secs
+  type: number
+  default: "5"
+  description: |
+    The delay in seconds between retries for RPC requests
+    when using the `fixed` retry strategy.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.exponential_backoff.max_count
+  type: number
+  default: "3"
+  description: |
+    The maximum number of retries for RPC requests
+    when using the `exponential_backoff` retry strategy.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.exponential_backoff.initial_delay_secs
+  type: number
+  default: "1"
+  description: |
+    The initial delay in seconds between retries for RPC requests
+    when using the `exponential_backoff` retry strategy.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.exponential_backoff.max_delay_secs
+  type: number
+  default: "5"
+  description: |
+    The maximum delay in seconds between retries for RPC requests
+    when using the `exponential_backoff` retry strategy.
+  experimental: true
+
+- key: cluster.rpc_retry_strategy.exponential_backoff.factor
+  type: number
+  default: "2"
+  description: |
+    The factor by which the delay increases after each retry
+    when using the `exponential_backoff` retry strategy.
+  experimental: true
+
+- key: cluster.shuffle_backend.type
+  type: string
+  default: "flight"
+  description: |
+    The shuffle backend type. Valid values are `flight`, `storage`, and `celeborn`.
+    The `flight` shuffle backend streams shuffle data directly among tasks via Arrow Flight.
+    The `storage` shuffle backend materializes merged shuffle partitions in object storage
+    before running dependent stages.
+  experimental: true
+
+- key: cluster.shuffle_backend.flight.compression
+  type: string
+  default: "zstd"
+  description: |
+    Arrow IPC compression for Arrow Flight shuffle streams. Valid values are `none`,
+    `lz4`, and `zstd`.
+  experimental: true
+
+- key: cluster.shuffle_backend.storage.path
+  type: string
+  default: ""
+  description: |
+    The object storage base URL for storage-backed shuffle data.
+    This is required when `cluster.shuffle_backend.type` is `storage`.
+  experimental: true
+
+- key: cluster.shuffle_backend.storage.max_file_size
+  type: number
+  default: "134217728"
+  description: |
+    The maximum size in bytes of each storage-backed shuffle file. Larger partitions are
+    split into multiple Arrow IPC files.
+  experimental: true
+
+- key: cluster.shuffle_backend.storage.compression
+  type: string
+  default: "zstd"
+  description: |
+    Arrow IPC compression for storage-backed shuffle files. Valid values are `none`,
+    `lz4`, and `zstd`.
+  experimental: true
+
+- key: cluster.shuffle_backend.celeborn.master_endpoints
+  type: array
+  default: "[]"
+  description: |
+    The endpoints of Celeborn masters. Each entry is a `host:port` string.
+    Multiple entries enable master high availability.
+  experimental: true
+
+- key: cluster.shuffle_backend.celeborn.compression
+  type: string
+  default: "lz4"
+  description: |
+    Compression for Celeborn push-data batches. Valid values are `none`, `lz4`, and
+    `zstd(level)`, for example `zstd(1)`.
+  experimental: true
+
+- key: cluster.shuffle_backend.celeborn.heartbeat_interval_secs
+  type: number
+  default: "10"
+  description: The interval in seconds between Celeborn application heartbeats.
+  experimental: true
+
+- key: cluster.shuffle_backend.celeborn.endpoint_overrides
+  type: array
+  default: "[]"
+  description: |
+    Optional endpoint mappings for Celeborn workers advertised from an
+    isolated network. Each entry is an object with `internal` and `external`
+    `host:port` strings.
+    This option is intended for use in tests only.
+  experimental: true
+  hidden: true
+
+- key: cluster.shuffle_backend.celeborn.partition_split_threshold
+  type: number
+  default: "1073741824"
+  description: |
+    The maximum number of bytes written to a Celeborn partition before the
+    worker requests a split.
+  experimental: true
+
+- key: cluster.shuffle_backend.celeborn.partition_split_mode
+  type: string
+  default: "soft"
+  description: |
+    The Celeborn partition split mode. Use `soft` to accept the batch that
+    crosses the threshold, or `hard` to retry it on a new partition epoch.
+  experimental: true
+
+- key: execution.batch_size
+  type: number
+  default: "8192"
+  description: The batch size for physical plan execution.
+  experimental: true
+
+- key: execution.default_parallelism
+  type: number
+  default: "0"
+  description: |
+    The default parallelism used when generating physical plans, which determines the number of partitions a plan node is split into.
+    If the value is `0`, the parallelism is determined based on the number of available CPU cores.
+    It is recommended to set this value explicitly in the cluster mode since the number of CPU cores
+    available to the driver may not be the same as that available to the workers.
+  experimental: true
+
+- key: execution.collect_statistics
+  type: boolean
+  default: "true"
+  description: |
+    Should statistics be collected when first creating a table.
+    This can slow down the initial DataFrame creation while greatly accelerating queries with certain filters.
+    Has no effect after the table is created.
+  experimental: true
+
+- key: execution.use_row_number_estimates_to_optimize_partitioning
+  type: boolean
+  default: "false"
+  description: |
+    Should Sail use row number estimates at the input to decide whether increasing parallelism is beneficial or not.
+    By default, only exact row numbers (not estimates) are used for this decision.
+  experimental: true
+
+- key: execution.file_listing_cache.type
+  type: string
+  default: "none"
+  description: |
+    The type of cache for file metadata when listing files.
+    The cache avoids repeatedly listing file metadata,
+    which may be expensive in certain situations (e.g., when using remote object storage).
+    When the cache is used, updates to the underlying location may not be visible until
+    the cache entry expires (controlled by `execution.file_listing_cache.ttl`).
+    Valid values are `none`, `global` (for a global cache), and `session` (for a per-session cache).
+  experimental: true
+
+- key: execution.file_listing_cache.ttl
+  type: number
+  default: "1800"
+  description: |
+    The time-to-live (TTL) in seconds for cached directory listings.
+    Entries expire after this duration from when they were cached,
+    ensuring eventual consistency with the storage system.
+    This setting is only effective when the cache is enabled.
+    Setting the value to `0` disables the TTL.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: execution.file_listing_cache.max_entries
+  type: number
+  default: "10000"
+  description: |
+    Maximum number of directory listings to cache.
+    This setting is only effective when the cache is enabled.
+    Setting the value to `0` disables the limit.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: execution.checkpoint.path
+  type: string
+  default: ""
+  description: |
+    The object storage base path for DataFrame checkpoints managed by the server. The path must be
+    readable and writable by the driver and every worker. Checkpoint operations are rejected when
+    this value is empty. Sail does not fall back to driver memory or local worker storage. Sail
+    removes each session namespace on shutdown. An object storage lifecycle policy can clean up
+    data left by an ungraceful process exit.
+  experimental: true
+
+- key: parquet.enable_page_index
+  type: boolean
+  default: "true"
+  description: |
+    (Reading) Whether to enable page index when reading Parquet files.
+    If the value is `true`, the Parquet reader reads the page index if present.
+    This can reduce I/O and the number of rows decoded.
+  experimental: true
+
+- key: parquet.pruning
+  type: boolean
+  default: "true"
+  description: |
+    (Reading) Whether to prune row groups when reading Parquet files.
+    If the value is `true`, the Parquet reader attempts to skip entire row groups based
+    on the predicate in the query and the metadata (minimum and maximum values) stored in
+    the Parquet file.
+  experimental: true
+
+- key: parquet.skip_metadata
+  type: boolean
+  default: "true"
+  description: |
+    (Reading) Whether to skip the metadata when reading Parquet files.
+    If the value is `true`, the Parquet reader skip the optional embedded metadata that may be in
+    the file schema. This can help avoid schema conflicts when querying
+    multiple Parquet files with schemas containing compatible types but different metadata.
+  experimental: true
+
+- key: parquet.metadata_size_hint
+  type: number
+  default: "524288"
+  description: |
+    (Reading) If specified, the reader will try to fetch the last `size_hint` bytes of the parquet file optimistically.
+    If not specified, two reads are required:
+      - One read to fetch the 8-byte parquet footer
+      - Another to fetch the metadata length encoded in the footer
+
+    If the metadata is larger than the hint, two reads will still be performed.
+    Setting this can reduce one I/O operation per parquet file.
+    Defaults to 512 KiB, which should be sufficient for most parquet files.
+  experimental: true
+
+- key: parquet.pushdown_filters
+  type: boolean
+  default: "false"
+  description: |
+    (Reading) Whether to push down filter expressions when reading Parquet files.
+    If the value is `true`, the Parquet reader applies filter expressions in decoding operations to
+    reduce the number of rows decoded. This optimization is sometimes called "late materialization".
+  experimental: true
+
+- key: parquet.reorder_filters
+  type: boolean
+  default: "false"
+  description: |
+    (Reading) Whether to reorder filter expressions when reading Parquet files.
+    If the value is `true`, the Parquet reader reorders filter expressions heuristically in decoding operations to
+    minimize the cost of evaluation. If the value is `false`, the filters are applied in the same order as written in the query.
+  experimental: true
+
+- key: parquet.schema_force_view_types
+  type: boolean
+  default: "true"
+  description: |
+    (Reading) Whether to force view types for binary and string columns when reading Parquet files.
+    If the value is `true`, the Parquet reader will read columns of the `Utf8` or `Utf8Large` types as the `Utf8View` type,
+    and the `Binary` or `BinaryLarge` types as the `BinaryView` type.
+  experimental: true
+
+- key: parquet.binary_as_string
+  type: boolean
+  default: "false"
+  description: |
+    (Reading) Whether to read binary columns as string columns when reading Parquet files.
+    If the value is `true`, the Parquet reader will read columns of
+    the `Binary` or `LargeBinary` as the `Utf8` type, and the `BinaryView` type as the `Utf8View` type.
+    This is helpful when reading Parquet files generated by some legacy writers, which do not correctly set
+    the UTF-8 flag for strings, causing string columns to be loaded as binary columns by default.
+  experimental: true
+
+- key: parquet.bloom_filter_on_read
+  type: boolean
+  default: "true"
+  description: |
+    (Reading) Whether to use available bloom filters when reading Parquet files.
+  experimental: true
+
+- key: parquet.max_predicate_cache_size
+  type: number
+  default: "104857600"
+  description: |
+    (Reading) The maximum predicate cache size, in bytes. When `pushdown_filters` is enabled, sets the maximum memory
+    used to cache the results of predicate evaluation between filter evaluation and output generation.
+    Decreasing this value will reduce memory usage, but may increase IO and CPU usage.
+    Setting this value to `0` means no caching.
+  experimental: true
+
+- key: parquet.data_page_size_limit
+  type: number
+  default: "1048576"
+  description: |
+    (Writing) The best-effort maximum size of a data page in bytes.
+  experimental: true
+
+- key: parquet.write_batch_size
+  type: number
+  default: "1024"
+  description: |
+    (Writing) The Parquet writer batch size in bytes.
+  experimental: true
+
+- key: parquet.writer_version
+  type: string
+  default: '"1.0"'
+  description: |
+    (Writing) The Parquet writer version.
+    Valid values are `"1.0"` and `"2.0"`.
+  experimental: true
+
+- key: parquet.skip_arrow_metadata
+  type: boolean
+  default: "false"
+  description: |
+    (Writing) Whether to skip encoding the embedded arrow metadata when writing Parquet files.
+  experimental: true
+
+- key: parquet.compression
+  type: string
+  default: "zstd(3)"
+  description: |
+    (Writing) The default Parquet compression codec.
+    Valid values are `uncompressed`, `snappy`, `gzip(level)`,
+    `lzo`, `brotli(level)`, `lz4`, `zstd(level)`, and `lz4_raw`,
+    where `level` is an integer defining the compression level.
+    These values are not case-sensitive.
+  experimental: true
+
+- key: parquet.dictionary_enabled
+  type: boolean
+  default: "true"
+  description: |
+    (Writing) Whether to enable dictionary encoding for the Parquet writer.
+  experimental: true
+
+- key: parquet.dictionary_page_size_limit
+  type: number
+  default: "1048576"
+  description: |
+    (Writing) The best-effort maximum dictionary page size in bytes for the Parquet writer.
+  experimental: true
+
+- key: parquet.statistics_enabled
+  type: string
+  default: "page"
+  description: |
+    (Writing) Whether statistics are enabled for any column for the Parquet writer.
+    Valid values are `none`, `chunk`, and `page`.
+    These values are not case-sensitive.
+  experimental: true
+
+- key: parquet.max_row_group_size
+  type: number
+  default: "1048576"
+  description: |
+    (Writing) The target maximum number of rows in each row group for the Parquet writer.
+    Larger row groups require more memory to write, but
+    can get better compression and be faster to read.
+  experimental: true
+
+- key: parquet.column_index_truncate_length
+  type: number
+  default: "64"
+  description: |
+    (Writing) The column index truncate length for the Parquet writer.
+  experimental: true
+
+- key: parquet.statistics_truncate_length
+  type: number
+  default: "64"
+  description: |
+    (Writing) The statistics truncate length for the Parquet writer.
+    If the value is `0`, no truncation is applied.
+  experimental: true
+
+- key: parquet.data_page_row_count_limit
+  type: number
+  default: "20000"
+  description: |
+    (Writing) The best-effort maximum number of rows in data page for the Parquet writer.
+  experimental: true
+
+- key: parquet.encoding
+  type: string
+  default: ""
+  description: |
+    (Writing) The default encoding for any column.
+    Valid values are `plain`, `plain_dictionary`, `rle`,
+    `bit_packed` (deprecated), `delta_binary_packed`, `delta_length_byte_array`,
+    `delta_byte_array`, `rle_dictionary`, and `byte_stream_split`.
+    These values are not case sensitive.
+    An empty value can also be used, which allows the Parquet writer to choose
+    the encoding for each column to achieve good performance.
+  experimental: true
+
+- key: parquet.bloom_filter_on_write
+  type: boolean
+  default: "false"
+  description: |
+    (Writing) Whether to write bloom filters for all columns when writing Parquet files.
+  experimental: true
+
+- key: parquet.bloom_filter_fpp
+  type: number
+  default: "0.05"
+  description: |
+    (Writing) The false positive probability for bloom filters when writing Parquet files.
+  experimental: true
+
+- key: parquet.bloom_filter_ndv
+  type: number
+  default: "1000000"
+  description: |
+    (Writing) The number of distinct values for bloom filters when writing Parquet files.
+  experimental: true
+
+- key: parquet.allow_single_file_parallelism
+  type: boolean
+  default: "true"
+  description: |
+    (Writing) Whether to parallelize writing for each single Parquet file.
+    If the value is `true`, each column in each row group in each file are serialized in parallel.
+  experimental: true
+
+- key: parquet.maximum_parallel_row_group_writers
+  type: number
+  default: "2"
+  description: |
+    (Writing) The maximum number of row group writers to use for the Parquet writer.
+    This may improve performance when writing large Parquet files,
+    at the expense of higher memory usage.
+  experimental: true
+
+- key: parquet.maximum_buffered_record_batches_per_stream
+  type: number
+  default: "16"
+  description: |
+    (Writing) The maximum number of buffered record batches per stream for the Parquet writer.
+    This may improve performance when writing large Parquet files,
+    at the expense of higher memory usage.
+  experimental: true
+
+- key: parquet.content_defined_chunking.enabled
+  type: boolean
+  default: "false"
+  description: |
+    (Writing) Whether to enable content-defined chunking (CDC) when writing Parquet files.
+    When enabled, data page boundaries are determined by a rolling hash of column values.
+  experimental: true
+
+- key: parquet.content_defined_chunking.min_chunk_size
+  type: number
+  default: "262144"
+  description: |
+    (Writing) The minimum chunk size in bytes for Parquet content-defined chunking.
+    The rolling hash will not trigger a split until this many bytes have been accumulated.
+  experimental: true
+
+- key: parquet.content_defined_chunking.max_chunk_size
+  type: number
+  default: "1048576"
+  description: |
+    (Writing) The maximum chunk size in bytes for Parquet content-defined chunking.
+    A split is forced when the accumulated size exceeds this value.
+  experimental: true
+
+- key: parquet.content_defined_chunking.norm_level
+  type: number
+  default: "0"
+  description: |
+    (Writing) The normalization level for Parquet content-defined chunking.
+    Increasing this improves deduplication ratio but increases fragmentation.
+    The recommended range is `-3` to `3`.
+  experimental: true
+
+- key: parquet.file_statistics_cache.type
+  type: string
+  default: "global"
+  description: |
+    (Reading) The type of cache for files statistics when reading Parquet files.
+    This setting avoids repeatedly computing statistics,
+    which may be expensive in certain situations (e.g., when using remote object storage).
+    The cache is automatically invalidated when the underlying file is modified.
+    Valid values are `none`, `global` (for a global cache), and `session` (for a per-session cache).
+  experimental: true
+
+- key: parquet.file_statistics_cache.ttl
+  type: number
+  default: "1800"
+  description: |
+    (Reading) The time-to-live (TTL) in seconds for cached Parquet files statistics.
+    Entries expire after this duration from when they were cached,
+    ensuring eventual consistency with the storage system.
+    This setting is only effective when the cache is enabled.
+    Setting the value to `0` disables the TTL.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: parquet.file_statistics_cache.max_entries
+  type: number
+  default: "10000"
+  description: |
+    (Reading) Maximum number of Parquet files statistics to cache.
+    This setting is only effective when the cache is enabled.
+    When the limit is reached, least recently used entries are evicted.
+    Setting the value to `0` disables the limit.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: parquet.file_metadata_cache.type
+  type: string
+  default: "global"
+  description: |
+    (Reading) The type of cache for embedded metadata of Parquet files (footer and page metadata).
+    This setting avoids repeatedly reading metadata,
+    which can offer substantial performance improvements for repeated queries over large number of files.
+    The cache is automatically invalidated when the underlying file is modified.
+    Valid values are `none`, `global` (for a global cache), and `session` (for a per-session cache).
+  experimental: true
+
+- key: parquet.file_metadata_cache.ttl
+  type: number
+  default: "1800"
+  description: |
+    (Reading) The time-to-live (TTL) in seconds for cached Parquet files metadata.
+    Entries expire after this duration from when they were cached,
+    ensuring eventual consistency with the storage system.
+    This setting is only effective when the cache is enabled.
+    Setting the value to `0` disables the TTL.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: parquet.file_metadata_cache.size_limit
+  type: number
+  default: "0"
+  description: |
+    (Reading) Maximum size in bytes for the Parquet metadata cache.
+    Setting the value to `0` disables the limit.
+    This setting can only be configured at startup and cannot be changed at runtime.
+  experimental: true
+
+- key: kubernetes.image
+  type: string
+  default: "sail:latest"
+  description: The container image to use for the driver and worker pods.
+
+- key: kubernetes.image_pull_policy
+  type: string
+  default: "IfNotPresent"
+  description: The image pull policy for the driver and worker pods.
+
+- key: kubernetes.namespace
+  type: string
+  default: "default"
+  description: The Kubernetes namespace in which the driver and worker pods will be created.
+
+- key: kubernetes.driver_pod_name
+  type: string
+  default: ""
+  description: |
+    The name of the pod that runs the driver,
+    or empty if the driver pod name is not known.
+    This is used to set owner references for worker pods.
+
+- key: kubernetes.worker_pod_name_prefix
+  type: string
+  default: "sail-worker-"
+  description: |
+    The prefix of the name of worker pods.
+    This should usually end with a hyphen (`-`).
+
+- key: kubernetes.worker_service_account_name
+  type: string
+  default: "default"
+  description: The name of the service account to use for the worker pods.
+
+- key: kubernetes.worker_pod_template
+  type: string
+  default: ""
+  description: |
+    If non-empty, a JSON string representing a Kubernetes Pod template
+    with the schema of `PodTemplateSpec` in the Kubernetes API.
+
+- key: ecs.cluster
+  type: string
+  default: ""
+  description: |
+    The ECS cluster name or ARN to launch worker tasks in.
+
+- key: ecs.subnets
+  type: array
+  default: "[]"
+  description: |
+    VPC subnet IDs for awsvpc networking of worker tasks.
+
+- key: ecs.security_groups
+  type: array
+  default: "[]"
+  description: |
+    Security group IDs for worker tasks.
+
+- key: ecs.task_definition
+  type: string
+  default: ""
+  description: |
+    The ECS task definition family or ARN for worker tasks.
+
+- key: ecs.container_name
+  type: string
+  default: "sail-worker"
+  description: |
+    Container name in the task definition to apply environment overrides to.
+
+- key: ecs.assign_public_ip
+  type: boolean
+  default: "false"
+  description: |
+    Whether to assign public IPs to worker tasks.
+
+- key: ecs.launch_type
+  type: string
+  default: "FARGATE"
+  description: |
+    ECS launch type (FARGATE or EC2).
+
+- key: ecs.worker_log_group
+  type: string
+  default: "/ecs/sail-worker"
+  description: |
+    CloudWatch log group for worker task logs.
+
+- key: catalog.list
+  type: array
+  default: '[{name="sail", type="memory", initial_database=["default"], initial_database_comment="default database"}]'
+  description: |
+    The list of catalogs to use. Each catalog is defined by a name and a type, along with optional parameters.
+    `name` is used to refer to the catalog name, and `type` defines the catalog implementation.
+  experimental: true
+
+- key: catalog.default_catalog
+  type: string
+  default: ""
+  description: |
+    The name of the default catalog to use.
+    If this is not set and there is only one catalog, that only catalog is used as the default catalog.
+    If this is not set and there are multiple catalogs, an error will be raised when a session is created.
+  experimental: true
+
+- key: catalog.default_database
+  type: array
+  default: '["default"]'
+  description: |
+    The name of the default database (namespace) to use.
+    This is a list of strings, where each string is a part of the namespace.
+  experimental: true
+
+- key: catalog.global_temporary_database
+  type: array
+  default: '["global_temp"]'
+  description: |
+    The name of the global temporary database (namespace) to use.
+    This is a list of strings, where each string is a part of the namespace.
+    The global temporary database cannot be changed at runtime,
+    so setting the Spark configuration `spark.sql.globalTempDatabase` has no effect.
+  experimental: true
+
+- key: optimizer.enable_join_reorder
+  type: boolean
+  default: "false"
+  description: |
+    Whether to enable cost-based join reorder in the query optimizer.
+  experimental: true
+
+- key: optimizer.enable_join_swap
+  type: boolean
+  default: "true"
+  description: |
+    Whether to allow swapping join inputs using available statistics.
+    Disable this to preserve the SQL join input order for hash joins. This is distinct from
+    `optimizer.enable_join_reorder` that enables a more sophisticated cost-based join reorder
+    algorithm that can reorder multiple joins.
+  experimental: true
+
+- key: optimizer.prefer_hash_join
+  type: boolean
+  default: "true"
+  description: |
+    Whether to prefer hash join over sort-merge join when both inputs require repartitioning.
+    Hash join is generally faster but can require substantially more memory.
+  experimental: true
+
+- key: optimizer.enable_window_topn
+  type: boolean
+  default: "false"
+  description: |
+    Whether to optimize partitioned `ROW_NUMBER` and `RANK` windows with an upper-bound
+    filter using a per-partition top-k operator instead of sorting all input rows.
+    This can improve performance when the partition keys have low cardinality.
+    High-cardinality partition keys, large limits, or large rank tie groups can increase
+    memory usage and runtime. The top-k operator does not support spilling to disk.
+  experimental: true
+
+- key: optimizer.expand_views_at_output
+  type: boolean
+  default: "true"
+  description: |
+    Whether the optimizer should coerce view types to non-view types at query output.
+    If the value is `true`, `Utf8View` is coerced to `LargeUtf8` and `BinaryView` is coerced
+    to `LargeBinary` before results leave the query boundary. If the value is `false`, view
+    types pass through to the client.
+  experimental: true
+
+- key: spark.session_timeout_secs
+  type: number
+  default: "900"
+  description: |
+    The duration in seconds allowed for the session to be idle.
+    If the server does not receive any requests from the client after this duration,
+    the session will be removed from the server.
+
+- key: spark.execution_heartbeat_interval_secs
+  type: number
+  default: "15"
+  description: |
+    The interval in seconds for the server to send empty response to the client
+    during long-running operations. The empty response serves as a heartbeat to keep
+    the session active.
+  experimental: true
+
+- key: flight.session_timeout_secs
+  type: number
+  default: "3600"
+  description: |
+    The timeout in seconds for idle Flight SQL sessions.
+    Sessions that have been inactive for longer than this duration will be cleaned up.
+  experimental: true
+
+- key: catalog.system.store
+  type: string
+  default: "memory"
+  description: The system catalog store backend. Valid values are `memory` and `disk`.
+  experimental: true
+
+- key: catalog.system.disk.path
+  type: string
+  default: ""
+  description: The existing directory used by the disk-backed system catalog store.
+  experimental: true
+
+- key: telemetry.export_traces
+  type: boolean
+  default: "false"
+  description: Whether to export traces to an OpenTelemetry collector.
+  experimental: true
+
+- key: telemetry.export_metrics
+  type: boolean
+  default: "false"
+  description: Whether to export metrics to an OpenTelemetry collector.
+  experimental: true
+
+- key: telemetry.export_logs
+  type: boolean
+  default: "false"
+  description: Whether to export logs to an OpenTelemetry collector.
+  experimental: true
+
+- key: telemetry.exporter.otlp.endpoint
+  type: string
+  default: ""
+  description: |
+    The OTLP endpoint for telemetry data export.
+    The OTLP exporter is disabled unless this option is set.
+  experimental: true
+
+- key: telemetry.exporter.otlp.protocol
+  type: string
+  default: "grpc"
+  description: |
+    The OTLP protocol for telemetry data export.
+    Valid values are `grpc`, `http-binary`, and `http-json`.
+  experimental: true
+
+- key: telemetry.exporter.otlp.timeout_secs
+  type: number
+  default: "10"
+  description: The timeout in seconds for OTLP telemetry data export.
+  experimental: true
+
+- key: telemetry.exporter.system.enabled
+  type: boolean
+  default: "false"
+  description: Whether metrics are written to the system catalog store.
+  experimental: true
+
+- key: telemetry.traces_export_interval_secs
+  type: number
+  default: "5"
+  description: The interval in seconds for exporting traces.
+  experimental: true
+
+- key: telemetry.metrics_export_interval_secs
+  type: number
+  default: "5"
+  description: The interval in seconds for exporting metrics.
+  experimental: true
+
+- key: telemetry.metrics_collection_interval_secs
+  type: number
+  default: "5"
+  description: The interval in seconds for collecting metrics.
+  experimental: true
+
+- key: telemetry.logs_export_interval_secs
+  type: number
+  default: "1"
+  description: The interval in seconds for exporting logs.
+  experimental: true
+
+- key: telemetry.logs_export_max_queue_size
+  type: number
+  default: "65536"
+  description: |
+    The maximum number of log records to queue for exporting.
+    The log record will be dropped if the queue gets full between export intervals.
+  experimental: true
+
+- key: telemetry.logs_export_batch_size
+  type: number
+  default: "512"
+  description: |
+    The batch size for exporting logs. Multiple batches may be sent in each export interval
+    if the number of queued log records exceeds the batch size.
+  experimental: true
+
+- key: python.data_source_write_channel_capacity
+  type: number
+  default: "8"
+  description: |
+    The capacity of the channel used to stream RecordBatches to Python during write operations.
+    Larger values trade memory for throughput when the Python writer is slower than the producer.
+    This setting is specific to the Python data source write implementation.
+  experimental: true
+
+- key: python.data_source_slow_write_warn_ms
+  type: number
+  default: "30000"
+  description: |
+    The threshold in milliseconds for logging a warning when Python write operations are slow.
+    If a write operation takes longer than this duration, a warning is logged suggesting
+    faster I/O or subprocess isolation.
+  experimental: true
+
+- key: python.data_source_slow_read_warn_ms
+  type: number
+  default: "30000"
+  description: |
+    The threshold in milliseconds for logging a warning when Python read operations are slow.
+    If a read operation takes longer than this duration, a warning is logged suggesting
+    faster I/O or subprocess isolation.
+  experimental: true

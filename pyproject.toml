@@ -1,0 +1,297 @@
+[project]
+name = "pysail"
+version = "0.7.2"
+description = "Sail Python library"
+authors = [
+    { name = "LakeSail", email = "hello@lakesail.com" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10,<3.15"
+dependencies = []
+keywords = ["data", "big data", "sql", "spark", "pyspark", "arrow", "datafusion"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+test = [
+    # The dependencies for testing the installed package.
+    "pyspark-client==4.2.0",
+    "pandas<3",
+    "duckdb>=1.0,<2",
+    "pytest>=9.1,<10",
+    "pytest-xdist>=3.7,<4",
+    "pytest-rerunfailures>=16.7,<17",
+    "pytest-timeout>=2.4,<3",
+    "pytest-bdd>=8.1,<9",
+    "syrupy>=5.0,<6",
+    "jinja2>=3.1,<4",
+    "pillow>=10.3.0,<11",
+    "pyiceberg[sql-sqlite,pyiceberg-core]==0.11.1",
+    "pydantic>=2.11,<2.12",
+    "jedi>=0.19.2,<0.20",
+    "jsonpath-ng>=1.6,<2",
+    "PyYAML>=6.0,<7",
+    "moto[glue]>=5,<6",
+    "testcontainers>=4,<5",
+    "connectorx>=0.3,<1",
+    "vortex-data>=0.64,<1; platform_system != 'Windows'",
+    "pyarrow>=24.0,<25",
+    "adbc-driver-flightsql>=1.0,<2",
+    "adbc-driver-manager>=1.0,<2",
+]
+mcp = [
+    "mcp>=1.0.0,<2",
+]
+jdbc = [
+    "connectorx>=0.3",
+    "pyarrow>=10.0",
+]
+vortex = [
+    "vortex-data>=0.64; platform_system != 'Windows'",
+    "pyarrow>=10.0",
+]
+
+[project.urls]
+Homepage = "https://lakesail.com"
+Documentation = "https://docs.lakesail.com/sail/latest/"
+Repository = "https://github.com/lakehq/sail"
+Issues = "https://github.com/lakehq/sail/issues"
+
+[project.scripts]
+sail = "pysail.cli:main"
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+# All Hatch environments are configured to have `skip-install = true`,
+# otherwise Hatch triggers a fresh build to install the project, which can be slow.
+# To install the project as an editable package, run `hatch run [<env>:]maturin develop` instead.
+
+# We use `uv` in CI for faster package installation, but we still use `pip` for local development,
+# since the IDE may only support `pip`. Also, if we used `uv` for local development, the `pip` command
+# would then be associated with the global Python installation in the command line. In this case,
+# the developer may incorrectly run `pip` instead of `uv pip`, resulting in unintended modification
+# to the global Python installation.
+
+[tool.hatch.envs.default]
+python = "3.11"
+installer = "pip"
+skip-install = true
+dependencies = [
+    "pyspark[connect]==4.2.0",
+    "ibis-framework>=12,<13",
+    "pandas<3",
+    "pytest>=9.1,<10",
+    "pytest-timeout>=2.4,<3",
+    "pytest-bdd>=8.1,<9",
+    "syrupy>=5.0,<6",
+    "jinja2>=3.1,<4",
+    "duckdb>=1.1,<2",
+    "mcp>=1.0,<2",
+    "boto3>=1.38,<2",
+    "pillow>=10.3.0,<11",
+    "pyiceberg[sql-sqlite,pyiceberg-core]==0.11.1",
+    "pydantic>=2.11,<2.12",
+    "jedi>=0.19.2,<0.20",
+    "jsonpath-ng>=1.6,<2",
+    "PyYAML>=6.0,<7",
+    "pyarrow>=24.0,<25",
+    "adbc-driver-flightsql>=1.0,<2",
+    "adbc-driver-manager>=1.0,<2",
+    "moto[glue]>=5,<6",
+    "testcontainers>=4,<5",
+    "connectorx>=0.3,<1",
+    "vortex-data>=0.64,<1; platform_system != 'Windows'",
+]
+path = ".venvs/default"
+
+[tool.hatch.envs.default.overrides]
+env.CI.installer = "uv"
+
+[tool.hatch.envs.default.scripts]
+# The scripts can be inherited by other environments.
+install-pysail = "\"{env:HATCH_UV}\" pip install pysail --no-index -f target/wheels --force-reinstall"
+
+[tool.hatch.envs.coverage]
+template = "default"
+env-vars = { RUSTC_WORKSPACE_WRAPPER = ".github/scripts/rustc-workspace-wrapper.sh", LLVM_PROFILE_FILE = "target/coverage/sail-%p-%m.profraw" }
+
+[tool.hatch.envs.docs]
+python = "3.11"
+installer = "pip"
+skip-install = true
+dependencies = [
+    "sphinx>=8.0,<9",
+]
+path = ".venvs/docs"
+
+[tool.hatch.envs.docs.extra-scripts]
+build = "sphinx-build python/pysail/docs python/pysail/docs/_build -b json"
+
+[tool.hatch.envs.docs.overrides]
+env.CI.installer = "uv"
+
+[tool.hatch.envs.test]
+matrix-name-format = "{variable}-{value}"
+python = "3.11"
+installer = "pip"
+skip-install = true
+dependencies = [
+    "pandas<3",
+    "pytest>=9.1,<10",
+    "pytest-xdist>=3.7,<4",
+    "pytest-rerunfailures>=16.7,<17",
+    "pytest-timeout>=2.4,<3",
+    "pytest-bdd>=8.1,<9",
+    "syrupy>=5.0,<6",
+    "jinja2>=3.1,<4",
+    "duckdb>=1.1,<2",
+    "pillow>=10.3.0,<11",
+    "pyiceberg[sql-sqlite,pyiceberg-core]==0.11.1",
+    "pydantic>=2.11,<2.12",
+    "jedi>=0.19.2,<0.20",
+    "jsonpath-ng>=1.6,<2",
+    "PyYAML>=6.0,<7",
+    "pyarrow>=24.0,<25",
+    "adbc-driver-flightsql>=1.0,<2",
+    "adbc-driver-manager>=1.0,<2",
+    "moto[glue]>=5,<6",
+    "testcontainers>=4,<5",
+    "connectorx>=0.3,<1",
+    "vortex-data>=0.64,<1; platform_system != 'Windows'",
+]
+
+[[tool.hatch.envs.test.matrix]]
+spark = ["3.5.9", "4.0.4", "4.1.3", "4.2.0"]
+
+[tool.hatch.envs.test.overrides]
+matrix.spark.path = [
+    { value = ".venvs/test.spark-3.5.9", if = ["3.5.9"] },
+    { value = ".venvs/test.spark-4.0.4", if = ["4.0.4"] },
+    { value = ".venvs/test.spark-4.1.3", if = ["4.1.3"] },
+    { value = ".venvs/test.spark-4.2.0", if = ["4.2.0"] },
+]
+matrix.spark.extra-dependencies = [
+    { value = "pyspark[connect]==3.5.9", if = ["3.5.9"] },
+    { value = "pyspark[connect]==4.0.4", if = ["4.0.4"] },
+    { value = "pyspark[connect]==4.1.3", if = ["4.1.3"] },
+    { value = "pyspark[connect]==4.2.0", if = ["4.2.0"] },
+]
+env.CI.installer = "uv"
+
+[tool.hatch.envs.test-spark]
+matrix-name-format = "{variable}-{value}"
+python = "3.11"
+installer = "pip"
+skip-install = true
+dependencies = [
+    "pytest>=8.4,<9",
+    "pytest-xdist>=3.7,<4",
+    "pytest-timeout>=2.4,<3",
+    "pytest-reportlog>=0.4,<0.5",
+]
+
+[[tool.hatch.envs.test-spark.matrix]]
+spark = ["3.5.9", "4.2.0"]
+
+[tool.hatch.envs.test-spark.extra-scripts]
+install-pyspark = "\"{env:HATCH_UV}\" pip install --force-reinstall 'pyspark[connect] @ opt/spark/python/dist/pyspark-{matrix:spark}.tar.gz' 'pandas<3'"
+
+[tool.hatch.envs.test-spark.overrides]
+matrix.spark.path = [
+    { value = ".venvs/test-spark.spark-3.5.9", if = ["3.5.9"] },
+    { value = ".venvs/test-spark.spark-4.2.0", if = ["4.2.0"] },
+]
+env.CI.installer = "uv"
+
+[tool.hatch.envs.test-ibis]
+python = "3.11"
+installer = "pip"
+skip-install = true
+dependencies = [
+    "pyspark[connect]==3.5.9",
+    "ibis-framework[pyspark]>=12,<13",
+    # Ibis 12 uses Drop(this=...), but SQLGlot 30.18 requires Drop(tables=[...]).
+    "sqlglot>=23.4,<30.18,!=26.32.0",
+    # The test dependencies are borrowed from `pyproject.toml` of the Ibis project.
+    # They need to be updated accordingly when we update the Ibis version.
+    "cloudpickle",
+    "filelock>=3.7.0,<4",
+    "fsspec[s3]",
+    "hypothesis>=6.58.0,<7",
+    "packaging>=21.3",
+    # without this constraint, pyspark starts to fail some memtable cleanup tests
+    # with pytest 8.4.0
+    "pytest>=8.2.0,<8.4.0",
+    "pytest-benchmark>=3.4.1,<6",
+    "pytest-deadfixtures>=2.2.1,<3",
+    "pytest-clarity>=1.0.1,<2",
+    "pytest-cov>=5,<8",
+    "pytest-mock>=3.6.1,<4",
+    "pytest-randomly>=3.10.1,<5",
+    "pytest-repeat>=0.9.1,<0.10",
+    "pytest-snapshot>=0.9.0,<1",
+    "pytest-timeout>=2.3.1,<3",
+    "pytest-xdist>=2.3.0,<4",
+    "requests>=2,<3",
+    "tomli>=2.0.1,<3",
+    # The following additional dependencies are needed in our test setup.
+    "pytest-reportlog>=0.4,<0.5",
+]
+path = ".venvs/test-ibis"
+
+[tool.hatch.envs.test-ibis.overrides]
+env.CI.installer = "uv"
+
+[tool.hatch.build.targets.sdist]
+packages = ["python/pysail"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["python/pysail"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.per-file-ignores]
+"crates/**/*.py" = ["INP001", "PLC0415"]
+"python/pysail/docs/conf.py" = ["INP001"]
+"python/pysail/examples/**/*.py" = ["T201", "PLC0415"]
+"python/pysail/testing/**/*.py" = ["S101"]
+"python/pysail/tests/**/*.py" = ["S101", "PLC0415"]
+"scripts/**/*.py" = ["SLF001", "PLC0415"]
+
+[tool.pytest.ini_options]
+testpaths = ["python"]
+# Do not add configuration here to modify the test behavior.
+# Instead, add the configuration using a hook in `conftest.py`.
+# The `pyproject.toml` file is not part of the installed package,
+# so the configuration here will not be available when testing the
+# installed package via `pytest --pyargs pysail`.
+
+[tool.maturin]
+python-source = "python"
+module-name = "pysail._native"
+manifest-path = "crates/sail-python/Cargo.toml"
+features = [
+    "pyo3/extension-module",
+    "pyo3/abi3-py38",
+    "pyo3/generate-import-lib",
+]

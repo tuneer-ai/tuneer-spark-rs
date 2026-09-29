@@ -1,0 +1,535 @@
+{
+  "tests": [
+    {
+      "input": "+a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "+"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-1.23E10BD",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "decimal128": {
+                    "precision": 11,
+                    "scale": 0,
+                    "value": "12300000000"
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-1.8E308D",
+      "exception": "\n[INVALID_NUMERIC_LITERAL_RANGE] Numeric literal -1.8E308 is outside the valid range for double with minimum value of -1.7976931348623157E+308 and maximum value of 1.7976931348623157E+308. Please adjust the value accordingly. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n-1.8E308D\n^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: out-of-range double: 1.8E308"
+      }
+    },
+    {
+      "input": "-9e1",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "literal": {
+                  "float64": {
+                    "value": 90.0
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "-a",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "-"
+            ],
+            "arguments": [
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "a"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": ".9e+2",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 90.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": ".e3",
+      "exception": "\n[PARSE_SYNTAX_ERROR] Syntax error at or near '.'. SQLSTATE: 42601 (line 1, pos 0)\n\n== SQL ==\n.e3\n^^^\n",
+      "output": {
+        "failure": "invalid argument: found . at 0:1 expected something else, or expression"
+      }
+    },
+    {
+      "input": "0.9e+2",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 90.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "1.20E-38BD",
+      "exception": "\n[DECIMAL_PRECISION_EXCEEDS_MAX_PRECISION] Decimal precision 40 exceeds max precision 38. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n1.20E-38BD\n^^^^^^^^^^\n",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal256": {
+              "precision": 40,
+              "scale": 40,
+              "value": "120"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "1.23E10BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 11,
+              "scale": 0,
+              "value": "12300000000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "1.8E308D",
+      "exception": "\n[INVALID_NUMERIC_LITERAL_RANGE] Numeric literal 1.8E308 is outside the valid range for double with minimum value of -1.7976931348623157E+308 and maximum value of 1.7976931348623157E+308. Please adjust the value accordingly. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n1.8E308D\n^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: out-of-range double: 1.8E308"
+      }
+    },
+    {
+      "input": "10.0D",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 10.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "1000Y",
+      "exception": "\n[INVALID_NUMERIC_LITERAL_RANGE] Numeric literal 1000 is outside the valid range for tinyint with minimum value of -128 and maximum value of 127. Please adjust the value accordingly. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n1000Y\n^^^^^\n",
+      "output": {
+        "failure": "invalid argument: tinyint: 1000"
+      }
+    },
+    {
+      "input": "10L",
+      "output": {
+        "success": {
+          "literal": {
+            "int64": {
+              "value": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "10S",
+      "output": {
+        "success": {
+          "literal": {
+            "int16": {
+              "value": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "10Y",
+      "output": {
+        "success": {
+          "literal": {
+            "int8": {
+              "value": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123.08BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 5,
+              "scale": 2,
+              "value": "12308"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123.0BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 4,
+              "scale": 1,
+              "value": "1230"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123.0E-28BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 29,
+              "scale": 29,
+              "value": "1230"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 3,
+              "scale": 0,
+              "value": "123"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123E+10BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 13,
+              "scale": 0,
+              "value": "1230000000000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123E-10BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 10,
+              "scale": 10,
+              "value": "123"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "123E10BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 13,
+              "scale": 0,
+              "value": "1230000000000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "1SL",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "1SL"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "1a",
+      "output": {
+        "success": {
+          "unresolvedAttribute": {
+            "name": [
+              "1a"
+            ],
+            "planId": null,
+            "isMetadataColumn": false
+          }
+        }
+      }
+    },
+    {
+      "input": "40000S",
+      "exception": "\n[INVALID_NUMERIC_LITERAL_RANGE] Numeric literal 40000 is outside the valid range for smallint with minimum value of -32768 and maximum value of 32767. Please adjust the value accordingly. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n40000S\n^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: smallint: 40000"
+      }
+    },
+    {
+      "input": "787324",
+      "output": {
+        "success": {
+          "literal": {
+            "int32": {
+              "value": 787324
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "7873247234798249234",
+      "output": {
+        "success": {
+          "literal": {
+            "int64": {
+              "value": 7873247234798249234
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "7873247234798249279371.2334",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 26,
+              "scale": 4,
+              "value": "78732472347982492793712334"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "78732472347982492793712334",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 26,
+              "scale": 0,
+              "value": "78732472347982492793712334"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "78732472347982492793712334L",
+      "exception": "\n[INVALID_NUMERIC_LITERAL_RANGE] Numeric literal 78732472347982492793712334 is outside the valid range for bigint with minimum value of -9223372036854775808 and maximum value of 9223372036854775807. Please adjust the value accordingly. SQLSTATE: 22003\n== SQL (line 1, position 1) ==\n78732472347982492793712334L\n^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+      "output": {
+        "failure": "invalid argument: bigint: 78732472347982492793712334"
+      }
+    },
+    {
+      "input": "9.0e1",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 90.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "9.e+1BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 2,
+              "scale": 0,
+              "value": "90"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "900.0E-1BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 4,
+              "scale": 2,
+              "value": "9000"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "900e-1BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 3,
+              "scale": 1,
+              "value": "900"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "90912830918230182310293801923652346786BD",
+      "output": {
+        "success": {
+          "literal": {
+            "decimal128": {
+              "precision": 38,
+              "scale": 0,
+              "value": "90912830918230182310293801923652346786"
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "9e-1",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 0.9
+            }
+          }
+        }
+      }
+    },
+    {
+      "input": "9e1",
+      "output": {
+        "success": {
+          "literal": {
+            "float64": {
+              "value": 90.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

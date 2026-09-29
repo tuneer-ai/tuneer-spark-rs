@@ -1,0 +1,601 @@
+{
+  "tests": [
+    {
+      "input": "case 'a'='a' when true then 1 end",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "when"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "=="
+                        ],
+                        "arguments": [
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "a"
+                              }
+                            }
+                          },
+                          {
+                            "literal": {
+                              "utf8": {
+                                "value": "a"
+                              }
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    },
+                    {
+                      "literal": {
+                        "boolean": {
+                          "value": true
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "literal": {
+                  "int32": {
+                    "value": 1
+                  }
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "case (a or b) when true then c when false then d else e end",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "when"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "or"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "a"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "b"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    },
+                    {
+                      "literal": {
+                        "boolean": {
+                          "value": true
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "or"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "a"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "b"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    },
+                    {
+                      "literal": {
+                        "boolean": {
+                          "value": false
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "d"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "e"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "case a when 1 then b when 2 then c else d end",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "when"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "d"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "case when (1) + case when a > b then c else d end then f else g end",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "when"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "+"
+                  ],
+                  "arguments": [
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "unresolvedFunction": {
+                        "functionName": [
+                          "when"
+                        ],
+                        "arguments": [
+                          {
+                            "unresolvedFunction": {
+                              "functionName": [
+                                ">"
+                              ],
+                              "arguments": [
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "a"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                },
+                                {
+                                  "unresolvedAttribute": {
+                                    "name": [
+                                      "b"
+                                    ],
+                                    "planId": null,
+                                    "isMetadataColumn": false
+                                  }
+                                }
+                              ],
+                              "namedArguments": [],
+                              "isDistinct": false,
+                              "isUserDefinedFunction": false,
+                              "isInternal": null,
+                              "ignoreNulls": null,
+                              "filter": null,
+                              "orderBy": null
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "c"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          },
+                          {
+                            "unresolvedAttribute": {
+                              "name": [
+                                "d"
+                              ],
+                              "planId": null,
+                              "isMetadataColumn": false
+                            }
+                          }
+                        ],
+                        "namedArguments": [],
+                        "isDistinct": false,
+                        "isUserDefinedFunction": false,
+                        "isInternal": null,
+                        "ignoreNulls": null,
+                        "filter": null,
+                        "orderBy": null
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "f"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "g"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    },
+    {
+      "input": "case when a = 1 then b when a = 2 then c else d end",
+      "output": {
+        "success": {
+          "unresolvedFunction": {
+            "functionName": [
+              "when"
+            ],
+            "arguments": [
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 1
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "b"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedFunction": {
+                  "functionName": [
+                    "=="
+                  ],
+                  "arguments": [
+                    {
+                      "unresolvedAttribute": {
+                        "name": [
+                          "a"
+                        ],
+                        "planId": null,
+                        "isMetadataColumn": false
+                      }
+                    },
+                    {
+                      "literal": {
+                        "int32": {
+                          "value": 2
+                        }
+                      }
+                    }
+                  ],
+                  "namedArguments": [],
+                  "isDistinct": false,
+                  "isUserDefinedFunction": false,
+                  "isInternal": null,
+                  "ignoreNulls": null,
+                  "filter": null,
+                  "orderBy": null
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "c"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              },
+              {
+                "unresolvedAttribute": {
+                  "name": [
+                    "d"
+                  ],
+                  "planId": null,
+                  "isMetadataColumn": false
+                }
+              }
+            ],
+            "namedArguments": [],
+            "isDistinct": false,
+            "isUserDefinedFunction": false,
+            "isInternal": null,
+            "ignoreNulls": null,
+            "filter": null,
+            "orderBy": null
+          }
+        }
+      }
+    }
+  ]
+}

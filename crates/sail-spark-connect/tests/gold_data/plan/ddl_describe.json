@@ -1,0 +1,72 @@
+{
+  "tests": [
+    {
+      "input": "DESC FUNCTION a",
+      "output": {
+        "success": {
+          "command": {
+            "describeFunction": {
+              "function": [
+                "a"
+              ],
+              "extended": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DESCRIBE FUNCTION EXTENDED a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "describeFunction": {
+              "function": [
+                "a",
+                "b",
+                "c"
+              ],
+              "extended": true
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DESCRIBE FUNCTION a",
+      "output": {
+        "success": {
+          "command": {
+            "describeFunction": {
+              "function": [
+                "a"
+              ],
+              "extended": false
+            },
+            "planId": null
+          }
+        }
+      }
+    },
+    {
+      "input": "DESCRIBE FUNCTION a.b.c",
+      "output": {
+        "success": {
+          "command": {
+            "describeFunction": {
+              "function": [
+                "a",
+                "b",
+                "c"
+              ],
+              "extended": false
+            },
+            "planId": null
+          }
+        }
+      }
+    }
+  ]
+}

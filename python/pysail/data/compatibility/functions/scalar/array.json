@@ -1,0 +1,142 @@
+[
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_append",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_compact",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_concat",
+    "status": "supported",
+    "note": "This is Sail exclusive (not available in PySpark or Spark SQL). This is a synonym of `concat`."
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_contains",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_contains_all",
+    "status": "supported",
+    "note": "This is Sail exclusive (not available in PySpark or Spark SQL)."
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_distinct",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_except",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_insert",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_intersect",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_join",
+    "status": "partially supported",
+    "ref": "https://github.com/lakehq/sail/issues/220"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_max",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_min",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_position",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_prepend",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_remove",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_repeat",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_size",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "array_union",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "arrays_overlap",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "arrays_zip",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "flatten",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "get",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "sequence",
+    "status": "partially supported",
+    "ref": "https://github.com/lakehq/sail/issues/220"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "shuffle",
+    "status": "planned",
+    "ref": "https://github.com/lakehq/sail/issues/220"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "slice",
+    "status": "supported"
+  },
+  {
+    "module": "pyspark.sql.functions",
+    "function": "sort_array",
+    "status": "supported"
+  }
+]
