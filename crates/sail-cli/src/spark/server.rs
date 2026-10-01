@@ -5,6 +5,7 @@ use std::sync::Arc;
 use log::{error, info};
 use sail_common::config::AppConfig;
 use sail_common::runtime::RuntimeManager;
+use sail_server::federation::FederationManager;
 use sail_spark_connect::entrypoint::serve;
 use tokio::net::TcpListener;
 
@@ -88,9 +89,14 @@ where
         .primary()
         .block_on(async { telemetry::TelemetryGuard::try_new(&config) })?;
 
+    let federation = Arc::new(FederationManager::new());
+    let http_port: u16 = std::env::var("SAIL_HTTP_PORT")
+        .ok()
+        .and_then(|p| p.parse().ok())
+        .unwrap_or(9000);
+
     let handle = runtime.handle();
     let (server_address, server_task) = runtime.handle().primary().block_on(async {
-        // A secure connection can be handled by a gateway in production.
         let listener = TcpListener::bind(address).await?;
         let server_address = listener.local_addr()?;
         let server_task = async move {
@@ -111,9 +117,20 @@ where
 
     let server_task = runtime.handle().primary().spawn(server_task);
 
+    let fm = Arc::clone(&federation);
+    let http_task = runtime.handle().primary().spawn(async move {
+        let http_addr = SocketAddr::from(([0, 0, 0, 0], http_port));
+        if let Err(e) = sail_server::start_http_server(http_addr, fm).await {
+            error!("HTTP management server error: {e}");
+        }
+    });
+
+    federation.set_ready(true);
+
     runtime.handle().primary().block_on(async move {
         let result = workload(server_address).await;
         let server_result = server_task.await;
+        http_task.abort();
         match (result, server_result) {
             (Err(e), _) => Err(e),
             (Ok(()), Ok(Ok(()))) => Ok(()),

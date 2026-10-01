@@ -22,6 +22,7 @@ sail-telemetry = { path = "../sail-telemetry" }
 sail-spark-connect = { path = "../sail-spark-connect" }
 sail-session = { path = "../sail-session" }
 sail-mimalloc = { path = "../sail-mimalloc", optional = true }
+sail-server = { path = "../sail-server" }
 
 clap = { workspace = true }
 tokio = { workspace = true }
